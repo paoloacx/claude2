@@ -1251,8 +1251,11 @@ function renderTimeline() {
                                     <button class="mac-button edit-button" onclick="editEntry(${entry.id})">✏️ Edit</button>
                                     
                                     <div class="breadcrumb-time">
-                                        ${entry.isTimedActivity ? 
-                                            `<span class="compact-time">⏰ ${formatTime(entry.timestamp)} - ${calculateEndTime(entry.timestamp, entry.duration)}</span>` :
+    ${entry.isTimedActivity ? 
+        `<div class="time-event-header">
+            <span>⏰ ${formatTime(entry.timestamp)} - ${calculateEndTime(entry.timestamp, entry.duration)}</span>
+            <span class="time-activity-inline">${entry.activity}</span>
+        </div>` :
                                             entry.isQuickTrack ?
                                             `<span class="compact-time">⏰ ${formatTime(entry.timestamp)} ${entry.note}</span>` :
                                             `⏰ ${formatTime(entry.timestamp)}`
