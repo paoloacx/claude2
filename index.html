@@ -31,6 +31,10 @@
             🔐 Sign in with Google
         </button>
         
+        <button class="mac-button" onclick="signInWithEmail()" style="width: 100%; margin-bottom: 12px; font-size: 14px;">
+            📧 Sign in with Email
+        </button>
+        
         <div style="text-align: center; margin-top: 16px; font-size: 11px; color: #666;">
             Or continue without account
             <br>
@@ -164,7 +168,7 @@
 
         <div class="mac-window hidden" id="empty-state">
             <div class="mac-content empty-state">
-                <div style="font-size: 48px; margin-bottom: 16px;">📍</div>
+                <div style="font-size: 48px; margin-bottom: 16px;">📝</div>
                 <p><strong>No entries yet</strong></p>
                 <p style="color: #666; margin-top: 8px;">Create your first breadcrumb</p>
             </div>
@@ -202,12 +206,25 @@
         </div>
     </div>
 
+    <!-- Modal de Stats - AGREGADO CORRECTAMENTE AL HTML -->
+    <div id="stats-modal" class="preview-modal" onclick="closeStats(event)">
+        <div class="preview-content" onclick="event.stopPropagation()">
+            <div class="mac-title-bar">
+                <span>📊 Statistics</span>
+                <button onclick="closeStats()" style="background: #fff; border: 2px solid #000; padding: 2px 8px; cursor: pointer;">✕</button>
+            </div>
+            <div class="mac-content">
+                <div class="stats-grid" id="stats-content"></div>
+            </div>
+        </div>
+    </div>
+
     <div class="footer" id="footer" style="display: none;">
-    <button class="mac-button" onclick="openStats()">📊 Stats</button>
-    <button class="mac-button" onclick="exportCSV()">💾 Export CSV</button>
-    <button class="mac-button" onclick="exportICS()">📅 Export iCal</button>
-    <button class="mac-button" onclick="openSettings()">⚙️ Settings</button>
-</div>
+        <button class="mac-button" onclick="openStats()">📊 Stats</button>
+        <button class="mac-button" onclick="exportCSV()">💾 Export CSV</button>
+        <button class="mac-button" onclick="exportICS()">📅 Export iCal</button>
+        <button class="mac-button" onclick="openSettings()">⚙️ Settings</button>
+    </div>
 
     <script src="./firebase-config.js"></script>
     <script src="./app.js"></script>
