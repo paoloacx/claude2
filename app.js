@@ -1260,9 +1260,7 @@ function renderTimeline() {
                                         ${entry.isSpent ? `<span class="spent-badge">💰 €${entry.spentAmount.toFixed(2)}</span>` : ''}
                                     </div>
                                     
-                                    ${entry.isTimedActivity ? `
-                                        <div class="activity-label">${entry.activity}</div>
-                                    ` : ''}
+                                    ${entry.isTimedActivity ? '' : ''}
                                     
                                     ${!entry.isTimedActivity && !entry.isQuickTrack ? `
                                         <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 8px;">
