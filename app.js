@@ -1401,29 +1401,11 @@ END:VCALENDAR`;
 }
 // Stats functions
 function openStats() {
-    const modal = document.getElementById('stats-modal');
-    if (!modal) {
-        createStatsModal();
-    }
     calculateStats();
-    document.getElementById('stats-modal').classList.add('show');
-}
-
-function createStatsModal() {
-    const modalHTML = `
-        <div id="stats-modal" class="preview-modal" onclick="closeStats(event)">
-            <div class="preview-content" onclick="event.stopPropagation()">
-                <div class="mac-title-bar">
-                    <span>📊 Statistics</span>
-                    <button onclick="closeStats()" style="background: #fff; border: 2px solid #000; padding: 2px 8px; cursor: pointer;">✕</button>
-                </div>
-                <div class="mac-content">
-                    <div class="stats-grid" id="stats-content"></div>
-                </div>
-            </div>
-        </div>
-    `;
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    const modal = document.getElementById('stats-modal');
+    if (modal) {
+        modal.classList.add('show');
+    }
 }
 
 function calculateStats() {
