@@ -24,8 +24,13 @@ auth.onAuthStateChanged((user) => {
         currentUser = user;
         showMainApp();
         updateSyncStatus('online');
-        loadDataFromFirebase();
-        loadSettingsFromFirebase();
+        // Esperar a que app.js se cargue
+        if (typeof loadDataFromFirebase === 'function') {
+            loadDataFromFirebase();
+        }
+        if (typeof loadSettingsFromFirebase === 'function') {
+            loadSettingsFromFirebase();
+        }
     }
 });
 
@@ -57,8 +62,13 @@ function continueOffline() {
     isOfflineMode = true;
     showMainApp();
     updateSyncStatus('offline');
-    loadData();
-    loadSettings();
+    // Esperar a que app.js se cargue
+    if (typeof loadData === 'function') {
+        loadData();
+    }
+    if (typeof loadSettings === 'function') {
+        loadSettings();
+    }
 }
 
 // Show main app
@@ -116,24 +126,33 @@ async function loadDataFromFirebase() {
     try {
         const snapshot = await db.collection('users').doc(currentUser.uid).collection('entries').orderBy('timestamp', 'desc').get();
         
-        entries = [];
-        snapshot.forEach((doc) => {
-            entries.push({ id: doc.id, ...doc.data() });
-        });
+        if (typeof entries !== 'undefined') {
+            entries = [];
+            snapshot.forEach((doc) => {
+                entries.push({ id: doc.id, ...doc.data() });
+            });
+            
+            if (typeof renderTimeline === 'function') {
+                renderTimeline();
+            }
+        }
         
-        renderTimeline();
         updateSyncStatus('online');
     } catch (error) {
         console.error('Error loading from Firebase:', error);
         updateSyncStatus('offline');
-        loadData();
+        if (typeof loadData === 'function') {
+            loadData();
+        }
     }
 }
 
 // Save data to Firebase
 async function saveDataToFirebase() {
     if (!currentUser || isOfflineMode) {
-        saveData();
+        if (typeof saveData === 'function') {
+            saveData();
+        }
         return;
     }
     
@@ -142,17 +161,22 @@ async function saveDataToFirebase() {
     try {
         const batch = db.batch();
         
-        entries.forEach((entry) => {
-            const docRef = db.collection('users').doc(currentUser.uid).collection('entries').doc(String(entry.id));
-            batch.set(docRef, entry);
-        });
+        if (typeof entries !== 'undefined') {
+            entries.forEach((entry) => {
+                const docRef = db.collection('users').doc(currentUser.uid).collection('entries').doc(String(entry.id));
+                batch.set(docRef, entry);
+            });
+            
+            await batch.commit();
+        }
         
-        await batch.commit();
         updateSyncStatus('online');
     } catch (error) {
         console.error('Error saving to Firebase:', error);
         updateSyncStatus('offline');
-        saveData();
+        if (typeof saveData === 'function') {
+            saveData();
+        }
     }
 }
 
@@ -163,42 +187,54 @@ async function loadSettingsFromFirebase() {
     try {
         const doc = await db.collection('users').doc(currentUser.uid).collection('settings').doc('app-settings').get();
         
-        if (doc.exists) {
+        if (doc.exists && typeof timeDurations !== 'undefined') {
             const data = doc.data();
             if (data.timeDurations) timeDurations = data.timeDurations;
             if (data.timeActivities) timeActivities = data.timeActivities;
             if (data.trackItems) trackItems = data.trackItems;
             if (data.moods) moods = data.moods;
             
-            updateTimerOptions();
-            updateTrackOptions();
+            if (typeof updateTimerOptions === 'function') {
+                updateTimerOptions();
+            }
+            if (typeof updateTrackOptions === 'function') {
+                updateTrackOptions();
+            }
         }
     } catch (error) {
         console.error('Error loading settings from Firebase:', error);
-        loadSettings();
+        if (typeof loadSettings === 'function') {
+            loadSettings();
+        }
     }
 }
 
 // Save settings to Firebase
 async function saveSettingsToFirebase() {
     if (!currentUser || isOfflineMode) {
-        saveSettingsToStorage();
+        if (typeof saveSettingsToStorage === 'function') {
+            saveSettingsToStorage();
+        }
         return;
     }
     
     try {
-        await db.collection('users').doc(currentUser.uid).collection('settings').doc('app-settings').set({
-            timeDurations: timeDurations,
-            timeActivities: timeActivities,
-            trackItems: trackItems,
-            moods: moods,
-            updatedAt: new Date().toISOString()
-        });
-        
-        console.log('Settings saved to Firebase');
+        if (typeof timeDurations !== 'undefined') {
+            await db.collection('users').doc(currentUser.uid).collection('settings').doc('app-settings').set({
+                timeDurations: timeDurations,
+                timeActivities: timeActivities,
+                trackItems: trackItems,
+                moods: moods,
+                updatedAt: new Date().toISOString()
+            });
+            
+            console.log('Settings saved to Firebase');
+        }
     } catch (error) {
         console.error('Error saving settings to Firebase:', error);
-        saveSettingsToStorage();
+        if (typeof saveSettingsToStorage === 'function') {
+            saveSettingsToStorage();
+        }
     }
 }
 
