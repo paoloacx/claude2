@@ -1399,7 +1399,117 @@ END:VCALENDAR`;
     a.download = `breadcrumbs-${Date.now()}.ics`;
     a.click();
 }
+// Stats functions
+function openStats() {
+    const modal = document.getElementById('stats-modal');
+    if (!modal) {
+        createStatsModal();
+    }
+    calculateStats();
+    document.getElementById('stats-modal').classList.add('show');
+}
 
+function createStatsModal() {
+    const modalHTML = `
+        <div id="stats-modal" class="preview-modal" onclick="closeStats(event)">
+            <div class="preview-content" onclick="event.stopPropagation()">
+                <div class="mac-title-bar">
+                    <span>📊 Statistics</span>
+                    <button onclick="closeStats()" style="background: #fff; border: 2px solid #000; padding: 2px 8px; cursor: pointer;">✕</button>
+                </div>
+                <div class="mac-content">
+                    <div class="stats-grid" id="stats-content"></div>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+}
+
+function calculateStats() {
+    const totalEntries = entries.length;
+    const breadcrumbs = entries.filter(e => !e.isTimedActivity && !e.isQuickTrack && !e.isSpent).length;
+    const timeEvents = entries.filter(e => e.isTimedActivity).length;
+    const trackEvents = entries.filter(e => e.isQuickTrack).length;
+    const spentEvents = entries.filter(e => e.isSpent).length;
+    
+    const totalSpent = entries
+        .filter(e => e.isSpent)
+        .reduce((sum, e) => sum + (e.spentAmount || 0), 0);
+    
+    const totalMinutes = entries
+        .filter(e => e.isTimedActivity)
+        .reduce((sum, e) => sum + (e.duration || 0), 0);
+    
+    const totalHours = (totalMinutes / 60).toFixed(1);
+    
+    // Actividades más frecuentes
+    const activityCount = {};
+    entries.filter(e => e.isTimedActivity).forEach(e => {
+        activityCount[e.activity] = (activityCount[e.activity] || 0) + 1;
+    });
+    const topActivity = Object.keys(activityCount).length > 0 
+        ? Object.keys(activityCount).reduce((a, b) => activityCount[a] > activityCount[b] ? a : b)
+        : 'None';
+    
+    // Tracks más frecuentes
+    const trackCount = {};
+    entries.filter(e => e.isQuickTrack).forEach(e => {
+        trackCount[e.note] = (trackCount[e.note] || 0) + 1;
+    });
+    const topTrack = Object.keys(trackCount).length > 0
+        ? Object.keys(trackCount).reduce((a, b) => trackCount[a] > trackCount[b] ? a : b)
+        : 'None';
+    
+    const statsHTML = `
+        <div class="stat-card">
+            <div class="stat-number">${totalEntries}</div>
+            <div class="stat-label">Total Entries</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">${breadcrumbs}</div>
+            <div class="stat-label">📝 Breadcrumbs</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">${timeEvents}</div>
+            <div class="stat-label">⏱️ Time Events</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">${trackEvents}</div>
+            <div class="stat-label">📊 Tracked Items</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">${spentEvents}</div>
+            <div class="stat-label">💰 Expenses</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">€${totalSpent.toFixed(2)}</div>
+            <div class="stat-label">Total Spent</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">${totalHours}h</div>
+            <div class="stat-label">Hours Tracked</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" style="font-size: 18px;">${topActivity}</div>
+            <div class="stat-label">Top Activity</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" style="font-size: 16px;">${topTrack}</div>
+            <div class="stat-label">Most Tracked</div>
+        </div>
+    `;
+    
+    document.getElementById('stats-content').innerHTML = statsHTML;
+}
+
+function closeStats(event) {
+    if (event && event.target.id !== 'stats-modal') return;
+    const modal = document.getElementById('stats-modal');
+    if (modal) {
+        modal.classList.remove('show');
+    }
+}
 // Initialize app
 loadData();
 loadSettings();
