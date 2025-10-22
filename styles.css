@@ -643,3 +643,62 @@ h1 {
         max-height: 150px;
     }
 }
+/* Mejoras para eventos Time */
+.time-event-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 4px;
+}
+
+.time-activity-inline {
+    font-weight: bold;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Botón edit arriba derecha */
+.edit-button {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 4px 10px;
+    font-size: 11px;
+    z-index: 10;
+    left: auto;
+}
+
+/* Botón preview abajo derecha */
+.preview-button {
+    padding: 4px 10px;
+    font-size: 11px;
+    margin-left: auto;
+}
+
+/* Stats modal */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.stat-card {
+    background: #f0f0f0;
+    border: 3px solid #000;
+    padding: 16px;
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 32px;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 8px;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: #666;
+}
