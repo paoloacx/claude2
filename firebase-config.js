@@ -22,6 +22,7 @@ let isOfflineMode = false;
 auth.onAuthStateChanged((user) => {
     if (user) {
         currentUser = user;
+        console.log('Usuario autenticado:', user.email, 'UID:', user.uid);
         showMainApp();
         updateSyncStatus('online');
         // Esperar a que app.js se cargue
@@ -45,6 +46,35 @@ function signInWithGoogle() {
         .catch((error) => {
             console.error('Google sign-in error:', error);
             alert('Sign in error: ' + error.message);
+        });
+}
+
+// Sign in with Email/Password
+function signInWithEmail() {
+    const email = prompt('Enter your email:');
+    const password = prompt('Enter your password:');
+    
+    if (!email || !password) return;
+    
+    auth.signInWithEmailAndPassword(email, password)
+        .then((result) => {
+            console.log('Signed in with email:', result.user.email);
+        })
+        .catch((error) => {
+            // Si el usuario no existe, intentar crearlo
+            if (error.code === 'auth/user-not-found') {
+                auth.createUserWithEmailAndPassword(email, password)
+                    .then((result) => {
+                        console.log('New user created:', result.user.email);
+                    })
+                    .catch((createError) => {
+                        console.error('Error creating user:', createError);
+                        alert('Error: ' + createError.message);
+                    });
+            } else {
+                console.error('Email sign-in error:', error);
+                alert('Sign in error: ' + error.message);
+            }
         });
 }
 
@@ -117,20 +147,27 @@ function updateSyncStatus(status) {
     }
 }
 
-// Load data from Firebase
+// Load data from Firebase - AHORA ESPECÍFICO POR USUARIO
 async function loadDataFromFirebase() {
     if (!currentUser) return;
     
     updateSyncStatus('syncing');
     
     try {
-        const snapshot = await db.collection('users').doc(currentUser.uid).collection('entries').orderBy('timestamp', 'desc').get();
+        // Cargar desde users/{userId}/entries
+        const snapshot = await db.collection('users')
+            .doc(currentUser.uid)
+            .collection('entries')
+            .orderBy('timestamp', 'desc')
+            .get();
         
         if (typeof entries !== 'undefined') {
             entries = [];
             snapshot.forEach((doc) => {
                 entries.push({ id: doc.id, ...doc.data() });
             });
+            
+            console.log(`Cargadas ${entries.length} entradas del usuario ${currentUser.email}`);
             
             if (typeof renderTimeline === 'function') {
                 renderTimeline();
@@ -147,7 +184,7 @@ async function loadDataFromFirebase() {
     }
 }
 
-// Save data to Firebase
+// Save data to Firebase - AHORA ESPECÍFICO POR USUARIO
 async function saveDataToFirebase() {
     if (!currentUser || isOfflineMode) {
         if (typeof saveData === 'function') {
@@ -163,11 +200,16 @@ async function saveDataToFirebase() {
         
         if (typeof entries !== 'undefined') {
             entries.forEach((entry) => {
-                const docRef = db.collection('users').doc(currentUser.uid).collection('entries').doc(String(entry.id));
+                // Guardar en users/{userId}/entries/{entryId}
+                const docRef = db.collection('users')
+                    .doc(currentUser.uid)
+                    .collection('entries')
+                    .doc(String(entry.id));
                 batch.set(docRef, entry);
             });
             
             await batch.commit();
+            console.log(`Guardadas ${entries.length} entradas para ${currentUser.email}`);
         }
         
         updateSyncStatus('online');
@@ -180,12 +222,17 @@ async function saveDataToFirebase() {
     }
 }
 
-// Load settings from Firebase
+// Load settings from Firebase - AHORA ESPECÍFICO POR USUARIO
 async function loadSettingsFromFirebase() {
     if (!currentUser) return;
     
     try {
-        const doc = await db.collection('users').doc(currentUser.uid).collection('settings').doc('app-settings').get();
+        // Cargar desde users/{userId}/settings/app-settings
+        const doc = await db.collection('users')
+            .doc(currentUser.uid)
+            .collection('settings')
+            .doc('app-settings')
+            .get();
         
         if (doc.exists && typeof timeDurations !== 'undefined') {
             const data = doc.data();
@@ -193,6 +240,8 @@ async function loadSettingsFromFirebase() {
             if (data.timeActivities) timeActivities = data.timeActivities;
             if (data.trackItems) trackItems = data.trackItems;
             if (data.moods) moods = data.moods;
+            
+            console.log('Configuración cargada para', currentUser.email);
             
             if (typeof updateTimerOptions === 'function') {
                 updateTimerOptions();
@@ -209,7 +258,7 @@ async function loadSettingsFromFirebase() {
     }
 }
 
-// Save settings to Firebase
+// Save settings to Firebase - AHORA ESPECÍFICO POR USUARIO
 async function saveSettingsToFirebase() {
     if (!currentUser || isOfflineMode) {
         if (typeof saveSettingsToStorage === 'function') {
@@ -220,15 +269,20 @@ async function saveSettingsToFirebase() {
     
     try {
         if (typeof timeDurations !== 'undefined') {
-            await db.collection('users').doc(currentUser.uid).collection('settings').doc('app-settings').set({
-                timeDurations: timeDurations,
-                timeActivities: timeActivities,
-                trackItems: trackItems,
-                moods: moods,
-                updatedAt: new Date().toISOString()
-            });
+            // Guardar en users/{userId}/settings/app-settings
+            await db.collection('users')
+                .doc(currentUser.uid)
+                .collection('settings')
+                .doc('app-settings')
+                .set({
+                    timeDurations: timeDurations,
+                    timeActivities: timeActivities,
+                    trackItems: trackItems,
+                    moods: moods,
+                    updatedAt: new Date().toISOString()
+                });
             
-            console.log('Settings saved to Firebase');
+            console.log('Settings saved to Firebase for', currentUser.email);
         }
     } catch (error) {
         console.error('Error saving settings to Firebase:', error);
@@ -238,13 +292,18 @@ async function saveSettingsToFirebase() {
     }
 }
 
-// Delete entry from Firebase
+// Delete entry from Firebase - AHORA ESPECÍFICO POR USUARIO
 async function deleteEntryFromFirebase(entryId) {
     if (!currentUser || isOfflineMode) return;
     
     try {
-        await db.collection('users').doc(currentUser.uid).collection('entries').doc(String(entryId)).delete();
-        console.log('Entry deleted from Firebase');
+        // Eliminar desde users/{userId}/entries/{entryId}
+        await db.collection('users')
+            .doc(currentUser.uid)
+            .collection('entries')
+            .doc(String(entryId))
+            .delete();
+        console.log('Entry deleted from Firebase for', currentUser.email);
     } catch (error) {
         console.error('Error deleting from Firebase:', error);
     }
