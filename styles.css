@@ -225,7 +225,7 @@ h1 {
     background: white;
     border: 3px ridge #999;
     padding: 16px;
-    padding-top: 50px;
+    padding-top: 16px;  /* CAMBIADO: De 50px a 16px para que el contenido empiece más arriba */
     margin-bottom: 12px;
     position: relative;
     color: #000;
@@ -319,10 +319,11 @@ h1 {
     background: #e0e0e0;
 }
 
+/* CAMBIADO: Botón edit ahora en la esquina superior derecha */
 .edit-button {
     position: absolute;
     top: 12px;
-    left: 12px;
+    right: 12px;  /* Ahora está a la derecha */
     padding: 4px 10px;
     font-size: 11px;
     z-index: 10;
@@ -632,17 +633,6 @@ h1 {
     gap: 8px;
 }
 
-@media (max-width: 768px) {
-    .preview-image-thumb,
-    .preview-map-thumb {
-        width: 50px !important;
-        height: 50px !important;
-    }
-    
-    .header-image {
-        max-height: 150px;
-    }
-}
 /* Mejoras para eventos Time */
 .time-event-header {
     display: flex;
@@ -656,24 +646,6 @@ h1 {
     font-size: 14px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-}
-
-/* Botón edit arriba derecha */
-.edit-button {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    padding: 4px 10px;
-    font-size: 11px;
-    z-index: 10;
-    left: auto;
-}
-
-/* Botón preview abajo derecha */
-.preview-button {
-    padding: 4px 10px;
-    font-size: 11px;
-    margin-left: auto;
 }
 
 /* Stats modal */
@@ -701,4 +673,16 @@ h1 {
 .stat-label {
     font-size: 14px;
     color: #666;
+}
+
+@media (max-width: 768px) {
+    .preview-image-thumb,
+    .preview-map-thumb {
+        width: 50px !important;
+        height: 50px !important;
+    }
+    
+    .header-image {
+        max-height: 150px;
+    }
 }
