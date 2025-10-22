@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Breadcrumbs Timeline</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon.png">
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="./styles.css">
     
@@ -16,8 +21,12 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
 </head>
 <body>
-    <!-- Usa la imagen que subiste a GitHub o déjala comentada por ahora -->
-    <img class="header-image" src="./bread-header.png" alt="Breadcrumbs Header">
+    <!-- Header Image - Opcional, descomenta cuando tengas la imagen -->
+    <!-- 
+    <div class="header-container">
+        <img class="header-image" src="./header.png" alt="Breadcrumbs Timeline Header">
+    </div>
+    -->
     
     <div class="sync-status" id="sync-status">● Offline</div>
 
@@ -49,8 +58,9 @@
             <div class="mac-title-bar">
                 <span>Breadcrumbs Timeline</span>
                 <div class="user-avatar" id="user-avatar" onclick="toggleUserMenu(event)" style="display: none;">
-                    <span id="user-email-short"></span>
+                    <span id="user-icon">👤</span>
                     <div class="logout-menu" id="logout-menu">
+                        <div class="user-email-display" id="user-email-full"></div>
                         <button onclick="signOutUser(); event.stopPropagation();">🚪 Sign Out</button>
                     </div>
                 </div>

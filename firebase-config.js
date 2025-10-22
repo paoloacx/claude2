@@ -108,8 +108,10 @@ function showMainApp() {
     
     if (currentUser) {
         const email = currentUser.email;
-        const shortEmail = email.length > 20 ? email.substring(0, 17) + '...' : email;
-        document.getElementById('user-email-short').textContent = '👤 ' + shortEmail;
+        // Mostrar solo icono en el avatar
+        document.getElementById('user-icon').textContent = '👤';
+        // Guardar el email completo en el dropdown
+        document.getElementById('user-email-full').textContent = email;
         document.getElementById('user-avatar').style.display = 'block';
     }
 }

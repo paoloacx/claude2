@@ -1250,18 +1250,20 @@ function renderTimeline() {
                                 <div class="breadcrumb-entry ${entry.isTimedActivity ? 'edit-mode' : ''} ${trackClass} ${spentClass}" style="${heightStyle}">
                                     <button class="mac-button edit-button" onclick="editEntry(${entry.id})">✏️ Edit</button>
                                     
-                                    <div class="breadcrumb-time">
-    ${entry.isTimedActivity ? 
-        `<div class="time-event-header">
-            <span>⏰ ${formatTime(entry.timestamp)} - ${calculateEndTime(entry.timestamp, entry.duration)}</span>
-            <span class="time-activity-inline">${entry.activity}</span>
-        </div>` :
-                                            entry.isQuickTrack ?
-                                            `<span class="compact-time">⏰ ${formatTime(entry.timestamp)} ${entry.note}</span>` :
-                                            `⏰ ${formatTime(entry.timestamp)}`
-                                        }
-                                        ${entry.isSpent ? `<span class="spent-badge">💰 €${entry.spentAmount.toFixed(2)}</span>` : ''}
-                                    </div>
+                                    ${entry.isTimedActivity ? 
+                                        `<div class="time-event-header">
+                                            <span style="font-size: 13px; font-weight: bold;">⏰ ${formatTime(entry.timestamp)} - ${calculateEndTime(entry.timestamp, entry.duration)}</span>
+                                            <span class="time-activity-inline">${entry.activity}</span>
+                                            <span style="opacity: 0; pointer-events: none; font-size: 13px;">⏰ 00:00 - 00:00</span>
+                                        </div>` :
+                                        `<div class="breadcrumb-time">
+                                            ${entry.isQuickTrack ?
+                                                `<span class="compact-time">⏰ ${formatTime(entry.timestamp)} ${entry.note}</span>` :
+                                                `⏰ ${formatTime(entry.timestamp)}`
+                                            }
+                                            ${entry.isSpent ? `<span class="spent-badge">💰 €${entry.spentAmount.toFixed(2)}</span>` : ''}
+                                        </div>`
+                                    }
                                     
                                     ${entry.isTimedActivity ? '' : ''}
                                     
@@ -1346,10 +1348,161 @@ function renderTimeline() {
 
 // Export functions
 function exportCSV() {
+    openExportModal('csv');
+}
+
+function exportICS() {
+    openExportModal('ical');
+}
+
+function openExportModal(format) {
+    const modal = document.getElementById('export-modal');
+    if (!modal) {
+        createExportModal();
+    }
+    
+    // Configurar el modal según el formato
+    document.getElementById('export-format-type').textContent = format === 'csv' ? 'CSV' : 'iCal';
+    document.getElementById('export-modal').classList.add('show');
+}
+
+function createExportModal() {
+    const modalHTML = `
+        <div id="export-modal" class="preview-modal" onclick="closeExportModal(event)">
+            <div class="preview-content" onclick="event.stopPropagation()">
+                <div class="mac-title-bar">
+                    <span>📤 Export <span id="export-format-type">CSV</span></span>
+                    <button onclick="closeExportModal()" style="background: #fff; border: 2px solid #000; padding: 2px 8px; cursor: pointer;">✕</button>
+                </div>
+                <div class="mac-content">
+                    <h3 style="margin-bottom: 16px;">Select Export Range</h3>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <label class="mac-label">
+                            <input type="radio" name="export-range" value="all" checked onchange="updateExportOptions()"> 
+                            Export All Entries
+                        </label>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <label class="mac-label">
+                            <input type="radio" name="export-range" value="month" onchange="updateExportOptions()"> 
+                            Export Specific Month
+                        </label>
+                        <div id="month-selector" style="margin-left: 20px; margin-top: 8px; display: none;">
+                            <input type="month" class="mac-input" id="export-month" style="max-width: 200px;">
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <label class="mac-label">
+                            <input type="radio" name="export-range" value="day" onchange="updateExportOptions()"> 
+                            Export Specific Day
+                        </label>
+                        <div id="day-selector" style="margin-left: 20px; margin-top: 8px; display: none;">
+                            <input type="date" class="mac-input" id="export-day" style="max-width: 200px;">
+                        </div>
+                    </div>
+                    
+                    <hr style="margin: 20px 0; border: 1px solid #ddd;">
+                    
+                    <h3 style="margin-bottom: 16px;">iCal Options (Only for iCal export)</h3>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <label class="mac-label">
+                            <input type="radio" name="ical-grouping" value="individual" checked> 
+                            Each event as separate calendar entry
+                        </label>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <label class="mac-label">
+                            <input type="radio" name="ical-grouping" value="daily"> 
+                            Group all events per day as one calendar entry
+                        </label>
+                    </div>
+                    
+                    <button class="mac-button mac-button-primary" onclick="performExport()" style="width: 100%; margin-top: 24px;">
+                        📥 Export
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    // Establecer fechas por defecto
+    const today = new Date();
+    const monthInput = document.getElementById('export-month');
+    const dayInput = document.getElementById('export-day');
+    
+    monthInput.value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
+    dayInput.value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+}
+
+function updateExportOptions() {
+    const range = document.querySelector('input[name="export-range"]:checked').value;
+    
+    document.getElementById('month-selector').style.display = range === 'month' ? 'block' : 'none';
+    document.getElementById('day-selector').style.display = range === 'day' ? 'block' : 'none';
+}
+
+function closeExportModal(event) {
+    if (event && event.target.id !== 'export-modal') return;
+    const modal = document.getElementById('export-modal');
+    if (modal) {
+        modal.classList.remove('show');
+    }
+}
+
+function performExport() {
+    const format = document.getElementById('export-format-type').textContent.toLowerCase();
+    const range = document.querySelector('input[name="export-range"]:checked').value;
+    const icalGrouping = document.querySelector('input[name="ical-grouping"]:checked').value;
+    
+    // Filtrar entradas según el rango seleccionado
+    let filteredEntries = [...entries];
+    let filenameSuffix = 'all';
+    
+    if (range === 'month') {
+        const monthValue = document.getElementById('export-month').value;
+        const [year, month] = monthValue.split('-');
+        filteredEntries = entries.filter(e => {
+            const date = new Date(e.timestamp);
+            return date.getFullYear() === parseInt(year) && 
+                   date.getMonth() + 1 === parseInt(month);
+        });
+        filenameSuffix = `${year}-${month}`;
+    } else if (range === 'day') {
+        const dayValue = document.getElementById('export-day').value;
+        filteredEntries = entries.filter(e => {
+            const date = new Date(e.timestamp);
+            const dateStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+            return dateStr === dayValue;
+        });
+        filenameSuffix = dayValue;
+    }
+    
+    if (filteredEntries.length === 0) {
+        alert('No entries found for the selected period.');
+        return;
+    }
+    
+    // Realizar la exportación
+    if (format === 'csv') {
+        exportCSVData(filteredEntries, filenameSuffix);
+    } else {
+        exportICSData(filteredEntries, filenameSuffix, icalGrouping);
+    }
+    
+    closeExportModal();
+}
+
+function exportCSVData(data, suffix) {
     const headers = ['Date and Time', 'Note', 'Activity', 'Duration (min)', 'Location', 'Weather', 'Mood', 'Spent', 'Images'];
-    const rows = entries.map(e => [
+    const rows = data.map(e => [
         new Date(e.timestamp).toLocaleString(),
-        e.note,
+        e.note || '',
         e.activity || '',
         e.duration || '',
         e.location || '',
@@ -1360,43 +1513,101 @@ function exportCSV() {
     ]);
     
     const csv = [headers, ...rows].map(row => 
-        row.map(cell => `"${cell}"`).join(',')
+        row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')
     ).join('\n');
     
-    const blob = new Blob([csv], { type: 'text/csv' });
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `breadcrumbs-${Date.now()}.csv`;
+    a.download = `breadcrumbs-${suffix}.csv`;
     a.click();
+    URL.revokeObjectURL(url);
 }
 
-function exportICS() {
-    const icsEvents = entries.map(e => {
-        const date = new Date(e.timestamp);
-        const dateStr = date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+function exportICSData(data, suffix, grouping) {
+    let icsEvents = '';
+    
+    if (grouping === 'daily') {
+        // Agrupar por día
+        const groupedByDay = {};
+        data.forEach(e => {
+            const date = new Date(e.timestamp);
+            const dayKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+            if (!groupedByDay[dayKey]) {
+                groupedByDay[dayKey] = [];
+            }
+            groupedByDay[dayKey].push(e);
+        });
         
-        return `BEGIN:VEVENT
+        // Crear un evento por día
+        icsEvents = Object.keys(groupedByDay).map(dayKey => {
+            const dayEntries = groupedByDay[dayKey];
+            const firstEntry = dayEntries[0];
+            const date = new Date(firstEntry.timestamp);
+            const dateStr = date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+            
+            // Crear descripción con todos los eventos del día
+            const description = dayEntries.map(e => {
+                const time = new Date(e.timestamp).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+                let text = `${time}: ${e.note || e.activity || 'Event'}`;
+                if (e.duration) text += ` (${e.duration} min)`;
+                return text;
+            }).join('\\n');
+            
+            return `BEGIN:VEVENT
+UID:${dayKey}@breadcrumbs
+DTSTAMP:${dateStr}
+DTSTART;VALUE=DATE:${dayKey.replace(/-/g, '')}
+SUMMARY:Breadcrumbs - ${dayEntries.length} events
+DESCRIPTION:${description.replace(/\n/g, '\\n')}
+END:VEVENT`;
+        }).join('\n');
+    } else {
+        // Evento individual por cada entrada
+        icsEvents = data.map(e => {
+            const date = new Date(e.timestamp);
+            const dateStr = date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+            
+            let endDate = new Date(date);
+            if (e.duration) {
+                endDate.setMinutes(endDate.getMinutes() + e.duration);
+            } else {
+                endDate.setMinutes(endDate.getMinutes() + 30); // 30 min por defecto
+            }
+            const endDateStr = endDate.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+            
+            const summary = e.activity || e.note?.substring(0, 50) || 'Breadcrumb Event';
+            const description = (e.note || '') + (e.location ? `\\nLocation: ${e.location}` : '') + (e.weather ? `\\nWeather: ${e.weather}` : '');
+            
+            return `BEGIN:VEVENT
 UID:${e.id}@breadcrumbs
 DTSTAMP:${dateStr}
 DTSTART:${dateStr}
-SUMMARY:${e.note.substring(0, 50)}
-DESCRIPTION:${e.note}
+DTEND:${endDateStr}
+SUMMARY:${summary.replace(/\n/g, ' ')}
+DESCRIPTION:${description.replace(/\n/g, '\\n')}
 LOCATION:${e.location || ''}
 END:VEVENT`;
-    }).join('\n');
+        }).join('\n');
+    }
 
     const ics = `BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Breadcrumbs Timeline//ES
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
 ${icsEvents}
 END:VCALENDAR`;
 
-    const blob = new Blob([ics], { type: 'text/calendar' });
+    const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `breadcrumbs-${Date.now()}.ics`;
+    a.download = `breadcrumbs-${suffix}.ics`;
+    a.click();
+    URL.revokeObjectURL(url);
+}
     a.click();
 }
 // Stats functions
