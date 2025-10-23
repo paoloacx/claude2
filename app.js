@@ -1360,7 +1360,8 @@ function renderTimeline() {
                                     ${entry.isTimedActivity ? 
                                         `<div class="breadcrumb-time">⏰ ${formatTime(entry.timestamp)} - ${calculateEndTime(entry.timestamp, entry.duration)}</div>
                                         <div class="activity-label">${entry.activity}</div>
-                                        <div style="font-size: 13px; color: #666; margin-top: 8px;">Duration: ${entry.duration} minutes</div>` :
+                                        <div style="font-size: 13px; color: #666; margin-top: 8px;">Duration: ${entry.duration} minutes</div>
+                                        ${entry.optionalNote ? '<div class="optional-note">' + entry.optionalNote + '</div>' : ''}` :
                                         `<div class="breadcrumb-time">
                                             ${entry.isQuickTrack ?
                                                 `<span class="compact-time">⏰ ${formatTime(entry.timestamp)} ${entry.note}</span>` :
@@ -1371,13 +1372,14 @@ function renderTimeline() {
                                     }
                                     
                                     ${entry.isTimedActivity ? '' : ''}
+                                    ${entry.isQuickTrack && entry.optionalNote ? '<div class="optional-note">' + entry.optionalNote + '</div>' : ''}
                                     
                                     ${!entry.isTimedActivity && !entry.isQuickTrack ? `
                                         <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 8px;">
                                             ${entry.mood ? `<span class="mood-display">${entry.mood.emoji}</span>` : ''}
                                             <div style="flex: 1;">
                                                 <div class="breadcrumb-note" id="note-${entry.id}">${entry.note}</div>
-                                                ${entry.note.length > 150 ? `<button class="read-more-btn" id="read-more-${entry.id}" onclick="toggleReadMore(${entry.id})">Read more</button>` : ''}
+                                                ${entry.note && entry.note.length > 200 ? `<button class="read-more-btn" id="read-more-${entry.id}" onclick="toggleReadMore(${entry.id})">Read more</button>` : ''}
                                             </div>
                                         </div>
                                     ` : ''}

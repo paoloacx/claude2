@@ -72,7 +72,7 @@ body {
     margin-top: 0;
 }
 
-/* FONDO PUNTEADO MAC CLASSIC en title bar */
+/* FONDO PUNTEADO MAC CLASSIC */
 .mac-title-bar {
     background: #000;
     background-image: 
@@ -81,7 +81,7 @@ body {
     background-size: 2px 2px;
     color: white;
     padding: 8px 16px;
-    font-size: 16px;
+    font-size: 22px;
     font-weight: bold;
     display: flex;
     justify-content: space-between;
@@ -94,7 +94,7 @@ body {
     gap: 12px;
     font-family: 'VT323', monospace;
     letter-spacing: 1px;
-    font-size: 16px;
+    font-size: 22px;
 }
 
 .sync-button {
@@ -103,7 +103,7 @@ body {
     color: white;
     padding: 4px 8px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 18px;
     border-radius: 3px;
     line-height: 1;
 }
@@ -128,7 +128,7 @@ body {
 }
 
 .user-avatar #user-icon {
-    font-size: 20px;
+    font-size: 22px;
     line-height: 1;
     text-align: center;
 }
@@ -295,9 +295,16 @@ h1 {
     background: #333;
 }
 
+/* ANIMACIÓN PANEL DESPLEGABLE */
 .day-content {
-    display: none;
-    padding-top: 12px;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition:
+        max-height 0.45s ease,
+        opacity 0.4s ease,
+        transform 0.4s ease;
     background: repeating-radial-gradient(
         circle at 0 0,
         transparent 0,
@@ -306,11 +313,24 @@ h1 {
         transparent 2px
     );
     background-size: 4px 4px;
-    padding: 16px;
+    padding: 0 16px;
 }
 
 .day-content.expanded {
-    display: block !important;
+    max-height: 5000px !important;
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    padding: 16px !important;
+}
+
+/* ANIMACIÓN CHEVRON */
+.chevron {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.chevron.expanded {
+    transform: rotate(180deg);
 }
 
 .breadcrumb-entry {
@@ -440,6 +460,7 @@ h1 {
     font-size: 11px;
 }
 
+/* ANIMACIÓN MODAL (pop-in suave) */
 .preview-modal {
     display: none;
     position: fixed;
@@ -451,12 +472,15 @@ h1 {
     z-index: 10000;
     overflow-y: auto;
     padding: 20px;
+    opacity: 0;
+    transition: opacity 0.25s ease;
 }
 
 .preview-modal.show {
     display: flex !important;
     align-items: center;
     justify-content: center;
+    opacity: 1 !important;
 }
 
 .preview-content {
@@ -467,6 +491,12 @@ h1 {
     max-height: 90vh;
     overflow-y: auto;
     position: relative;
+    transform: scale(0.95) translateY(8px);
+    transition: all 0.25s cubic-bezier(.18,.89,.32,1.28);
+}
+
+.preview-modal.show .preview-content {
+    transform: scale(1) translateY(0);
 }
 
 .preview-map-full {
@@ -580,14 +610,6 @@ h1 {
     background: #ff6b6b;
     color: white;
     border-color: #ff0000;
-}
-
-.chevron {
-    transition: transform 0.3s;
-}
-
-.chevron.expanded {
-    transform: rotate(180deg);
 }
 
 .mood-selector {
@@ -749,7 +771,7 @@ h1 {
     display: none;
 }
 
-/* CRITICAL: WORK con caja visible separado */
+/* WORK con caja visible */
 .activity-label {
     font-weight: bold !important;
     font-size: 18px !important;
@@ -811,7 +833,7 @@ h1 {
     color: #666;
 }
 
-/* SUPER CRITICAL: Optional note fondo amarillo MUY visible */
+/* SUPER CRITICAL: Optional note amarillo visible */
 .optional-note {
     font-size: 14px !important;
     font-weight: bold !important;
