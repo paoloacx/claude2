@@ -119,6 +119,7 @@ function toggleTrack() {
         selectedTrackItem = null;
         document.getElementById('save-track-btn').disabled = true;
         document.getElementById('delete-track-btn').classList.add('hidden');
+        document.getElementById('track-optional-note').value = '';
     }
 }
 
@@ -649,6 +650,7 @@ function createTimeEvent() {
     if (!selectedDuration || !selectedActivity) return;
     
     const timestamp = getTimestampFromInput('datetime-input-time');
+    const optionalNote = document.getElementById('time-optional-note').value.trim();
     
     if (editingEntryId) {
         const entryIndex = entries.findIndex(e => e.id === editingEntryId);
@@ -658,7 +660,8 @@ function createTimeEvent() {
                 timestamp: timestamp,
                 note: `${selectedActivity} - ${selectedDuration} minutes`,
                 activity: selectedActivity,
-                duration: selectedDuration
+                duration: selectedDuration,
+                optionalNote: optionalNote
             };
         }
         editingEntryId = null;
@@ -675,7 +678,8 @@ function createTimeEvent() {
             mood: null,
             activity: selectedActivity,
             duration: selectedDuration,
-            isTimedActivity: true
+            isTimedActivity: true,
+            optionalNote: optionalNote
         };
         
         entries.unshift(entry);
@@ -689,6 +693,7 @@ function createTimeEvent() {
     
     document.getElementById('create-time-btn').textContent = 'Create Event';
     document.getElementById('delete-time-btn').classList.add('hidden');
+    document.getElementById('time-optional-note').value = '';
 }
 
 function resetTimerSelections() {
@@ -700,6 +705,7 @@ function resetTimerSelections() {
     document.getElementById('create-time-btn').disabled = true;
     document.getElementById('create-time-btn').textContent = 'Create Event';
     document.getElementById('delete-time-btn').classList.add('hidden');
+    document.getElementById('time-optional-note').value = '';
 }
 
 // Track Event functions
@@ -738,6 +744,8 @@ function editTrackEvent(entry) {
     const minutes = String(date.getMinutes()).padStart(2, '0');
     document.getElementById('datetime-input-track').value = `${year}-${month}-${day}T${hours}:${minutes}`;
     
+    document.getElementById('track-optional-note').value = entry.optionalNote || '';
+    
     renderTrackSelector();
     
     document.querySelectorAll('#track-selector .activity-option').forEach(el => {
@@ -759,6 +767,7 @@ function saveTrackEvent() {
     if (!selectedTrackItem) return;
     
     const timestamp = getTimestampFromInput('datetime-input-track');
+    const optionalNote = document.getElementById('track-optional-note').value.trim();
     
     if (editingEntryId) {
         const entryIndex = entries.findIndex(e => e.id === editingEntryId);
@@ -766,7 +775,8 @@ function saveTrackEvent() {
             entries[entryIndex] = {
                 ...entries[entryIndex],
                 timestamp: timestamp,
-                note: selectedTrackItem
+                note: selectedTrackItem,
+                optionalNote: optionalNote
             };
         }
         editingEntryId = null;
@@ -782,7 +792,8 @@ function saveTrackEvent() {
             audio: null,
             coords: null,
             mood: null,
-            isQuickTrack: true
+            isQuickTrack: true,
+            optionalNote: optionalNote
         };
         
         entries.unshift(entry);
@@ -1608,8 +1619,7 @@ END:VCALENDAR`;
     a.click();
     URL.revokeObjectURL(url);
 }
-    a.click();
-}
+
 // Stats functions
 function openStats() {
     calculateStats();
