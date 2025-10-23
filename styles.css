@@ -77,16 +77,20 @@ body {
     align-items: center;
 }
 
+/* CAMBIADO: Avatar redondo y emoji centrado */
 .user-avatar {
     font-size: 18px;
     cursor: pointer;
-    padding: 6px 10px;
+    padding: 0;
     background: #333;
-    border-radius: 3px;
+    border-radius: 50%;
     position: relative;
     line-height: 1;
-    min-width: 36px;
-    text-align: center;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .user-avatar:hover {
@@ -226,10 +230,11 @@ h1 {
     position: relative;
 }
 
+/* CAMBIADO: Círculo centrado sobre la línea */
 .day-header::before {
     content: '';
     position: absolute;
-    left: -35px;
+    left: -33px;
     top: 50%;
     transform: translateY(-50%);
     width: 16px;
@@ -267,7 +272,7 @@ h1 {
     background: white;
     border: 3px ridge #999;
     padding: 16px;
-    padding-top: 16px;  /* CAMBIADO: De 50px a 16px para que el contenido empiece más arriba */
+    padding-top: 16px;
     margin-bottom: 12px;
     position: relative;
     color: #000;
@@ -361,14 +366,14 @@ h1 {
     background: #e0e0e0;
 }
 
-/* CAMBIADO: Botón edit ahora en la esquina superior derecha */
+/* CAMBIADO: Botón edit ahora en la esquina superior derecha con z-index menor al footer */
 .edit-button {
     position: absolute;
     top: 12px;
-    right: 12px;  /* Ahora está a la derecha */
+    right: 12px;
     padding: 4px 10px;
     font-size: 11px;
-    z-index: 10;
+    z-index: 5;
 }
 
 .preview-button {
@@ -467,6 +472,7 @@ h1 {
     display: none;
 }
 
+/* CAMBIADO: Footer con z-index 100 para que esté por encima de todo */
 .footer {
     position: fixed;
     bottom: 0;
@@ -480,6 +486,7 @@ h1 {
     justify-content: center;
     gap: 12px;
     box-shadow: 0 -3px 10px rgba(0,0,0,0.3);
+    z-index: 100;
 }
 
 .footer .mac-button {
@@ -663,10 +670,23 @@ h1 {
     display: none;
 }
 
+/* CAMBIADO: Títulos de Time y Track más abajo y con mejor fondo */
 .activity-label {
     font-weight: bold;
     font-size: 16px;
-    margin-top: 4px;
+    margin-top: 12px;
+    display: inline-block;
+    padding: 8px 16px;
+    background: rgba(0,0,0,0.08);
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: auto;
+}
+
+/* Para eventos Track con fondo oscuro */
+.breadcrumb-entry.track-event .activity-label {
+    background: rgba(255,255,255,0.15);
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.4);
 }
 
 .compact-time {
@@ -721,6 +741,18 @@ h1 {
 .stat-label {
     font-size: 14px;
     color: #666;
+}
+
+/* NUEVO: Estilos para línea de texto opcional en Track y Time */
+.optional-note {
+    font-size: 13px;
+    color: #666;
+    margin-top: 8px;
+    font-style: italic;
+}
+
+.breadcrumb-entry.track-event .optional-note {
+    color: #ddd;
 }
 
 @media (max-width: 768px) {

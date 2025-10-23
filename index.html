@@ -130,6 +130,9 @@
                 <label class="mac-label">Activity:</label>
                 <div class="activity-selector" id="activity-selector"></div>
 
+                <label class="mac-label">Optional Note:</label>
+                <input type="text" class="mac-input" id="time-optional-note" placeholder="Add a short note (optional)">
+
                 <button class="mac-button mac-button-primary" onclick="createTimeEvent()" id="create-time-btn" disabled style="width: 100%; margin-top: 16px;">Create Event</button>
                 <button class="mac-button delete-button hidden" onclick="deleteCurrentEntry()" id="delete-time-btn" style="width: 100%; margin-top: 8px;">🗑️ Delete</button>
                 <button class="mac-button" onclick="toggleTimer()" style="width: 100%; margin-top: 8px;">Cancel</button>
@@ -144,6 +147,9 @@
 
                 <label class="mac-label">Select Track Type:</label>
                 <div class="activity-selector" id="track-selector"></div>
+
+                <label class="mac-label">Optional Note:</label>
+                <input type="text" class="mac-input" id="track-optional-note" placeholder="Add a short note (optional)">
 
                 <button class="mac-button mac-button-primary" onclick="saveTrackEvent()" id="save-track-btn" disabled style="width: 100%; margin-top: 16px;">Save Track</button>
                 <button class="mac-button delete-button hidden" onclick="deleteCurrentEntry()" id="delete-track-btn" style="width: 100%; margin-top: 8px;">🗑️ Delete</button>
@@ -176,7 +182,7 @@
 
         <div class="mac-window hidden" id="empty-state">
             <div class="mac-content empty-state">
-                <div style="font-size: 48px; margin-bottom: 16px;">📝</div>
+                <div style="font-size: 48px; margin-bottom: 16px;">📍</div>
                 <p><strong>No entries yet</strong></p>
                 <p style="color: #666; margin-top: 8px;">Create your first breadcrumb</p>
             </div>
@@ -214,7 +220,7 @@
         </div>
     </div>
 
-    <!-- Modal de Stats - AGREGADO CORRECTAMENTE AL HTML -->
+    <!-- Modal de Stats -->
     <div id="stats-modal" class="preview-modal" onclick="closeStats(event)">
         <div class="preview-content" onclick="event.stopPropagation()">
             <div class="mac-title-bar">
