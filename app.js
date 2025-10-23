@@ -1272,6 +1272,27 @@ function toggleDay(dayKey) {
     chevron.classList.toggle('expanded');
 }
 
+
+// Show image in modal
+function showImageInModal(entryId, imageIndex) {
+    const entry = entries.find(e => e.id == entryId);
+    if (!entry || !entry.images || !entry.images[imageIndex]) {
+        console.error('Image not found');
+        return;
+    }
+    
+    const modal = document.getElementById('preview-modal');
+    const body = document.getElementById('preview-body');
+    
+    body.innerHTML = `
+        <div style="text-align: center; padding: 20px;">
+            <img src="${entry.images[imageIndex]}" style="max-width: 100%; max-height: 80vh; border: 2px solid #000;">
+        </div>
+    `;
+    
+    modal.classList.add('show');
+}
+
 function renderTimeline() {
     const container = document.getElementById('timeline-container');
     const emptyState = document.getElementById('empty-state');
@@ -1320,11 +1341,9 @@ function renderTimeline() {
                                     <button class="mac-button edit-button" onclick="editEntry(${entry.id})">✏️ Edit</button>
                                     
                                     ${entry.isTimedActivity ? 
-                                        `<div class="time-event-header">
-                                            <span style="font-size: 13px; font-weight: bold;">⏰ ${formatTime(entry.timestamp)} - ${calculateEndTime(entry.timestamp, entry.duration)}</span>
-                                            <span class="time-activity-inline">${entry.activity}</span>
-                                            <span style="opacity: 0; pointer-events: none; font-size: 13px;">⏰ 00:00 - 00:00</span>
-                                        </div>` :
+                                        `<div class="breadcrumb-time">⏰ ${formatTime(entry.timestamp)} - ${calculateEndTime(entry.timestamp, entry.duration)}</div>
+                                        <div class="activity-label">${entry.activity}</div>
+                                        <div style="font-size: 13px; color: #666; margin-top: 8px;">Duration: ${entry.duration} minutes</div>` :
                                         `<div class="breadcrumb-time">
                                             ${entry.isQuickTrack ?
                                                 `<span class="compact-time">⏰ ${formatTime(entry.timestamp)} ${entry.note}</span>` :
