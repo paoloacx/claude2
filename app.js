@@ -1054,9 +1054,12 @@ function openSettings() {
 }
 
 // Open image in modal
-function openImageModal(entryIndex, imageIndex) {
-    const entry = entries[entryIndex];
-    if (!entry || !entry.images || !entry.images[imageIndex]) return;
+function openImageModal(entryId, imageIndex) {
+    const entry = entries.find(e => e.id == entryId);
+    if (!entry || !entry.images || !entry.images[imageIndex]) {
+        console.error('Image not found:', entryId, imageIndex);
+        return;
+    }
     
     const modal = document.getElementById('preview-modal');
     const body = document.getElementById('preview-body');

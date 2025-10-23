@@ -104,7 +104,6 @@ body {
     transform: scale(0.95);
 }
 
-/* FIXED: Avatar sin círculo, solo emoji en línea */
 .user-avatar {
     cursor: pointer;
     background: transparent;
@@ -226,14 +225,14 @@ h1 {
     font-size: 14px;
 }
 
-/* FIXED: Timeline con sombra */
+/* SOMBRA FUERTE timeline como cabecera */
 .timeline {
     position: relative;
     padding-left: 40px;
-    box-shadow: 3px 3px 8px rgba(0,0,0,0.2);
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.3);
     background: white;
     padding: 20px 20px 20px 40px;
-    border: 2px solid #ccc;
+    border: 3px solid #000;
     margin-bottom: 20px;
 }
 
@@ -251,7 +250,7 @@ h1 {
     position: relative;
 }
 
-/* FIXED: Day header con sombra */
+/* SOMBRA FUERTE day header como cabecera */
 .day-header {
     background: #000;
     color: white;
@@ -264,7 +263,7 @@ h1 {
     justify-content: space-between;
     align-items: center;
     position: relative;
-    box-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.3);
 }
 
 .day-header::before {
@@ -304,7 +303,7 @@ h1 {
     display: block;
 }
 
-/* FIXED: Entries con sombra */
+/* SOMBRA FUERTE entries como cabecera */
 .breadcrumb-entry {
     background: white;
     border: 3px ridge #999;
@@ -312,13 +311,13 @@ h1 {
     margin-bottom: 12px;
     position: relative;
     color: #000;
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.3);
 }
 
 .breadcrumb-entry.track-event {
     background: #4a4a4a;
     color: white;
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.3);
 }
 
 .breadcrumb-entry.track-event .breadcrumb-time,
@@ -329,23 +328,19 @@ h1 {
 
 .breadcrumb-entry.spent-event {
     background: #d4edda;
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.3);
 }
 
-/* FIXED: Time event con fondo beige y sombra */
 .breadcrumb-entry.time-event {
     background: #fff8dc;
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.3);
 }
 
 .breadcrumb-time {
     font-weight: bold;
     font-size: 13px;
-    margin-bottom: 8px;
     color: #000;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    display: inline-block;
 }
 
 .breadcrumb-note {
@@ -416,9 +411,6 @@ h1 {
 }
 
 .edit-button {
-    position: absolute;
-    top: 12px;
-    right: 12px;
     padding: 4px 10px;
     font-size: 11px;
     z-index: 5;
@@ -737,11 +729,11 @@ h1 {
     display: none;
 }
 
-/* SUPER FIXED: Título centrado MUY separado */
+/* CRITICAL: Título MUY separado y centrado */
 .activity-label {
     font-weight: bold;
     font-size: 18px;
-    margin-top: 50px;
+    margin-top: 40px;
     display: block;
     text-align: center;
     padding: 12px 20px;
@@ -767,18 +759,6 @@ h1 {
     align-items: flex-start;
     justify-content: space-between;
     margin-bottom: 12px;
-}
-
-.time-activity-inline {
-    font-weight: bold;
-    font-size: 16px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    flex: 1;
-    text-align: center;
-    padding: 8px 16px;
-    background: rgba(0,0,0,0.05);
-    border-radius: 4px;
 }
 
 .stats-grid {
@@ -807,22 +787,23 @@ h1 {
     color: #666;
 }
 
-/* SUPER FIXED: Nota opcional MUY MUY visible */
+/* CRITICAL: Optional note MUY visible */
 .optional-note {
     font-size: 14px;
-    color: #333;
-    margin-top: 20px;
-    font-style: italic;
-    padding: 12px;
-    border-top: 2px dashed #999;
+    font-weight: bold;
+    color: #000;
+    margin-top: 24px;
+    padding: 14px;
+    border: 2px solid #999;
+    border-radius: 4px;
     line-height: 1.6;
-    background: rgba(255,255,255,0.5);
+    background: rgba(255,255,200,0.3);
 }
 
 .breadcrumb-entry.track-event .optional-note {
     color: #fff;
-    border-top-color: #888;
-    background: rgba(255,255,255,0.1);
+    border-color: #888;
+    background: rgba(255,255,255,0.15);
 }
 
 @media (max-width: 768px) {
