@@ -193,13 +193,13 @@ h1 {
 .mac-button {
     background: #ddd;
     border: 3px outset #fff;
-    padding: 8px 16px;
+    padding: 4px 8px;
     font-family: 'Courier New', monospace;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: bold;
     cursor: pointer;
-    margin-right: 8px;
-    margin-bottom: 8px;
+    margin-right: 4px;
+    margin-bottom: 4px;
 }
 
 .mac-button:hover {
@@ -582,8 +582,8 @@ h1 {
 
 .footer .mac-button {
     margin: 0;
-    font-size: 11px;
-    padding: 8px;
+    font-size: 10px;
+    padding: 5px 8px;
     min-width: fit-content;
 }
 

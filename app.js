@@ -1353,6 +1353,50 @@ function renderTimeline() {
                                 const trackClass = entry.isQuickTrack ? 'track-event' : '';
                                 const spentClass = entry.isSpent ? 'spent-event' : '';
                                 
+                                // RECAP ENTRY
+                                if (entry.type === 'recap') {
+                                    return `
+                                        <div class="breadcrumb-entry recap-entry" style="background: #e6f3ff; border-left: 6px solid #007bff;">
+                                            <button class="mac-button edit-button" onclick="editEntry(${entry.id})">✏️ Edit</button>
+                                            
+                                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                                <div style="font-weight: bold; font-size: 16px;">🌟 Day Recap</div>
+                                                <div style="font-size: 24px; font-weight: bold; color: #007bff;">${entry.rating}/10</div>
+                                            </div>
+                                            
+                                            ${entry.reflection ? `
+                                                <div style="margin-bottom: 12px; padding: 12px; background: white; border: 2px solid #007bff; border-radius: 4px;">
+                                                    <div style="font-size: 12px; font-weight: bold; color: #666; margin-bottom: 4px;">REFLEXIÓN</div>
+                                                    <div style="font-size: 14px; line-height: 1.6;">${entry.reflection}</div>
+                                                </div>
+                                            ` : ''}
+                                            
+                                            ${entry.highlights && entry.highlights.length > 0 ? `
+                                                <div style="margin-bottom: 12px;">
+                                                    <div style="font-size: 12px; font-weight: bold; color: #666; margin-bottom: 8px;">HIGHLIGHTS</div>
+                                                    ${entry.highlights.map((h, i) => `
+                                                        <div style="padding: 8px; background: white; border-left: 3px solid #28a745; margin-bottom: 4px; font-size: 13px;">
+                                                            ${i+1}. ${h}
+                                                        </div>
+                                                    `).join('')}
+                                                </div>
+                                            ` : ''}
+                                            
+                                            ${entry.track ? `
+                                                <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: white; border: 2px solid #000;">
+                                                    <img src="${entry.track.artwork}" style="width: 60px; height: 60px; border: 2px solid #000;">
+                                                    <div style="flex: 1;">
+                                                        <div style="font-size: 12px; font-weight: bold; color: #666;">BSO DEL DÍA</div>
+                                                        <div style="font-weight: bold; font-size: 14px;">${entry.track.name}</div>
+                                                        <div style="font-size: 12px; color: #666;">${entry.track.artist}</div>
+                                                    </div>
+                                                    <a href="${entry.track.url}" target="_blank" style="font-size: 24px; text-decoration: none;">🎵</a>
+                                                </div>
+                                            ` : ''}
+                                        </div>
+                                    `;
+                                }
+                                
                                 return `
                                 <div class="breadcrumb-entry ${entry.isTimedActivity ? 'edit-mode' : ''} ${trackClass} ${spentClass}" style="${heightStyle}">
                                     <button class="mac-button edit-button" onclick="editEntry(${entry.id})">✏️ Edit</button>
@@ -1848,27 +1892,41 @@ function closeRecapForm() {
 }
 
 async function buscarBSO() {
-    const query = document.getElementById('recap-bso').value.trim();
-    if (!query) {
-        alert('Please enter a song or artist name');
-        return;
-    }
-    
-    const resultsDiv = document.getElementById('recap-bso-results');
-    resultsDiv.innerHTML = '<div style="padding: 12px; text-align: center;">Searching...</div>';
-    
-    try {
-        const url = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=song&limit=5`;
-        const response = await fetch(url);
-        const data = await response.json();
-        
-        if (data.results && data.results.length > 0) {
-            const html = data.results.map(track => `
-                <div class="bso-result" style="display: flex; align-items: center; gap: 12px; padding: 8px; border: 2px solid #999; margin-bottom: 8px; cursor: pointer; background: white;" onclick="selectTrack('${track.trackName.replace(/'/g, "\'")}', '${track.artistName.replace(/'/g, "\'")}', '${track.trackViewUrl}', '${track.artworkUrl100}')">
-                    <img src="${track.artworkUrl100}" style="width: 50px; height: 50px; border: 2px solid #000;">
-                    <div style="flex: 1;">
-                        <div style="font-weight: bold; font-size: 13px;">${track.trackName}</div>
-                        <div style="font-size: 11px; color: #666;">${track.artistName}</div>
+    const query = document.getElementById
+// Override show functions to add animations
+const _originalShowCrumbForm = window.showCrumbForm;
+window.showCrumbForm = function() {
+    document.getElementById('crumb-form')?.classList.remove('hidden');
+    ['time-form', 'track-form', 'spent-form', 'recap-form'].forEach(id => {
+        document.getElementById(id)?.classList.add('hidden');
+    });
+};
+
+const _originalShowTimeForm = window.showTimeForm;  
+window.showTimeForm = function() {
+    document.getElementById('time-form')?.classList.remove('hidden');
+    ['crumb-form', 'track-form', 'spent-form', 'recap-form'].forEach(id => {
+        document.getElementById(id)?.classList.add('hidden');
+    });
+};
+
+const _originalShowTrackForm = window.showTrackForm;
+window.showTrackForm = function() {
+    document.getElementById('track-form')?.classList.remove('hidden');
+    ['crumb-form', 'time-form', 'spent-form', 'recap-form'].forEach(id => {
+        document.getElementById(id)?.classList.add('hidden');
+    });
+};
+
+const _originalShowSpentForm = window.showSpentForm;
+window.showSpentForm = function() {
+    document.getElementById('spent-form')?.classList.remove('hidden');
+    ['crumb-form', 'time-form', 'track-form', 'recap-form'].forEach(id => {
+        document.getElementById(id)?.classList.add('hidden');
+    });
+};
+
+66;">${track.artistName}</div>
                     </div>
                     <div style="font-size: 18px;">▶️</div>
                 </div>
