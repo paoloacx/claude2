@@ -1608,7 +1608,8 @@ END:VCALENDAR`;
     a.click();
     URL.revokeObjectURL(url);
 }
-
+    a.click();
+}
 // Stats functions
 function openStats() {
     calculateStats();
