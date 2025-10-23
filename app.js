@@ -88,17 +88,7 @@ function saveData() {
 
 // Sync/Refresh data
 function syncData() {
-    if (currentUser && !isOfflineMode) {
-        updateSyncStatus('syncing');
-        loadDataFromFirebase();
-        loadSettingsFromFirebase();
-        setTimeout(() => {
-            alert('✅ Data synced!');
-            updateSyncStatus('online');
-        }, 500);
-    } else {
-        alert('Offline mode - data is stored locally');
-    }
+    location.reload();
 }
 
 // Toggle forms
@@ -1064,13 +1054,16 @@ function openSettings() {
 }
 
 // Open image in modal
-function openImageModal(imgSrc) {
+function openImageModal(entryIndex, imageIndex) {
+    const entry = entries[entryIndex];
+    if (!entry || !entry.images || !entry.images[imageIndex]) return;
+    
     const modal = document.getElementById('preview-modal');
     const body = document.getElementById('preview-body');
     
     body.innerHTML = `
-        <div style="text-align: center;">
-            <img src="${imgSrc}" style="max-width: 100%; max-height: 80vh; border: 2px solid #000;">
+        <div style="text-align: center; padding: 20px;">
+            <img src="${entry.images[imageIndex]}" style="max-width: 100%; max-height: 80vh; border: 2px solid #000;">
         </div>
     `;
     

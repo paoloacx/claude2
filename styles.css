@@ -85,7 +85,6 @@ body {
     gap: 12px;
 }
 
-/* FIXED: Botón sync sin borde blanco */
 .sync-button {
     background: transparent;
     border: none;
@@ -105,29 +104,26 @@ body {
     transform: scale(0.95);
 }
 
-/* FIXED: Avatar centrado horizontal Y vertical */
+/* FIXED: Avatar sin círculo, solo emoji en línea */
 .user-avatar {
     cursor: pointer;
-    background: #333;
-    border-radius: 50%;
+    background: transparent;
+    border: none;
     position: relative;
-    width: 36px;
-    height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
+    padding: 0 8px;
 }
 
 .user-avatar #user-icon {
-    font-size: 18px;
+    font-size: 20px;
     line-height: 1;
     text-align: center;
-    width: 100%;
 }
 
 .user-avatar:hover {
-    background: #555;
+    opacity: 0.8;
 }
 
 .logout-menu {
@@ -230,9 +226,15 @@ h1 {
     font-size: 14px;
 }
 
+/* FIXED: Timeline con sombra */
 .timeline {
     position: relative;
     padding-left: 40px;
+    box-shadow: 3px 3px 8px rgba(0,0,0,0.2);
+    background: white;
+    padding: 20px 20px 20px 40px;
+    border: 2px solid #ccc;
+    margin-bottom: 20px;
 }
 
 .timeline-line {
@@ -249,6 +251,7 @@ h1 {
     position: relative;
 }
 
+/* FIXED: Day header con sombra */
 .day-header {
     background: #000;
     color: white;
@@ -261,6 +264,7 @@ h1 {
     justify-content: space-between;
     align-items: center;
     position: relative;
+    box-shadow: 3px 3px 6px rgba(0,0,0,0.3);
 }
 
 .day-header::before {
@@ -300,6 +304,7 @@ h1 {
     display: block;
 }
 
+/* FIXED: Entries con sombra */
 .breadcrumb-entry {
     background: white;
     border: 3px ridge #999;
@@ -307,11 +312,13 @@ h1 {
     margin-bottom: 12px;
     position: relative;
     color: #000;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
 }
 
 .breadcrumb-entry.track-event {
     background: #4a4a4a;
     color: white;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
 }
 
 .breadcrumb-entry.track-event .breadcrumb-time,
@@ -322,6 +329,13 @@ h1 {
 
 .breadcrumb-entry.spent-event {
     background: #d4edda;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+}
+
+/* FIXED: Time event con fondo beige y sombra */
+.breadcrumb-entry.time-event {
+    background: #fff8dc;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
 }
 
 .breadcrumb-time {
@@ -506,7 +520,6 @@ h1 {
     display: none;
 }
 
-/* SUPER FIXED: Footer siempre abajo, nunca se mueve */
 .footer {
     position: fixed !important;
     bottom: 0 !important;
@@ -724,21 +737,22 @@ h1 {
     display: none;
 }
 
-/* FIXED: Título centrado y MUY separado de la hora */
+/* SUPER FIXED: Título centrado MUY separado */
 .activity-label {
     font-weight: bold;
-    font-size: 16px;
-    margin-top: 30px;
+    font-size: 18px;
+    margin-top: 50px;
     display: block;
     text-align: center;
-    padding: 8px 16px;
-    background: rgba(0,0,0,0.08);
+    padding: 12px 20px;
+    background: rgba(0,0,0,0.1);
     box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-    border-radius: 3px;
+    border-radius: 4px;
+    letter-spacing: 1px;
 }
 
 .breadcrumb-entry.track-event .activity-label {
-    background: rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.2);
     box-shadow: 2px 2px 4px rgba(0,0,0,0.4);
 }
 
@@ -793,20 +807,22 @@ h1 {
     color: #666;
 }
 
-/* FIXED: Nota opcional MUY visible */
+/* SUPER FIXED: Nota opcional MUY MUY visible */
 .optional-note {
-    font-size: 13px;
-    color: #666;
-    margin-top: 18px;
+    font-size: 14px;
+    color: #333;
+    margin-top: 20px;
     font-style: italic;
-    padding-top: 12px;
-    border-top: 1px dashed #ccc;
-    line-height: 1.5;
+    padding: 12px;
+    border-top: 2px dashed #999;
+    line-height: 1.6;
+    background: rgba(255,255,255,0.5);
 }
 
 .breadcrumb-entry.track-event .optional-note {
-    color: #ddd;
-    border-top-color: #666;
+    color: #fff;
+    border-top-color: #888;
+    background: rgba(255,255,255,0.1);
 }
 
 @media (max-width: 768px) {
