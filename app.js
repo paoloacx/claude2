@@ -1001,7 +1001,7 @@ function previewEntry(id) {
                 <strong>Images:</strong>
                 <div class="preview-images-full">
                     ${entry.images.map(img => `
-                        <img src="${img}" class="preview-image-full" onclick="window.open('${img}')">
+                        <img src="${img}" class="preview-image-full" onclick="event.stopPropagation(); showImageInModal('${entry.id}', ${entry.images.indexOf(img)});">
                     `).join('')}
                 </div>
             </div>
@@ -1293,6 +1293,23 @@ function showImageInModal(entryId, imageIndex) {
     modal.classList.add('show');
 }
 
+
+// Toggle note expansion
+function toggleNote(entryId) {
+    const noteDiv = document.getElementById('note-' + entryId);
+    const btn = event.target;
+    
+    if (noteDiv) {
+        if (noteDiv.classList.contains('expanded')) {
+            noteDiv.classList.remove('expanded');
+            btn.textContent = 'Read more';
+        } else {
+            noteDiv.classList.add('expanded');
+            btn.textContent = 'Read less';
+        }
+    }
+}
+
 function renderTimeline() {
     const container = document.getElementById('timeline-container');
     const emptyState = document.getElementById('empty-state');
@@ -1383,7 +1400,7 @@ function renderTimeline() {
                                     
                                     <div class="breadcrumb-preview">
                                         ${entry.images && entry.images.length > 0 ? entry.images.map(img => `
-                                            <img src="${img}" class="preview-image-thumb" onclick="window.open('${img}')">
+                                            <img src="${img}" class="preview-image-thumb" onclick="event.stopPropagation(); showImageInModal('${entry.id}', ${entry.images.indexOf(img)});">
                                         `).join('') : ''}
                                         ${entry.coords ? `<div class="preview-map-thumb" id="mini-map-${entry.id}"></div>` : ''}
                                         ${(entry.images && entry.images.length > 0) || entry.coords || entry.audio ? `
