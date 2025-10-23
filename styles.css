@@ -385,10 +385,17 @@ h1 {
     max-height: 4.8em;
     overflow: hidden;
     position: relative;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    transition: all 0.3s ease;
 }
 
 .breadcrumb-note.expanded {
     max-height: none !important;
+    display: block;
+    -webkit-line-clamp: unset;
+    animation: slideDown 0.3s ease;
 }
 
 .read-more-btn {
@@ -1008,11 +1015,34 @@ h1 {
 
 /* Animación para read more button */
 .read-more-btn {
-    transition: color 0.2s ease;
+    transition: all 0.2s ease;
+    padding: 4px 8px;
+    margin-top: 4px;
 }
 
 .read-more-btn:hover {
     color: #0047b3;
+    transform: translateY(-1px);
+}
+
+.note-text {
+    transition: max-height 0.3s ease;
+    overflow: hidden;
+}
+
+.note-text.expanded {
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0.5;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* ===== RECAP STYLES ===== */
