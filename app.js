@@ -15,6 +15,19 @@ let selectedTrackItem = null;
 let mediaRecorder = null;
 let audioChunks = [];
 
+// Refresh function
+function refreshApp() {
+    if (currentUser && !isOfflineMode) {
+        loadDataFromFirebase();
+        loadSettingsFromFirebase();
+        alert('✅ Synced!');
+    } else {
+        location.reload();
+    }
+}
+
+
+
 // Settings
 let timeDurations = [15, 30, 60, 120, 180];
 let timeActivities = ['Reading', 'Sports', 'Work', 'Cleaning', 'Errands'];
@@ -69,6 +82,20 @@ function saveData() {
     localStorage.setItem('timeline-entries', JSON.stringify(entries));
     if (!isOfflineMode && currentUser) {
         saveDataToFirebase();
+    }
+}
+
+
+// Sync/Refresh data
+function syncData() {
+    if (currentUser && !isOfflineMode) {
+        updateSyncStatus('syncing');
+        loadDataFromFirebase();
+        setTimeout(() => {
+            alert('✅ Data synced!');
+        }, 500);
+    } else {
+        location.reload();
     }
 }
 
@@ -330,11 +357,28 @@ function handleImages(event) {
     });
 }
 
-// Audio recording
+// Audio recording - iOS compatible
 async function startRecording() {
     try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        mediaRecorder = new MediaRecorder(stream);
+        const stream = await navigator.mediaDevices.getUserMedia({ 
+            audio: {
+                echoCancellation: true,
+                noiseSuppression: true,
+                sampleRate: 44100
+            } 
+        });
+        
+        // Detectar formato compatible con iOS
+        let options = {};
+        if (MediaRecorder.isTypeSupported('audio/mp4')) {
+            options = { mimeType: 'audio/mp4' };
+        } else if (MediaRecorder.isTypeSupported('audio/webm')) {
+            options = { mimeType: 'audio/webm' };
+        } else if (MediaRecorder.isTypeSupported('audio/ogg')) {
+            options = { mimeType: 'audio/ogg' };
+        }
+        
+        mediaRecorder = new MediaRecorder(stream, options);
         audioChunks = [];
 
         mediaRecorder.ondataavailable = (event) => {
@@ -342,7 +386,8 @@ async function startRecording() {
         };
 
         mediaRecorder.onstop = () => {
-            const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+            const mimeType = mediaRecorder.mimeType || 'audio/webm';
+            const audioBlob = new Blob(audioChunks, { type: mimeType });
             const reader = new FileReader();
             reader.onloadend = () => {
                 currentAudio = reader.result;

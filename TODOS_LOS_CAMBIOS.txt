@@ -1,0 +1,90 @@
+═══════════════════════════════════════════════════════════════
+    TODOS LOS CAMBIOS APLICADOS - VERSIÓN FINAL
+═══════════════════════════════════════════════════════════════
+
+✅ 1. FOOTER ANCLADO ABAJO
+   - position: fixed (no sigue el scroll)
+   - z-index: 100 (siempre visible)
+   - Responsive en móvil (botones más pequeños)
+   - Font-size: 11px desktop, 9px móvil
+   - Padding reducido en móvil
+
+✅ 2. BOTÓN REFRESH/SYNC EN CABECERA
+   - Botón 🔄 junto al título
+   - Función syncData() que recarga desde Firebase
+   - Si offline, hace location.reload()
+   
+✅ 3. AVATAR PERFECTAMENTE CENTRADO
+   - border-radius: 50%
+   - display: flex con justify-content y align-items: center
+   - font-size: 20px en el emoji
+   - width/height: 36px fijos
+
+✅ 4. TÍTULOS TIME/TRACK BIEN POSICIONADOS
+   - margin-top: 20px (más separación de la hora)
+   - Hora alineada con botón Edit
+   - Título con fondo y sombra adaptado al texto
+   
+✅ 5. NOTA OPCIONAL VISIBLE EN TIMELINE
+   - margin-top: 16px (separación clara)
+   - border-top: 1px dashed #ccc
+   - font-style: italic
+   - Visible tanto en Time como en Track
+
+✅ 6. MINIMAPA CON Z-INDEX CORRECTO
+   - z-index: 1 (pasa por detrás del footer)
+   - position: relative
+   
+✅ 7. ZOOM MÓVIL ELIMINADO
+   - viewport: user-scalable=no
+   - font-size: 16px en inputs (iOS no hace zoom)
+
+✅ 8. AUDIO EN iOS COMPATIBLE
+   - Detecta audio/mp4 (formato iOS)
+   - Fallback a audio/webm
+   - MediaRecorder.isTypeSupported() check
+
+✅ 9. CÍRCULO CENTRADO EN TIMELINE
+   - left: -33px (perfectamente alineado)
+
+✅ 10. FOOTER RESPONSIVE
+    - Botones flex: 1 en móvil
+    - Texto más corto: "Stats", "CSV", "iCal"
+    - padding y gap reducidos
+
+═══════════════════════════════════════════════════════════════
+
+📱 PENDIENTE PARA SIGUIENTE ITERACIÓN:
+
+⏳ Agrupación por semanas/meses/años
+   - Por defecto: día actual desplegado
+   - Días de esta semana: solo header visible
+   - Semanas anteriores: plegadas
+   - Meses anteriores: plegados
+   
+   Esto requiere:
+   - Nueva lógica de agrupación en renderTimeline()
+   - Headers de semana/mes/año
+   - Estado de expansión por grupo
+   - LocalStorage para recordar estado
+
+═══════════════════════════════════════════════════════════════
+
+📦 ARCHIVOS ACTUALIZADOS:
+
+✓ app.js (62KB)
+✓ index.html (13KB)  
+✓ styles.css (14KB)
+✓ firebase-config.js (sin cambios)
+
+═══════════════════════════════════════════════════════════════
+
+🚀 PARA SUBIR:
+
+1. Reemplaza los 4 archivos en tu repo
+2. git add .
+3. git commit -m "Fixed footer, sync button, avatar, audio iOS & layout"
+4. git push origin main
+5. Espera 2 min y verifica: https://paoloacx.github.io/claude2/
+
+═══════════════════════════════════════════════════════════════

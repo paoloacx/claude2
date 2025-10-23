@@ -14,7 +14,7 @@ body {
         #d0d0d0 2px
     );
     padding: 0;
-    padding-bottom: 100px;
+    padding-bottom: 80px;
 }
 
 .header-image {
@@ -35,6 +35,10 @@ body {
 @media (max-width: 768px) {
     .header-image {
         max-height: 120px;
+    }
+    
+    body {
+        padding-bottom: 65px;
     }
 }
 
@@ -68,7 +72,31 @@ body {
     align-items: center;
 }
 
-/* FIXED: Avatar redondo con emoji centrado */
+.mac-title-bar .title-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sync-button {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    padding: 4px 8px;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 3px;
+}
+
+.sync-button:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.sync-button:active {
+    transform: scale(0.95);
+}
+
+/* FIXED: Avatar completamente centrado */
 .user-avatar {
     cursor: pointer;
     background: #333;
@@ -79,11 +107,15 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 }
 
 .user-avatar #user-icon {
-    font-size: 18px;
+    font-size: 20px;
     line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .user-avatar:hover {
@@ -223,7 +255,6 @@ h1 {
     position: relative;
 }
 
-/* FIXED: Círculo centrado sobre la línea */
 .day-header::before {
     content: '';
     position: absolute;
@@ -327,6 +358,7 @@ h1 {
     color: #000;
 }
 
+/* FIXED: Minimapa con z-index menor que footer */
 .mini-map {
     width: 100%;
     height: 200px;
@@ -334,6 +366,7 @@ h1 {
     margin-top: 12px;
     background: #e0e0e0;
     z-index: 1;
+    position: relative;
 }
 
 .breadcrumb-preview {
@@ -357,9 +390,10 @@ h1 {
     height: 60px;
     border: 2px solid #000;
     background: #e0e0e0;
+    cursor: pointer;
+    z-index: 1;
 }
 
-/* FIXED: Botón edit con z-index menor que footer */
 .edit-button {
     position: absolute;
     top: 12px;
@@ -465,7 +499,7 @@ h1 {
     display: none;
 }
 
-/* FIXED: Footer con z-index 100 */
+/* FIXED: Footer anclado abajo sin seguir scroll */
 .footer {
     position: fixed;
     bottom: 0;
@@ -473,17 +507,38 @@ h1 {
     right: 0;
     background: #000;
     color: white;
-    padding: 12px 20px;
+    padding: 10px 12px;
     border-top: 3px solid #666;
     display: flex;
     justify-content: center;
-    gap: 12px;
+    align-items: center;
+    gap: 8px;
     box-shadow: 0 -3px 10px rgba(0,0,0,0.3);
     z-index: 100;
+    flex-wrap: wrap;
 }
 
 .footer .mac-button {
     margin: 0;
+    font-size: 11px;
+    padding: 6px 10px;
+}
+
+/* FIXED: Footer responsive para móvil */
+@media (max-width: 768px) {
+    .footer {
+        padding: 8px 8px;
+        gap: 6px;
+    }
+    
+    .footer .mac-button {
+        font-size: 9px;
+        padding: 4px 6px;
+        margin: 0;
+        flex: 1;
+        min-width: 0;
+        white-space: nowrap;
+    }
 }
 
 .edit-mode {
@@ -663,11 +718,11 @@ h1 {
     display: none;
 }
 
-/* FIXED: Títulos de Time y Track con mejor posición y diseño */
+/* FIXED: Títulos bien posicionados */
 .activity-label {
     font-weight: bold;
     font-size: 16px;
-    margin-top: 16px;
+    margin-top: 20px;
     display: inline-block;
     padding: 8px 16px;
     background: rgba(0,0,0,0.08);
@@ -689,10 +744,9 @@ h1 {
 
 .time-event-header {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     margin-bottom: 12px;
-    padding: 12px 0;
 }
 
 .time-activity-inline {
@@ -707,7 +761,6 @@ h1 {
     border-radius: 4px;
 }
 
-/* Stats modal */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -734,14 +787,15 @@ h1 {
     color: #666;
 }
 
-/* FIXED: Nota opcional visible en timeline */
+/* FIXED: Nota opcional bien visible */
 .optional-note {
     font-size: 13px;
     color: #666;
-    margin-top: 12px;
+    margin-top: 16px;
     font-style: italic;
-    padding-top: 8px;
+    padding-top: 10px;
     border-top: 1px dashed #ccc;
+    line-height: 1.5;
 }
 
 .breadcrumb-entry.track-event .optional-note {
