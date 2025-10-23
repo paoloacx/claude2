@@ -1812,3 +1812,127 @@ function closeStats(event) {
 // Initialize app
 loadData();
 loadSettings();
+
+// ===== RECAP FUNCTIONS =====
+
+function showRecapForm() {
+    // Ocultar otros formularios
+    ['crumb-form', 'time-form', 'track-form', 'spent-form'].forEach(id => {
+        const form = document.getElementById(id);
+        if (form) form.classList.add('hidden');
+    });
+    
+    document.getElementById('recap-form').classList.remove('hidden');
+    
+    // Listener para el slider
+    const slider = document.getElementById('recap-rating');
+    const valueDisplay = document.getElementById('recap-rating-value');
+    
+    slider.oninput = function() {
+        valueDisplay.textContent = this.value;
+    };
+}
+
+function closeRecapForm() {
+    document.getElementById('recap-form').classList.add('hidden');
+    // Limpiar formulario
+    document.getElementById('recap-reflection').value = '';
+    document.getElementById('recap-rating').value = '5';
+    document.getElementById('recap-rating-value').textContent = '5';
+    document.getElementById('recap-highlight-1').value = '';
+    document.getElementById('recap-highlight-2').value = '';
+    document.getElementById('recap-highlight-3').value = '';
+    document.getElementById('recap-bso').value = '';
+    document.getElementById('recap-bso-results').innerHTML = '';
+    document.getElementById('recap-selected-track').value = '';
+}
+
+async function buscarBSO() {
+    const query = document.getElementById('recap-bso').value.trim();
+    if (!query) {
+        alert('Please enter a song or artist name');
+        return;
+    }
+    
+    const resultsDiv = document.getElementById('recap-bso-results');
+    resultsDiv.innerHTML = '<div style="padding: 12px; text-align: center;">Searching...</div>';
+    
+    try {
+        const url = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=song&limit=5`;
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        if (data.results && data.results.length > 0) {
+            const html = data.results.map(track => `
+                <div class="bso-result" style="display: flex; align-items: center; gap: 12px; padding: 8px; border: 2px solid #999; margin-bottom: 8px; cursor: pointer; background: white;" onclick="selectTrack('${track.trackName.replace(/'/g, "\'")}', '${track.artistName.replace(/'/g, "\'")}', '${track.trackViewUrl}', '${track.artworkUrl100}')">
+                    <img src="${track.artworkUrl100}" style="width: 50px; height: 50px; border: 2px solid #000;">
+                    <div style="flex: 1;">
+                        <div style="font-weight: bold; font-size: 13px;">${track.trackName}</div>
+                        <div style="font-size: 11px; color: #666;">${track.artistName}</div>
+                    </div>
+                    <div style="font-size: 18px;">▶️</div>
+                </div>
+            `).join('');
+            resultsDiv.innerHTML = html;
+        } else {
+            resultsDiv.innerHTML = '<div style="padding: 12px; text-align: center; color: #666;">No results found</div>';
+        }
+    } catch (error) {
+        console.error('Error searching BSO:', error);
+        resultsDiv.innerHTML = '<div style="padding: 12px; text-align: center; color: red;">Error searching. Try again.</div>';
+    }
+}
+
+function selectTrack(trackName, artistName, url, artwork) {
+    const trackData = {
+        name: trackName,
+        artist: artistName,
+        url: url,
+        artwork: artwork
+    };
+    
+    document.getElementById('recap-selected-track').value = JSON.stringify(trackData);
+    document.getElementById('recap-bso-results').innerHTML = `
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 3px solid #000; background: #f0f0f0;">
+            <img src="${artwork}" style="width: 60px; height: 60px; border: 2px solid #000;">
+            <div style="flex: 1;">
+                <div style="font-weight: bold;">${trackName}</div>
+                <div style="font-size: 12px; color: #666;">${artistName}</div>
+            </div>
+            <a href="${url}" target="_blank" style="text-decoration: none; font-size: 20px;">🔗</a>
+        </div>
+    `;
+}
+
+function saveRecap() {
+    const reflection = document.getElementById('recap-reflection').value.trim();
+    const rating = document.getElementById('recap-rating').value;
+    const highlight1 = document.getElementById('recap-highlight-1').value.trim();
+    const highlight2 = document.getElementById('recap-highlight-2').value.trim();
+    const highlight3 = document.getElementById('recap-highlight-3').value.trim();
+    const selectedTrackJson = document.getElementById('recap-selected-track').value;
+    
+    if (!reflection && !highlight1 && !highlight2 && !highlight3) {
+        alert('Please add at least one reflection or highlight');
+        return;
+    }
+    
+    const recap = {
+        id: Date.now(),
+        timestamp: new Date().toISOString(),
+        type: 'recap',
+        reflection: reflection,
+        rating: parseInt(rating),
+        highlights: [highlight1, highlight2, highlight3].filter(h => h),
+        track: selectedTrackJson ? JSON.parse(selectedTrackJson) : null
+    };
+    
+    // Agregar a entries
+    entries.push(recap);
+    saveData();
+    renderTimeline();
+    closeRecapForm();
+    
+    alert('🌟 Recap saved!');
+}
+
