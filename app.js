@@ -1053,8 +1053,8 @@ function openSettings() {
     renderSettingsConfig();
 }
 
-// Open image in modal
-function openImageModal(entryId, imageIndex) {
+// Show image preview
+function showImagePreview(entryId, imageIndex) {
     const entry = entries.find(e => e.id == entryId);
     if (!entry || !entry.images || !entry.images[imageIndex]) {
         console.error('Image not found:', entryId, imageIndex);
