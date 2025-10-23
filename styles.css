@@ -4,6 +4,11 @@
     box-sizing: border-box;
 }
 
+html, body {
+    height: 100%;
+    overflow-x: hidden;
+}
+
 body {
     font-family: 'Courier New', monospace;
     background: repeating-linear-gradient(
@@ -15,6 +20,8 @@ body {
     );
     padding: 0;
     padding-bottom: 80px;
+    position: relative;
+    min-height: 100vh;
 }
 
 .header-image {
@@ -78,14 +85,16 @@ body {
     gap: 12px;
 }
 
+/* FIXED: Botón sync sin borde blanco */
 .sync-button {
     background: transparent;
-    border: 2px solid white;
+    border: none;
     color: white;
     padding: 4px 8px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 16px;
     border-radius: 3px;
+    line-height: 1;
 }
 
 .sync-button:hover {
@@ -96,7 +105,7 @@ body {
     transform: scale(0.95);
 }
 
-/* FIXED: Avatar completamente centrado */
+/* FIXED: Avatar centrado horizontal Y vertical */
 .user-avatar {
     cursor: pointer;
     background: #333;
@@ -111,11 +120,10 @@ body {
 }
 
 .user-avatar #user-icon {
-    font-size: 20px;
+    font-size: 18px;
     line-height: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    text-align: center;
+    width: 100%;
 }
 
 .user-avatar:hover {
@@ -358,7 +366,6 @@ h1 {
     color: #000;
 }
 
-/* FIXED: Minimapa con z-index menor que footer */
 .mini-map {
     width: 100%;
     height: 200px;
@@ -499,12 +506,12 @@ h1 {
     display: none;
 }
 
-/* FIXED: Footer anclado abajo sin seguir scroll */
+/* SUPER FIXED: Footer siempre abajo, nunca se mueve */
 .footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
     background: #000;
     color: white;
     padding: 10px 12px;
@@ -514,7 +521,7 @@ h1 {
     align-items: center;
     gap: 8px;
     box-shadow: 0 -3px 10px rgba(0,0,0,0.3);
-    z-index: 100;
+    z-index: 9999 !important;
     flex-wrap: wrap;
 }
 
@@ -524,7 +531,6 @@ h1 {
     padding: 6px 10px;
 }
 
-/* FIXED: Footer responsive para móvil */
 @media (max-width: 768px) {
     .footer {
         padding: 8px 8px;
@@ -718,17 +724,17 @@ h1 {
     display: none;
 }
 
-/* FIXED: Títulos bien posicionados */
+/* FIXED: Título centrado y MUY separado de la hora */
 .activity-label {
     font-weight: bold;
     font-size: 16px;
-    margin-top: 20px;
-    display: inline-block;
+    margin-top: 30px;
+    display: block;
+    text-align: center;
     padding: 8px 16px;
     background: rgba(0,0,0,0.08);
     box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     border-radius: 3px;
-    width: auto;
 }
 
 .breadcrumb-entry.track-event .activity-label {
@@ -787,13 +793,13 @@ h1 {
     color: #666;
 }
 
-/* FIXED: Nota opcional bien visible */
+/* FIXED: Nota opcional MUY visible */
 .optional-note {
     font-size: 13px;
     color: #666;
-    margin-top: 16px;
+    margin-top: 18px;
     font-style: italic;
-    padding-top: 10px;
+    padding-top: 12px;
     border-top: 1px dashed #ccc;
     line-height: 1.5;
 }
