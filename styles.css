@@ -576,7 +576,7 @@ h1 {
     right: 0 !important;
     background: #000;
     color: white;
-    padding: 10px 12px;
+    padding: 8px 12px;
     border-top: 3px solid #666;
     display: flex;
     justify-content: center;
@@ -588,10 +588,16 @@ h1 {
 }
 
 .footer .mac-button {
-    margin: 0;
-    font-size: 10px;
-    padding: 5px 8px;
+    margin: 0 4px;
+    font-size: 11px;
+    padding: 6px 10px;
     min-width: fit-content;
+    transition: all 0.2s ease;
+}
+
+.footer .mac-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 3px 3px 0 rgba(255,255,255,0.2);
 }
 
 @media (max-width: 768px) {
@@ -848,6 +854,20 @@ h1 {
     color: #000 !important;
     margin-top: 24px !important;
     padding: 14px !important;
+    max-height: 4.8em;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    transition: all 0.3s ease;
+}
+
+.optional-note.expanded {
+    max-height: none !important;
+    display: block;
+    -webkit-line-clamp: unset;
+    animation: slideDown 0.3s ease;
+}
     border: 2px solid #cc9900 !important;
     border-radius: 4px !important;
     line-height: 1.6 !important;
@@ -1124,3 +1144,94 @@ input[type="range"]:active::-moz-range-thumb {
         padding: 6px;
     }
 }
+
+/* ===== FAB BUTTONS ===== */
+
+.fab-container {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    z-index: 9998;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 12px;
+    align-items: flex-end;
+}
+
+.fab {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 3px solid #000;
+    background: #fff;
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.3);
+    cursor: pointer;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    position: relative;
+}
+
+.fab:hover {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 6px 6px 0 rgba(0,0,0,0.4);
+}
+
+.fab:active {
+    transform: scale(0.95);
+    box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+}
+
+.fab-main {
+    background: #000;
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+    width: 64px;
+    height: 64px;
+}
+
+.fab-main:hover {
+    transform: scale(1.1) rotate(90deg);
+}
+
+.fab-action {
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
+    opacity: 0;
+    transform: scale(0) translateY(20px);
+    pointer-events: none;
+}
+
+.fab-action.show {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    pointer-events: all;
+}
+
+@media (max-width: 768px) {
+    .fab-container {
+        right: 16px;
+        bottom: 70px;
+    }
+    
+    .fab-main {
+        width: 56px;
+        height: 56px;
+    }
+    
+    .fab-action {
+        width: 44px;
+        height: 44px;
+    }
+}
+
+
+#fab-icon {
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+

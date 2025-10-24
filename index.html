@@ -270,6 +270,27 @@
         </div>
     </div>
 
+    <div class="fab-container">
+        <button class="fab fab-main" onclick="toggleFabMenu()" id="fab-main">
+            <span id="fab-icon">+</span>
+        </button>
+        <button class="fab fab-action hidden" onclick="toggleCrumb()" title="Breadcrumb">
+            📍
+        </button>
+        <button class="fab fab-action hidden" onclick="toggleTime()" title="Time Event">
+            ⏰
+        </button>
+        <button class="fab fab-action hidden" onclick="toggleTrack()" title="Quick Track">
+            🎵
+        </button>
+        <button class="fab fab-action hidden" onclick="toggleSpent()" title="Spent">
+            💰
+        </button>
+        <button class="fab fab-action hidden" onclick="showRecapForm()" title="Day Recap">
+            🌟
+        </button>
+    </div>
+
     <div class="footer" id="footer" style="display: none;">
         <button class="mac-button" onclick="openStats()">📊 Stats</button>
         <button class="mac-button" onclick="exportCSV()">💾 CSV</button>

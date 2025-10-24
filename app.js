@@ -1361,7 +1361,10 @@ function renderTimeline() {
                                         `<div class="breadcrumb-time">⏰ ${formatTime(entry.timestamp)} - ${calculateEndTime(entry.timestamp, entry.duration)}</div>
                                         <div class="activity-label">${entry.activity}</div>
                                         <div style="font-size: 13px; color: #666; margin-top: 8px;">Duration: ${entry.duration} minutes</div>
-                                        ${entry.optionalNote ? '<div class="optional-note">' + entry.optionalNote + '</div>' : ''}` :
+                                        ${entry.optionalNote ? `
+                                            <div class="optional-note" id="note-${entry.id}">${entry.optionalNote}</div>
+                                            ${entry.optionalNote.length > 200 ? `<button class="read-more-btn" id="read-more-${entry.id}" onclick="toggleReadMore(${entry.id})">Read more</button>` : ''}
+                                        ` : ''}` :
                                         `<div class="breadcrumb-time">
                                             ${entry.isQuickTrack ?
                                                 `<span class="compact-time">⏰ ${formatTime(entry.timestamp)} ${entry.note}</span>` :
@@ -1372,7 +1375,10 @@ function renderTimeline() {
                                     }
                                     
                                     ${entry.isTimedActivity ? '' : ''}
-                                    ${entry.isQuickTrack && entry.optionalNote ? '<div class="optional-note">' + entry.optionalNote + '</div>' : ''}
+                                    ${entry.isQuickTrack && entry.optionalNote ? `
+                                        <div class="optional-note" id="note-${entry.id}">${entry.optionalNote}</div>
+                                        ${entry.optionalNote.length > 200 ? `<button class="read-more-btn" id="read-more-${entry.id}" onclick="toggleReadMore(${entry.id})">Read more</button>` : ''}
+                                    ` : ''}
                                     
                                     ${!entry.isTimedActivity && !entry.isQuickTrack ? `
                                         <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 8px;">
@@ -1927,7 +1933,6 @@ function saveRecap() {
         track: selectedTrackJson ? JSON.parse(selectedTrackJson) : null
     };
     
-    // Agregar a entries
     entries.push(recap);
     saveData();
     renderTimeline();
@@ -1935,4 +1940,79 @@ function saveRecap() {
     
     alert('🌟 Recap saved!');
 }
+
+// ===== FAB MENU =====
+
+let fabMenuOpen = false;
+
+function toggleFabMenu() {
+    const fabActions = document.querySelectorAll('.fab-action');
+    const fabIcon = document.getElementById('fab-icon');
+    
+    fabMenuOpen = !fabMenuOpen;
+    
+    if (fabMenuOpen) {
+        fabIcon.textContent = '×';
+        fabIcon.style.transform = 'rotate(45deg)';
+        
+        fabActions.forEach((btn, index) => {
+            setTimeout(() => {
+                btn.classList.remove('hidden');
+                setTimeout(() => btn.classList.add('show'), 10);
+            }, index * 50);
+        });
+    } else {
+        fabIcon.textContent = '+';
+        fabIcon.style.transform = 'rotate(0deg)';
+        
+        fabActions.forEach((btn, index) => {
+            setTimeout(() => {
+                btn.classList.remove('show');
+                setTimeout(() => btn.classList.add('hidden'), 300);
+            }, index * 30);
+        });
+    }
+}
+
+// Cerrar FAB menu al hacer click en una acción
+function closeFabMenu() {
+    if (fabMenuOpen) {
+        toggleFabMenu();
+    }
+}
+
+// Modificar las funciones toggle para cerrar el menú
+const originalToggleCrumb = window.toggleCrumb;
+window.toggleCrumb = function() {
+    closeFabMenu();
+    if (originalToggleCrumb) originalToggleCrumb();
+};
+
+const originalToggleTime = window.toggleTime;
+window.toggleTime = function() {
+    closeFabMenu();
+    if (originalToggleTime) originalToggleTime();
+};
+
+const originalToggleTrack = window.toggleTrack;
+window.toggleTrack = function() {
+    closeFabMenu();
+    if (originalToggleTrack) originalToggleTrack();
+};
+
+const originalToggleSpent = window.toggleSpent;
+window.toggleSpent = function() {
+    closeFabMenu();
+    if (originalToggleSpent) originalToggleSpent();
+};
+
+// Agregar para Recap
+const originalShowRecapForm = window.showRecapForm;
+window.showRecapForm = function() {
+    closeFabMenu();
+    document.getElementById('recap-form').classList.remove('hidden');
+    ['crumb-form', 'time-form', 'track-form', 'spent-form'].forEach(id => {
+        document.getElementById(id)?.classList.add('hidden');
+    });
+};
 
