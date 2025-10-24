@@ -32,17 +32,17 @@ function refreshApp() {
 let timeDurations = [15, 30, 60, 120, 180];
 let timeActivities = ['Reading', 'Sports', 'Work', 'Cleaning', 'Errands'];
 let trackItems = {
-    meals: ['Ã°Å¸ÂÂ³ Breakfast', 'Ã°Å¸Â¥â€” Lunch', 'Ã°Å¸ÂÂ½Ã¯Â¸Â Dinner', 'Ã¢Ëœâ€¢ Snack'],
-    tasks: ['Ã°Å¸â€™Å  Medicine', 'Ã°Å¸â€™Â§ Water', 'Ã°Å¸Å¡Â¶ Walk', 'Ã°Å¸â€œÅ¾ Call']
+    meals: ['☕ Breakfast', '🥗 Lunch', '🍽️ Dinner', '🍪 Snack'],
+    tasks: ['💊 Medicine', '💧 Water', '🚶 Walk', '📞 Call']
 };
 
 // Default moods
 const defaultMoods = [
-    { emoji: 'Ã°Å¸ËœÅ ', label: 'Happy' },
-    { emoji: 'Ã°Å¸ËœÂ¢', label: 'Sad' },
-    { emoji: 'Ã°Å¸ËœÂ¡', label: 'Angry' },
-    { emoji: 'Ã°Å¸ËœÂ°', label: 'Anxious' },
-    { emoji: 'Ã°Å¸ËœÂ´', label: 'Tired' }
+    { emoji: '😊', label: 'Happy' },
+    { emoji: '😢', label: 'Sad' },
+    { emoji: '😡', label: 'Angry' },
+    { emoji: '😰', label: 'Anxious' },
+    { emoji: '😴', label: 'Tired' }
 ];
 
 let moods = [...defaultMoods];
@@ -200,7 +200,7 @@ function clearForm() {
     document.getElementById('image-previews').innerHTML = '';
     document.getElementById('audio-preview').innerHTML = '';
     document.getElementById('delete-btn').classList.add('hidden');
-    document.getElementById('save-btn').textContent = 'Ã°Å¸â€™Â¾ Save';
+    document.getElementById('save-btn').textContent = '💾 Save';
     document.getElementById('mood-config').classList.add('hidden');
     const mapContainer = document.getElementById('form-map');
     if (mapContainer) {
@@ -218,18 +218,18 @@ function cancelEdit() {
 function getGPS() {
     const btn = document.getElementById('gps-btn');
     const locationInput = document.getElementById('location-input');
-    btn.textContent = 'Ã¢ÂÂ³ Searching...';
+    btn.textContent = '🔄 Searching...';
     btn.disabled = true;
 
     if (!navigator.geolocation) {
         alert('Geolocation not available');
-        btn.textContent = 'Ã°Å¸Å’Â Use GPS';
+        btn.textContent = '🌍 Use GPS';
         btn.disabled = false;
         return;
     }
 
     navigator.geolocation.getCurrentPosition(
-        (position) => {
+        (position) =` • 📍 ${entry.location}
             const lat = position.coords.latitude;
             const lon = position.coords.longitude;
             currentCoords = { lat, lon };
@@ -239,12 +239,12 @@ function getGPS() {
             showMiniMap(lat, lon, 'form-map');
             getWeather(lat, lon);
             
-            btn.textContent = 'Ã°Å¸Å’Â GPS OK';
+            btn.textContent = '✓ GPS OK';
             btn.disabled = false;
         },
-        (error) => {
+        (error) =` • 📍 ${entry.location}
             console.error('GPS Error:', error);
-            btn.textContent = 'Ã°Å¸Å’Â Use GPS';
+            btn.textContent = '🌍 Use GPS';
             btn.disabled = false;
         },
         {
@@ -259,7 +259,7 @@ async function getWeather(lat, lon) {
     const weatherInput = document.getElementById('weather-input');
     const locationInput = document.getElementById('location-input');
     
-    weatherInput.value = 'Ã¢ÂÂ³ Getting weather...';
+    weatherInput.value = '🔄 Getting weather...';
     
     try {
         const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric&lang=en`;
@@ -277,7 +277,7 @@ async function getWeather(lat, lon) {
         const emoji = getWeatherEmoji(data.weather[0].id);
         const city = data.name || 'Unknown';
         
-        weatherInput.value = `${emoji} ${description}, ${temp}Ã‚Â°C in ${city}`;
+        weatherInput.value = `${emoji} ${description}, ${temp}°C in ${city}`;
         locationInput.value = city;
     } catch (error) {
         console.error('Error getting weather:', error);
@@ -287,14 +287,14 @@ async function getWeather(lat, lon) {
 }
 
 function getWeatherEmoji(code) {
-    if (code >= 200 && code < 300) return 'Ã¢â€ºË†Ã¯Â¸Â';
-    if (code >= 300 && code < 400) return 'Ã°Å¸Å’Â¦Ã¯Â¸Â';
-    if (code >= 500 && code < 600) return 'Ã°Å¸Å’Â§Ã¯Â¸Â';
-    if (code >= 600 && code < 700) return 'Ã¢Ââ€žÃ¯Â¸Â';
-    if (code >= 700 && code < 800) return 'Ã°Å¸Å’Â«Ã¯Â¸Â';
-    if (code === 800) return 'Ã¢Ëœâ‚¬Ã¯Â¸Â';
-    if (code > 800) return 'Ã¢ËœÂÃ¯Â¸Â';
-    return 'Ã°Å¸Å’Â¤Ã¯Â¸Â';
+    if (code ` • 📍 ${entry.location}
+    if (code ` • 📍 ${entry.location}
+    if (code ` • 📍 ${entry.location}
+    if (code ` • 📍 ${entry.location}
+    if (code ` • 📍 ${entry.location}
+    if (code === 800) return '☀️';
+    if (code ` • 📍 ${entry.location}
+    return '🌤️';
 }
 
 function showMiniMap(lat, lon, containerId) {
@@ -307,13 +307,13 @@ function showMiniMap(lat, lon, containerId) {
     const map = L.map(containerId).setView([lat, lon], 13);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: 'Ã‚Â© OpenStreetMap',
+        attribution: '© OpenStreetMap',
         maxZoom: 19
     }).addTo(map);
 
     L.marker([lat, lon]).addTo(map);
 
-    setTimeout(() => {
+    setTimeout(() =` • 📍 ${entry.location}
         map.invalidateSize();
     }, 100);
 }
@@ -322,9 +322,9 @@ function showMiniMap(lat, lon, containerId) {
 function handleImages(event) {
     const files = Array.from(event.target.files);
     
-    files.forEach(file => {
+    files.forEach(file =` • 📍 ${entry.location}
         const reader = new FileReader();
-        reader.onload = (e) => {
+        reader.onload = (e) =` • 📍 ${entry.location}
             const img = new Image();
             img.onload = function() {
                 const canvas = document.createElement('canvas');
@@ -334,10 +334,10 @@ function handleImages(event) {
                 let height = img.height;
                 const maxSize = 800;
                 
-                if (width > height && width > maxSize) {
+                if (width ` • 📍 ${entry.location}
                     height = (height * maxSize) / width;
                     width = maxSize;
-                } else if (height > maxSize) {
+                } else if (height ` • 📍 ${entry.location}
                     width = (width * maxSize) / height;
                     height = maxSize;
                 }
@@ -381,21 +381,21 @@ async function startRecording() {
         mediaRecorder = new MediaRecorder(stream, options);
         audioChunks = [];
 
-        mediaRecorder.ondataavailable = (event) => {
+        mediaRecorder.ondataavailable = (event) =` • 📍 ${entry.location}
             audioChunks.push(event.data);
         };
 
-        mediaRecorder.onstop = () => {
+        mediaRecorder.onstop = () =` • 📍 ${entry.location}
             const mimeType = mediaRecorder.mimeType || 'audio/webm';
             const audioBlob = new Blob(audioChunks, { type: mimeType });
             const reader = new FileReader();
-            reader.onloadend = () => {
+            reader.onloadend = () =` • 📍 ${entry.location}
                 currentAudio = reader.result;
                 renderAudioPreview();
             };
             reader.readAsDataURL(audioBlob);
             
-            stream.getTracks().forEach(track => track.stop());
+            stream.getTracks().forEach(track =` • 📍 ${entry.location}
         };
 
         mediaRecorder.start();
@@ -419,11 +419,11 @@ function stopRecording() {
 
 function renderImagePreviews() {
     const container = document.getElementById('image-previews');
-    container.innerHTML = currentImages.map((img, idx) => `
-        <div class="image-preview">
-            <img src="${img}" alt="">
-            <div class="image-remove" onclick="removeImage(${idx})">Ã¢Å“â€¢</div>
-        </div>
+    container.innerHTML = currentImages.map((img, idx) =` • 📍 ${entry.location}
+        <div class="image-preview"` • 📍 ${entry.location}
+            <img src="${img}" alt=""` • 📍 ${entry.location}
+            <div class="image-remove" onclick="removeImage(${idx})"` • 📍 ${entry.location}
+        </div` • 📍 ${entry.location}
     `).join('');
 }
 
@@ -431,12 +431,12 @@ function renderAudioPreview() {
     const container = document.getElementById('audio-preview');
     if (currentAudio) {
         container.innerHTML = `
-            <div style="display: flex; align-items: center; gap: 8px; margin-top: 8px;">
-                <audio controls style="flex: 1;">
-                    <source src="${currentAudio}" type="audio/webm">
-                </audio>
-                <button class="mac-button" onclick="removeAudio()" style="padding: 4px 8px;">Ã¢Å“â€¢</button>
-            </div>
+            <div style="display: flex; align-items: center; gap: 8px; margin-top: 8px;"` • 📍 ${entry.location}
+                <audio controls style="flex: 1;"` • 📍 ${entry.location}
+                    <source src="${currentAudio}" type="audio/webm"` • 📍 ${entry.location}
+                </audio` • 📍 ${entry.location}
+                <button class="mac-button" onclick="removeAudio()" style="padding: 4px 8px;"` • 📍 ${entry.location}
+            </div` • 📍 ${entry.location}
         `;
     } else {
         container.innerHTML = '';
@@ -455,11 +455,11 @@ function removeAudio() {
 // Mood functions
 function renderMoodSelector() {
     const container = document.getElementById('mood-selector');
-    container.innerHTML = moods.map((mood, index) => `
-        <div class="mood-option ${selectedMood === index ? 'selected' : ''}" onclick="selectMood(${index})">
+    container.innerHTML = moods.map((mood, index) =` • 📍 ${entry.location}
+        <div class="mood-option ${selectedMood === index ? 'selected' : ''}" onclick="selectMood(${index})"` • 📍 ${entry.location}
             ${mood.emoji}
-            <span class="mood-label">${mood.label}</span>
-        </div>
+            <span class="mood-label"` • 📍 ${entry.location}
+        </div` • 📍 ${entry.location}
     `).join('');
 }
 
@@ -478,16 +478,16 @@ function toggleMoodConfig() {
 
 function renderMoodConfig() {
     const container = document.getElementById('mood-config-list');
-    container.innerHTML = moods.map((mood, index) => `
-        <div class="config-item">
-            <input type="text" value="${mood.emoji}" id="mood-emoji-${index}" maxlength="2">
-            <input type="text" value="${mood.label}" id="mood-label-${index}" placeholder="Label">
-        </div>
+    container.innerHTML = moods.map((mood, index) =` • 📍 ${entry.location}
+        <div class="config-item"` • 📍 ${entry.location}
+            <input type="text" value="${mood.emoji}" id="mood-emoji-${index}" maxlength="2"` • 📍 ${entry.location}
+            <input type="text" value="${mood.label}" id="mood-label-${index}" placeholder="Label"` • 📍 ${entry.location}
+        </div` • 📍 ${entry.location}
     `).join('');
 }
 
 function saveMoodConfig() {
-    moods = moods.map((mood, index) => ({
+    moods = moods.map((mood, index) =` • 📍 ${entry.location}
         emoji: document.getElementById(`mood-emoji-${index}`).value || mood.emoji,
         label: document.getElementById(`mood-label-${index}`).value || mood.label
     }));
@@ -512,7 +512,7 @@ function saveEntry() {
     const timestamp = getTimestampFromInput('datetime-input');
 
     if (editingEntryId) {
-        const entryIndex = entries.findIndex(e => e.id === editingEntryId);
+        const entryIndex = entries.findIndex(e =` • 📍 ${entry.location}
         if (entryIndex !== -1) {
             entries[entryIndex] = {
                 ...entries[entryIndex],
@@ -547,7 +547,7 @@ function saveEntry() {
 }
 
 function editEntry(id) {
-    const entry = entries.find(e => e.id === id);
+    const entry = entries.find(e =` • 📍 ${entry.location}
     if (!entry) return;
 
     if (entry.type === 'recap') {
@@ -588,7 +588,7 @@ function editEntry(id) {
     document.getElementById('datetime-input').value = `${year}-${month}-${day}T${hours}:${minutes}`;
 
     if (entry.mood) {
-        const moodIndex = moods.findIndex(m => m.emoji === entry.mood.emoji && m.label === entry.mood.label);
+        const moodIndex = moods.findIndex(m =` • 📍 ${entry.location}
         selectedMood = moodIndex !== -1 ? moodIndex : null;
     } else {
         selectedMood = null;
@@ -603,7 +603,7 @@ function editEntry(id) {
     }
 
     document.getElementById('delete-btn').classList.remove('hidden');
-    document.getElementById('save-btn').textContent = 'Ã°Å¸â€™Â¾ Update';
+    document.getElementById('save-btn').textContent = '💾 Update';
     
     const formWindow = document.getElementById('form-window');
     formWindow.classList.remove('hidden');
@@ -626,7 +626,7 @@ function editTimeEvent(entry) {
     const minutes = String(date.getMinutes()).padStart(2, '0');
     document.getElementById('datetime-input-time').value = `${year}-${month}-${day}T${hours}:${minutes}`;
     
-    document.querySelectorAll('.duration-option').forEach(el => {
+    document.querySelectorAll('.duration-option').forEach(el =` • 📍 ${entry.location}
         el.classList.remove('selected');
         const text = el.textContent.trim();
         if ((selectedDuration === 15 && text.includes('15')) ||
@@ -638,7 +638,7 @@ function editTimeEvent(entry) {
         }
     });
     
-    document.querySelectorAll('#activity-selector .activity-option').forEach(el => {
+    document.querySelectorAll('#activity-selector .activity-option').forEach(el =` • 📍 ${entry.location}
         el.classList.remove('selected');
         if (el.textContent.includes(selectedActivity)) {
             el.classList.add('selected');
@@ -649,7 +649,7 @@ function editTimeEvent(entry) {
     
     const timerWindow = document.getElementById('timer-window');
     const createBtn = document.getElementById('create-time-btn');
-    createBtn.textContent = 'Ã°Å¸â€™Â¾ Update Event';
+    createBtn.textContent = '💾 Update Event';
     document.getElementById('delete-time-btn').classList.remove('hidden');
     
     timerWindow.classList.remove('hidden');
@@ -659,7 +659,7 @@ function editTimeEvent(entry) {
 function selectDuration(minutes) {
     selectedDuration = minutes;
     const options = document.querySelectorAll('.duration-option');
-    options.forEach(el => {
+    options.forEach(el =` • 📍 ${entry.location}
         el.classList.remove('selected');
         const text = el.textContent.trim();
         if ((minutes === 15 && text.includes('15')) ||
@@ -677,7 +677,7 @@ function selectDuration(minutes) {
 function selectActivity(activity) {
     selectedActivity = activity;
     const options = document.querySelectorAll('#activity-selector .activity-option');
-    options.forEach(el => {
+    options.forEach(el =` • 📍 ${entry.location}
         el.classList.remove('selected');
         if (el.textContent.includes(activity)) {
             el.classList.add('selected');
@@ -703,7 +703,7 @@ function createTimeEvent() {
     const optionalNote = document.getElementById('time-optional-note').value.trim();
     
     if (editingEntryId) {
-        const entryIndex = entries.findIndex(e => e.id === editingEntryId);
+        const entryIndex = entries.findIndex(e =` • 📍 ${entry.location}
         if (entryIndex !== -1) {
             entries[entryIndex] = {
                 ...entries[entryIndex],
@@ -750,8 +750,8 @@ function resetTimerSelections() {
     selectedDuration = null;
     selectedActivity = null;
     editingEntryId = null;
-    document.querySelectorAll('.duration-option').forEach(el => el.classList.remove('selected'));
-    document.querySelectorAll('#activity-selector .activity-option').forEach(el => el.classList.remove('selected'));
+    document.querySelectorAll('.duration-option').forEach(el =` • 📍 ${entry.location}
+    document.querySelectorAll('#activity-selector .activity-option').forEach(el =` • 📍 ${entry.location}
     document.getElementById('create-time-btn').disabled = true;
     document.getElementById('create-time-btn').textContent = 'Create Event';
     document.getElementById('delete-time-btn').classList.add('hidden');
@@ -763,16 +763,16 @@ function renderTrackSelector() {
     const container = document.getElementById('track-selector');
     const allItems = [...trackItems.meals, ...trackItems.tasks];
     
-    container.innerHTML = allItems.map((item, index) => `
-        <div class="activity-option" onclick="selectTrackItem('${item}')">
+    container.innerHTML = allItems.map((item, index) =` • 📍 ${entry.location}
+        <div class="activity-option" onclick="selectTrackItem('${item}')"` • 📍 ${entry.location}
             ${item}
-        </div>
+        </div` • 📍 ${entry.location}
     `).join('');
 }
 
 function selectTrackItem(item) {
     selectedTrackItem = item;
-    document.querySelectorAll('#track-selector .activity-option').forEach(el => {
+    document.querySelectorAll('#track-selector .activity-option').forEach(el =` • 📍 ${entry.location}
         el.classList.remove('selected');
         if (el.textContent.trim() === item) {
             el.classList.add('selected');
@@ -798,14 +798,14 @@ function editTrackEvent(entry) {
     
     renderTrackSelector();
     
-    document.querySelectorAll('#track-selector .activity-option').forEach(el => {
+    document.querySelectorAll('#track-selector .activity-option').forEach(el =` • 📍 ${entry.location}
         if (el.textContent.trim() === selectedTrackItem) {
             el.classList.add('selected');
         }
     });
     
     document.getElementById('save-track-btn').disabled = false;
-    document.getElementById('save-track-btn').textContent = 'Ã°Å¸â€™Â¾ Update Track';
+    document.getElementById('save-track-btn').textContent = '💾 Update Track';
     document.getElementById('delete-track-btn').classList.remove('hidden');
     
     const trackWindow = document.getElementById('track-window');
@@ -820,7 +820,7 @@ function saveTrackEvent() {
     const optionalNote = document.getElementById('track-optional-note').value.trim();
     
     if (editingEntryId) {
-        const entryIndex = entries.findIndex(e => e.id === editingEntryId);
+        const entryIndex = entries.findIndex(e =` • 📍 ${entry.location}
         if (entryIndex !== -1) {
             entries[entryIndex] = {
                 ...entries[entryIndex],
@@ -898,7 +898,7 @@ function saveSpent() {
     const timestamp = getTimestampFromInput('datetime-input-spent');
 
     if (editingEntryId) {
-        const entryIndex = entries.findIndex(e => e.id === editingEntryId);
+        const entryIndex = entries.findIndex(e =` • 📍 ${entry.location}
         if (entryIndex !== -1) {
             entries[entryIndex] = {
                 ...entries[entryIndex],
@@ -939,7 +939,7 @@ function deleteCurrentEntry() {
     if (!editingEntryId) return;
     
     if (confirm('Delete this entry?')) {
-        entries = entries.filter(e => e.id !== editingEntryId);
+        entries = entries.filter(e =` • 📍 ${entry.location}
         
         if (currentUser && !isOfflineMode) {
             deleteEntryFromFirebase(editingEntryId);
@@ -960,77 +960,77 @@ function deleteCurrentEntry() {
 }
 // Preview functions
 function previewEntry(id) {
-    const entry = entries.find(e => e.id === id);
+    const entry = entries.find(e =` • 📍 ${entry.location}
     if (!entry) return;
 
     const modal = document.getElementById('preview-modal');
     const body = document.getElementById('preview-body');
     
     let html = `
-        <div style="margin-bottom: 16px;">
-            <strong>Time:</strong> ${formatDate(entry.timestamp)} at ${formatTime(entry.timestamp)}
-        </div>
+        <div style="margin-bottom: 16px;"` • 📍 ${entry.location}
+            <strong` • 📍 ${entry.location}
+        </div` • 📍 ${entry.location}
         
         ${entry.mood ? `
-            <div style="margin-bottom: 16px;">
-                <strong>Mood:</strong> <span style="font-size: 24px;">${entry.mood.emoji}</span> ${entry.mood.label}
-            </div>
+            <div style="margin-bottom: 16px;"` • 📍 ${entry.location}
+                <strong` • 📍 ${entry.location}
+            </div` • 📍 ${entry.location}
         ` : ''}
         
-        <div style="margin-bottom: 16px;">
-            <strong>Note:</strong>
-            <div style="margin-top: 8px; line-height: 1.6;">${entry.note}</div>
-        </div>
+        <div style="margin-bottom: 16px;"` • 📍 ${entry.location}
+            <strong` • 📍 ${entry.location}
+            <div style="margin-top: 8px; line-height: 1.6;"` • 📍 ${entry.location}
+        </div` • 📍 ${entry.location}
         
         ${entry.location ? `
-            <div style="margin-bottom: 16px;">
-                <strong>Location:</strong> ${entry.location}
-            </div>
+            <div style="margin-bottom: 16px;"` • 📍 ${entry.location}
+                <strong` • 📍 ${entry.location}
+            </div` • 📍 ${entry.location}
         ` : ''}
         
         ${entry.weather ? `
-            <div style="margin-bottom: 16px;">
-                <strong>Weather:</strong> ${entry.weather}
-            </div>
+            <div style="margin-bottom: 16px;"` • 📍 ${entry.location}
+                <strong` • 📍 ${entry.location}
+            </div` • 📍 ${entry.location}
         ` : ''}
         
         ${entry.coords ? `
-            <div style="margin-bottom: 16px;">
-                <strong>Map:</strong>
-                <div class="preview-map-full" id="preview-map-modal"></div>
-            </div>
+            <div style="margin-bottom: 16px;"` • 📍 ${entry.location}
+                <strong` • 📍 ${entry.location}
+                <div class="preview-map-full" id="preview-map-modal"` • 📍 ${entry.location}
+            </div` • 📍 ${entry.location}
         ` : ''}
         
         ${entry.audio ? `
-            <div style="margin-bottom: 16px;">
-                <strong>Audio:</strong>
-                <audio controls style="width: 100%; margin-top: 8px;">
-                    <source src="${entry.audio}" type="audio/webm">
-                </audio>
-            </div>
+            <div style="margin-bottom: 16px;"` • 📍 ${entry.location}
+                <strong` • 📍 ${entry.location}
+                <audio controls style="width: 100%; margin-top: 8px;"` • 📍 ${entry.location}
+                    <source src="${entry.audio}" type="audio/webm"` • 📍 ${entry.location}
+                </audio` • 📍 ${entry.location}
+            </div` • 📍 ${entry.location}
         ` : ''}
         
-        ${entry.images && entry.images.length > 0 ? `
-            <div style="margin-bottom: 16px;">
-                <strong>Images:</strong>
-                <div class="preview-images-full">
-                    ${entry.images.map(img => `
-                        <img src="${img}" class="preview-image-full" onclick="event.stopPropagation(); showImageInModal('${entry.id}', ${entry.images.indexOf(img)});">
+        ${entry.images && entry.images.length ` • 📍 ${entry.location}
+            <div style="margin-bottom: 16px;"` • 📍 ${entry.location}
+                <strong` • 📍 ${entry.location}
+                <div class="preview-images-full"` • 📍 ${entry.location}
+                    ${entry.images.map(img =` • 📍 ${entry.location}
+                        <img src="${img}" class="preview-image-full" onclick="event.stopPropagation(); showImageInModal('${entry.id}', ${entry.images.indexOf(img)});"` • 📍 ${entry.location}
                     `).join('')}
-                </div>
-            </div>
+                </div` • 📍 ${entry.location}
+            </div` • 📍 ${entry.location}
         ` : ''}
         
         ${entry.isTimedActivity ? `
-            <div style="margin-bottom: 16px;">
-                <strong>Activity:</strong> ${entry.activity} (${entry.duration} minutes)
-            </div>
+            <div style="margin-bottom: 16px;"` • 📍 ${entry.location}
+                <strong` • 📍 ${entry.location}
+            </div` • 📍 ${entry.location}
         ` : ''}
         
         ${entry.isSpent ? `
-            <div style="margin-bottom: 16px;">
-                <strong>Amount Spent:</strong> Ã¢â€šÂ¬${entry.spentAmount.toFixed(2)}
-            </div>
+            <div style="margin-bottom: 16px;"` • 📍 ${entry.location}
+                <strong` • 📍 ${entry.location}
+            </div` • 📍 ${entry.location}
         ` : ''}
     `;
     
@@ -1038,16 +1038,16 @@ function previewEntry(id) {
     modal.classList.add('show');
     
     if (entry.coords) {
-        setTimeout(() => {
+        setTimeout(() =` • 📍 ${entry.location}
             const mapContainer = document.getElementById('preview-map-modal');
             if (mapContainer) {
                 const map = L.map('preview-map-modal').setView([entry.coords.lat, entry.coords.lon], 13);
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: 'Ã‚Â© OpenStreetMap'
+                    attribution: '© OpenStreetMap'
                 }).addTo(map);
                 L.marker([entry.coords.lat, entry.coords.lon]).addTo(map);
                 
-                setTimeout(() => map.invalidateSize(), 100);
+                setTimeout(() =` • 📍 ${entry.location}
             }
         }, 100);
     }
@@ -1069,7 +1069,7 @@ function openSettings() {
 
 // Show image preview
 function showImagePreview(entryId, imageIndex) {
-    const entry = entries.find(e => e.id == entryId);
+    const entry = entries.find(e =` • 📍 ${entry.location}
     if (!entry || !entry.images || !entry.images[imageIndex]) {
         console.error('Image not found:', entryId, imageIndex);
         return;
@@ -1079,9 +1079,9 @@ function showImagePreview(entryId, imageIndex) {
     const body = document.getElementById('preview-body');
     
     body.innerHTML = `
-        <div style="text-align: center; padding: 20px;">
-            <img src="${entry.images[imageIndex]}" style="max-width: 100%; max-height: 80vh; border: 2px solid #000;">
-        </div>
+        <div style="text-align: center; padding: 20px;"` • 📍 ${entry.location}
+            <img src="${entry.images[imageIndex]}" style="max-width: 100%; max-height: 80vh; border: 2px solid #000;"` • 📍 ${entry.location}
+        </div` • 📍 ${entry.location}
     `;
     
     modal.classList.add('show');
@@ -1096,48 +1096,48 @@ function closeSettings(event) {
 
 function renderSettingsConfig() {
     const durationsContainer = document.getElementById('time-durations-config');
-    durationsContainer.innerHTML = timeDurations.map((duration, index) => `
-        <div class="config-item">
-            <input type="number" value="${duration}" id="duration-${index}" style="flex: 0 0 100px;">
-            <span>minutes</span>
-            <button class="mac-button" onclick="removeDuration(${index})" style="padding: 4px 8px; margin-left: auto;">Ã¢Å“â€¢</button>
-        </div>
+    durationsContainer.innerHTML = timeDurations.map((duration, index) =` • 📍 ${entry.location}
+        <div class="config-item"` • 📍 ${entry.location}
+            <input type="number" value="${duration}" id="duration-${index}" style="flex: 0 0 100px;"` • 📍 ${entry.location}
+            <span` • 📍 ${entry.location}
+            <button class="mac-button" onclick="removeDuration(${index})" style="padding: 4px 8px; margin-left: auto;"` • 📍 ${entry.location}
+        </div` • 📍 ${entry.location}
     `).join('') + `
-        <button class="mac-button" onclick="addDuration()" style="margin-top: 8px;">Ã¢Å¾â€¢ Add Duration</button>
+        <button class="mac-button" onclick="addDuration()" style="margin-top: 8px;"` • 📍 ${entry.location}
     `;
 
     const activitiesContainer = document.getElementById('time-activities-config');
-    activitiesContainer.innerHTML = timeActivities.map((activity, index) => `
-        <div class="config-item">
-            <input type="text" value="${activity}" id="activity-${index}">
-            <button class="mac-button" onclick="removeActivity(${index})" style="padding: 4px 8px;">Ã¢Å“â€¢</button>
-        </div>
+    activitiesContainer.innerHTML = timeActivities.map((activity, index) =` • 📍 ${entry.location}
+        <div class="config-item"` • 📍 ${entry.location}
+            <input type="text" value="${activity}" id="activity-${index}"` • 📍 ${entry.location}
+            <button class="mac-button" onclick="removeActivity(${index})" style="padding: 4px 8px;"` • 📍 ${entry.location}
+        </div` • 📍 ${entry.location}
     `).join('') + `
-        <button class="mac-button" onclick="addActivity()" style="margin-top: 8px;">Ã¢Å¾â€¢ Add Activity</button>
+        <button class="mac-button" onclick="addActivity()" style="margin-top: 8px;"` • 📍 ${entry.location}
     `;
 
     const trackContainer = document.getElementById('track-items-config');
     trackContainer.innerHTML = `
-        <div style="margin-bottom: 16px;">
-            <strong>Meals:</strong>
-            ${trackItems.meals.map((item, index) => `
-                <div class="config-item">
-                    <input type="text" value="${item}" id="meal-${index}">
-                    <button class="mac-button" onclick="removeMeal(${index})" style="padding: 4px 8px;">Ã¢Å“â€¢</button>
-                </div>
+        <div style="margin-bottom: 16px;"` • 📍 ${entry.location}
+            <strong` • 📍 ${entry.location}
+            ${trackItems.meals.map((item, index) =` • 📍 ${entry.location}
+                <div class="config-item"` • 📍 ${entry.location}
+                    <input type="text" value="${item}" id="meal-${index}"` • 📍 ${entry.location}
+                    <button class="mac-button" onclick="removeMeal(${index})" style="padding: 4px 8px;"` • 📍 ${entry.location}
+                </div` • 📍 ${entry.location}
             `).join('')}
-            <button class="mac-button" onclick="addMeal()" style="margin-top: 8px;">Ã¢Å¾â€¢ Add Meal</button>
-        </div>
-        <div>
-            <strong>Tasks:</strong>
-            ${trackItems.tasks.map((item, index) => `
-                <div class="config-item">
-                    <input type="text" value="${item}" id="task-${index}">
-                    <button class="mac-button" onclick="removeTask(${index})" style="padding: 4px 8px;">Ã¢Å“â€¢</button>
-                </div>
+            <button class="mac-button" onclick="addMeal()" style="margin-top: 8px;"` • 📍 ${entry.location}
+        </div` • 📍 ${entry.location}
+        <div` • 📍 ${entry.location}
+            <strong` • 📍 ${entry.location}
+            ${trackItems.tasks.map((item, index) =` • 📍 ${entry.location}
+                <div class="config-item"` • 📍 ${entry.location}
+                    <input type="text" value="${item}" id="task-${index}"` • 📍 ${entry.location}
+                    <button class="mac-button" onclick="removeTask(${index})" style="padding: 4px 8px;"` • 📍 ${entry.location}
+                </div` • 📍 ${entry.location}
             `).join('')}
-            <button class="mac-button" onclick="addTask()" style="margin-top: 8px;">Ã¢Å¾â€¢ Add Task</button>
-        </div>
+            <button class="mac-button" onclick="addTask()" style="margin-top: 8px;"` • 📍 ${entry.location}
+        </div` • 📍 ${entry.location}
     `;
 }
 
@@ -1162,7 +1162,7 @@ function removeActivity(index) {
 }
 
 function addMeal() {
-    trackItems.meals.push('Ã°Å¸ÂÂ´ New Meal');
+    trackItems.meals.push('🍴 New Meal');
     renderSettingsConfig();
 }
 
@@ -1182,22 +1182,22 @@ function removeTask(index) {
 }
 
 function saveSettings() {
-    timeDurations = timeDurations.map((_, index) => {
+    timeDurations = timeDurations.map((_, index) =` • 📍 ${entry.location}
         const val = document.getElementById(`duration-${index}`);
         return val ? parseInt(val.value) || 60 : 60;
     });
 
-    timeActivities = timeActivities.map((_, index) => {
+    timeActivities = timeActivities.map((_, index) =` • 📍 ${entry.location}
         const val = document.getElementById(`activity-${index}`);
         return val ? val.value : 'Activity';
     });
 
-    trackItems.meals = trackItems.meals.map((_, index) => {
+    trackItems.meals = trackItems.meals.map((_, index) =` • 📍 ${entry.location}
         const val = document.getElementById(`meal-${index}`);
         return val ? val.value : 'Meal';
     });
 
-    trackItems.tasks = trackItems.tasks.map((_, index) => {
+    trackItems.tasks = trackItems.tasks.map((_, index) =` • 📍 ${entry.location}
         const val = document.getElementById(`task-${index}`);
         return val ? val.value : 'Task';
     });
@@ -1218,19 +1218,19 @@ function updateTimerOptions() {
     const container = document.getElementById('duration-selector');
     if (!container) return;
     
-    container.innerHTML = timeDurations.map(duration => `
-        <div class="duration-option" onclick="selectDuration(${duration})">
-            ${duration < 60 ? duration + ' min' : (duration / 60) + ' hour' + (duration > 60 ? 's' : '')}
-        </div>
+    container.innerHTML = timeDurations.map(duration =` • 📍 ${entry.location}
+        <div class="duration-option" onclick="selectDuration(${duration})"` • 📍 ${entry.location}
+            ${duration < 60 ? duration + ' min' : (duration / 60) + ' hour' + (duration ` • 📍 ${entry.location}
+        </div` • 📍 ${entry.location}
     `).join('');
 
     const actContainer = document.getElementById('activity-selector');
     if (!actContainer) return;
     
-    actContainer.innerHTML = timeActivities.map(activity => `
-        <div class="activity-option" onclick="selectActivity('${activity}')">
+    actContainer.innerHTML = timeActivities.map(activity =` • 📍 ${entry.location}
+        <div class="activity-option" onclick="selectActivity('${activity}')"` • 📍 ${entry.location}
             ${activity}
-        </div>
+        </div` • 📍 ${entry.location}
     `).join('');
 }
 
@@ -1299,7 +1299,7 @@ function toggleRecapView(recapId) {
 
 // Show image in modal
 function showImageInModal(entryId, imageIndex) {
-    const entry = entries.find(e => e.id == entryId);
+    const entry = entries.find(e =` • 📍 ${entry.location}
     if (!entry || !entry.images || !entry.images[imageIndex]) {
         console.error('Image not found');
         return;
@@ -1309,9 +1309,9 @@ function showImageInModal(entryId, imageIndex) {
     const body = document.getElementById('preview-body');
     
     body.innerHTML = `
-        <div style="text-align: center; padding: 20px;">
-            <img src="${entry.images[imageIndex]}" style="max-width: 100%; max-height: 80vh; border: 2px solid #000;">
-        </div>
+        <div style="text-align: center; padding: 20px;"` • 📍 ${entry.location}
+            <img src="${entry.images[imageIndex]}" style="max-width: 100%; max-height: 80vh; border: 2px solid #000;"` • 📍 ${entry.location}
+        </div` • 📍 ${entry.location}
     `;
     
     modal.classList.add('show');
@@ -1354,7 +1354,7 @@ function renderTimeline() {
     const todayKey = getDayKey(today.toISOString());
 
     const groupedByDay = {};
-    entries.forEach(entry => {
+    entries.forEach(entry =` • 📍 ${entry.location}
         const dayKey = getDayKey(entry.timestamp);
         if (!groupedByDay[dayKey]) {
             groupedByDay[dayKey] = [];
@@ -1363,140 +1363,140 @@ function renderTimeline() {
     });
 
     const html = `
-        <div class="timeline">
-            <div class="timeline-line"></div>
-            ${Object.keys(groupedByDay).map(dayKey => {
+        <div class="timeline"` • 📍 ${entry.location}
+            <div class="timeline-line"` • 📍 ${entry.location}
+            ${Object.keys(groupedByDay).map(dayKey =` • 📍 ${entry.location}
                 const dayEntries = groupedByDay[dayKey];
                 const firstEntry = dayEntries[0];
                 
                 // Separar recaps del resto de entries
-                const recaps = dayEntries.filter(e => e.type === 'recap');
-                const normalEntries = dayEntries.filter(e => e.type !== 'recap');
+                const recaps = dayEntries.filter(e =` • 📍 ${entry.location}
+                const normalEntries = dayEntries.filter(e =` • 📍 ${entry.location}
                 
                 return `
-                    <div class="day-block">
-                        <div class="day-header" onclick="toggleDay('${dayKey}')">
-                            <span>${formatDate(firstEntry.timestamp)}</span>
-                            <span class="chevron ${dayKey === todayKey ? 'expanded' : ''}" id="chevron-${dayKey}">Ã¢â€“Â¼</span>
-                        </div>
+                    <div class="day-block"` • 📍 ${entry.location}
+                        <div class="day-header" onclick="toggleDay('${dayKey}')"` • 📍 ${entry.location}
+                            <span` • 📍 ${entry.location}
+                            <span class="chevron ${dayKey === todayKey ? 'expanded' : ''}" id="chevron-${dayKey}"` • 📍 ${entry.location}
+                        </div` • 📍 ${entry.location}
                         
-                        ${recaps.map(recap => `
-                            <div class="day-recap" id="recap-${recap.id}">
-                                <div class="recap-header" onclick="toggleRecapView(${recap.id})">
-                                    <span class="recap-chevron" id="recap-chevron-${recap.id}">Ã¢â€“Â¼</span>
-                                    <span>Ã°Å¸Å’Å¸ Day Recap</span>
-                                </div>
-                                <div class="recap-content hidden" id="recap-content-${recap.id}">
-                                    <div class="recap-rating">Rating: ${'Ã¢Â­Â'.repeat(recap.rating)}</div>
-                                    ${recap.reflection ? `<div class="recap-section"><strong>Reflection:</strong><br>${recap.reflection}</div>` : ''}
-                                    ${recap.highlights && recap.highlights.length > 0 ? `
-                                        <div class="recap-section">
-                                            <strong>Highlights:</strong>
-                                            <ul>
-                                                ${recap.highlights.map(h => `<li>${h}</li>`).join('')}
-                                            </ul>
-                                        </div>
+                        ${recaps.map(recap =` • 📍 ${entry.location}
+                            <div class="day-recap" id="recap-${recap.id}"` • 📍 ${entry.location}
+                                <div class="recap-header" onclick="toggleRecapView(${recap.id})"` • 📍 ${entry.location}
+                                    <span class="recap-chevron" id="recap-chevron-${recap.id}"` • 📍 ${entry.location}
+                                    <span` • 📍 ${entry.location}
+                                </div` • 📍 ${entry.location}
+                                <div class="recap-content hidden" id="recap-content-${recap.id}"` • 📍 ${entry.location}
+                                    <div class="recap-rating"` • 📍 ${entry.location}
+                                    ${recap.reflection ? `<div class="recap-section"` • 📍 ${entry.location}
+                                    ${recap.highlights && recap.highlights.length ` • 📍 ${entry.location}
+                                        <div class="recap-section"` • 📍 ${entry.location}
+                                            <strong` • 📍 ${entry.location}
+                                            <ul` • 📍 ${entry.location}
+                                                ${recap.highlights.map(h =` • 📍 ${entry.location}
+                                            </ul` • 📍 ${entry.location}
+                                        </div` • 📍 ${entry.location}
                                     ` : ''}
                                     ${recap.track ? `
-                                        <div class="recap-section">
-                                            <strong>Soundtrack:</strong><br>
-                                            <div style="display: flex; align-items: center; gap: 8px; margin-top: 8px;">
-                                                <img src="${recap.track.artwork}" style="width: 40px; height: 40px; border: 2px solid #000;">
-                                                <div style="flex: 1;">
-                                                    <div style="font-weight: bold; font-size: 12px;">${recap.track.name}</div>
-                                                    <div style="font-size: 11px; color: #666;">${recap.track.artist}</div>
-                                                </div>
-                                                <a href="${recap.track.url}" target="_blank" style="text-decoration: none;">Ã°Å¸â€â€”</a>
-                                            </div>
-                                        </div>
+                                        <div class="recap-section"` • 📍 ${entry.location}
+                                            <strong` • 📍 ${entry.location}
+                                            <div style="display: flex; align-items: center; gap: 8px; margin-top: 8px;"` • 📍 ${entry.location}
+                                                <img src="${recap.track.artwork}" style="width: 40px; height: 40px; border: 2px solid #000;"` • 📍 ${entry.location}
+                                                <div style="flex: 1;"` • 📍 ${entry.location}
+                                                    <div style="font-weight: bold; font-size: 12px;"` • 📍 ${entry.location}
+                                                    <div style="font-size: 11px; color: #666;"` • 📍 ${entry.location}
+                                                </div` • 📍 ${entry.location}
+                                                <a href="${recap.track.url}" target="_blank" style="text-decoration: none;"` • 📍 ${entry.location}
+                                            </div` • 📍 ${entry.location}
+                                        </div` • 📍 ${entry.location}
                                     ` : ''}
-                                    <button class="mac-button edit-button" onclick="editEntry(${recap.id})" style="margin-top: 12px;">Ã¢Å“ÂÃ¯Â¸Â Edit</button>
-                                </div>
-                            </div>
+                                    <button class="mac-button edit-button" onclick="editEntry(${recap.id})" style="margin-top: 12px;"` • 📍 ${entry.location}
+                                </div` • 📍 ${entry.location}
+                            </div` • 📍 ${entry.location}
                         `).join('')}
                         
-                        <div class="day-content ${dayKey === todayKey ? 'expanded' : ''}" id="day-content-${dayKey}">
-                            ${normalEntries.map(entry => {
+                        <div class="day-content ${dayKey === todayKey ? 'expanded' : ''}" id="day-content-${dayKey}"` • 📍 ${entry.location}
+                            ${normalEntries.map(entry =` • 📍 ${entry.location}
                                 const heightStyle = entry.isTimedActivity && entry.duration ? `min-height: ${Math.min(150 + entry.duration * 0.5, 300)}px;` : '';
                                 const trackClass = entry.isQuickTrack ? 'track-event' : '';
                                 const spentClass = entry.isSpent ? 'spent-event' : '';
                                 
                                 return `
-                                <div class="breadcrumb-entry ${entry.isTimedActivity ? 'edit-mode' : ''} ${trackClass} ${spentClass}" style="${heightStyle}">
-                                    <button class="mac-button edit-button" onclick="editEntry(${entry.id})">Ã¢Å“ÂÃ¯Â¸Â Edit</button>
+                                <div class="breadcrumb-entry ${entry.isTimedActivity ? 'edit-mode' : ''} ${trackClass} ${spentClass}" style="${heightStyle}"` • 📍 ${entry.location}
+                                    <button class="mac-button edit-button" onclick="editEntry(${entry.id})"` • 📍 ${entry.location}
                                     
                                     ${entry.isTimedActivity ? 
-                                        `<div class="breadcrumb-time">Ã¢ÂÂ° ${formatTime(entry.timestamp)} - ${calculateEndTime(entry.timestamp, entry.duration)}</div>
-                                        <div class="activity-label">${entry.activity}</div>
-                                        <div style="font-size: 13px; color: #666; margin-top: 8px;">Duration: ${entry.duration} minutes</div>
+                                        `<div class="breadcrumb-time"` • 📍 ${entry.location}
+                                        <div class="activity-label"` • 📍 ${entry.location}
+                                        <div style="font-size: 13px; color: #666; margin-top: 8px;"` • 📍 ${entry.location}
                                         ${entry.optionalNote ? `
-                                            <div class="optional-note" id="note-${entry.id}">${entry.optionalNote}</div>
-                                            ${entry.optionalNote.length > 200 ? `<button class="read-more-btn" id="read-more-${entry.id}" onclick="toggleReadMore(${entry.id})">Read more</button>` : ''}
+                                            <div class="optional-note" id="note-${entry.id}"` • 📍 ${entry.location}
+                                            ${entry.optionalNote.length ` • 📍 ${entry.location}
                                         ` : ''}` :
-                                        `<div class="breadcrumb-time">
+                                        `<div class="breadcrumb-time"` • 📍 ${entry.location}
                                             ${entry.isQuickTrack ?
-                                                `<span class="compact-time">Ã¢ÂÂ° ${formatTime(entry.timestamp)} ${entry.note}</span>` :
-                                                `Ã¢ÂÂ° ${formatTime(entry.timestamp)}`
+                                                `<span class="compact-time"` • 📍 ${entry.location}
+                                                `⏰ ${formatTime(entry.timestamp)}`
                                             }
-                                            ${entry.isSpent ? `<span class="spent-badge">Ã°Å¸â€™Â° Ã¢â€šÂ¬${entry.spentAmount.toFixed(2)}</span>` : ''}
-                                        </div>`
+                                            ${entry.isSpent ? `<span class="spent-badge"` • 📍 ${entry.location}
+                                        </div` • 📍 ${entry.location}
                                     }
                                     
                                     ${entry.isTimedActivity ? '' : ''}
                                     ${entry.isQuickTrack && entry.optionalNote ? `
-                                        <div class="optional-note" id="note-${entry.id}">${entry.optionalNote}</div>
-                                        ${entry.optionalNote.length > 200 ? `<button class="read-more-btn" id="read-more-${entry.id}" onclick="toggleReadMore(${entry.id})">Read more</button>` : ''}
+                                        <div class="optional-note" id="note-${entry.id}"` • 📍 ${entry.location}
+                                        ${entry.optionalNote.length ` • 📍 ${entry.location}
                                     ` : ''}
                                     
                                     ${!entry.isTimedActivity && !entry.isQuickTrack && !entry.isSpent ? `
-                                        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 8px;">
-                                            ${entry.mood ? `<span class="mood-display">${entry.mood.emoji}</span>` : ''}
-                                            <div style="flex: 1;">
-                                                <div class="breadcrumb-note" id="note-${entry.id}">${entry.note}</div>
-                                                ${entry.note && entry.note.length > 150 ? `<button class="read-more-btn" id="read-more-${entry.id}" onclick="toggleReadMore(${entry.id})">Read more</button>` : ''}
-                                            </div>
-                                        </div>
+                                        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 8px;"` • 📍 ${entry.location}
+                                            ${entry.mood ? `<span class="mood-display"` • 📍 ${entry.location}
+                                            <div style="flex: 1;"` • 📍 ${entry.location}
+                                                <div class="breadcrumb-note" id="note-${entry.id}"` • 📍 ${entry.location}
+                                                ${entry.note && entry.note.length ` • 📍 ${entry.location}
+                                            </div` • 📍 ${entry.location}
+                                        </div` • 📍 ${entry.location}
                                     ` : ''}
                                     
                                     ${entry.weather || entry.location ? `
-                                        <div style="font-size: 12px; color: ${entry.isQuickTrack ? '#ccc' : '#666'}; margin-bottom: 8px;">
+                                        <div style="font-size: 12px; color: ${entry.isQuickTrack ? '#ccc' : '#666'}; margin-bottom: 8px;"` • 📍 ${entry.location}
                                             ${entry.weather ? `${entry.weather}` : ''}
-                                            ${entry.weather && entry.location && entry.location.length < 20 ? ` Ã¢â‚¬Â¢ Ã°Å¸â€œÂ ${entry.location}` : ''}
-                                            ${!entry.weather && entry.location ? `Ã°Å¸â€œÂ ${entry.location}` : ''}
-                                        </div>
+                                            ${entry.weather && entry.location && entry.location.length < 20 ? ` • 📍 ${entry.location}` : ''}
+                                            ${!entry.weather && entry.location ? `📍 ${entry.location}` : ''}
+                                        </div` • 📍 ${entry.location}
                                     ` : ''}
                                     
                                     ${entry.audio ? `
-                                        <div style="margin-top: 12px; margin-bottom: 12px;">
-                                            <audio controls style="width: 100%; max-width: 300px;">
-                                                <source src="${entry.audio}" type="audio/webm">
-                                            </audio>
-                                        </div>
+                                        <div style="margin-top: 12px; margin-bottom: 12px;"` • 📍 ${entry.location}
+                                            <audio controls style="width: 100%; max-width: 300px;"` • 📍 ${entry.location}
+                                                <source src="${entry.audio}" type="audio/webm"` • 📍 ${entry.location}
+                                            </audio` • 📍 ${entry.location}
+                                        </div` • 📍 ${entry.location}
                                     ` : ''}
                                     
-                                    <div class="breadcrumb-preview">
-                                        ${entry.images && entry.images.length > 0 ? entry.images.map(img => `
-                                            <img src="${img}" class="preview-image-thumb" onclick="event.stopPropagation(); showImageInModal('${entry.id}', ${entry.images.indexOf(img)});">
+                                    <div class="breadcrumb-preview"` • 📍 ${entry.location}
+                                        ${entry.images && entry.images.length ` • 📍 ${entry.location}
+                                            <img src="${img}" class="preview-image-thumb" onclick="event.stopPropagation(); showImageInModal('${entry.id}', ${entry.images.indexOf(img)});"` • 📍 ${entry.location}
                                         `).join('') : ''}
-                                        ${entry.coords ? `<div class="preview-map-thumb" id="mini-map-${entry.id}"></div>` : ''}
-                                        ${(entry.images && entry.images.length > 0) || entry.coords || entry.audio ? `
-                                            <button class="mac-button preview-button" onclick="previewEntry(${entry.id})">Ã°Å¸â€Â</button>
+                                        ${entry.coords ? `<div class="preview-map-thumb" id="mini-map-${entry.id}"` • 📍 ${entry.location}
+                                        ${(entry.images && entry.images.length ` • 📍 ${entry.location}
+                                            <button class="mac-button preview-button" onclick="previewEntry(${entry.id})"` • 📍 ${entry.location}
                                         ` : ''}
-                                    </div>
-                                </div>
+                                    </div` • 📍 ${entry.location}
+                                </div` • 📍 ${entry.location}
                             `}).join('')}
-                        </div>
-                    </div>
+                        </div` • 📍 ${entry.location}
+                    </div` • 📍 ${entry.location}
                 `;
             }).join('')}
-        </div>
+        </div` • 📍 ${entry.location}
     `;
 
     container.innerHTML = html;
     
-    entries.forEach(entry => {
+    entries.forEach(entry =` • 📍 ${entry.location}
         if (entry.coords) {
-            setTimeout(() => {
+            setTimeout(() =` • 📍 ${entry.location}
                 const mapEl = document.getElementById(`mini-map-${entry.id}`);
                 if (mapEl && !mapEl.classList.contains('leaflet-container')) {
                     try {
@@ -1517,7 +1517,7 @@ function renderTimeline() {
                         L.marker([entry.coords.lat, entry.coords.lon]).addTo(miniMap);
                         
                         mapEl.style.cursor = 'pointer';
-                        mapEl.onclick = () => previewEntry(entry.id);
+                        mapEl.onclick = () =` • 📍 ${entry.location}
                     } catch (e) {
                         console.error('Error creating mini map:', e);
                     }
@@ -1549,66 +1549,66 @@ function openExportModal(format) {
 
 function createExportModal() {
     const modalHTML = `
-        <div id="export-modal" class="preview-modal" onclick="closeExportModal(event)">
-            <div class="preview-content" onclick="event.stopPropagation()">
-                <div class="mac-title-bar">
-                    <span>Ã°Å¸â€œÂ¤ Export <span id="export-format-type">CSV</span></span>
-                    <button onclick="closeExportModal()" style="background: #fff; border: 2px solid #000; padding: 2px 8px; cursor: pointer;">Ã¢Å“â€¢</button>
-                </div>
-                <div class="mac-content">
-                    <h3 style="margin-bottom: 16px;">Select Export Range</h3>
+        <div id="export-modal" class="preview-modal" onclick="closeExportModal(event)"` • 📍 ${entry.location}
+            <div class="preview-content" onclick="event.stopPropagation()"` • 📍 ${entry.location}
+                <div class="mac-title-bar"` • 📍 ${entry.location}
+                    <span` • 📍 ${entry.location}
+                    <button onclick="closeExportModal()" style="background: #fff; border: 2px solid #000; padding: 2px 8px; cursor: pointer;"` • 📍 ${entry.location}
+                </div` • 📍 ${entry.location}
+                <div class="mac-content"` • 📍 ${entry.location}
+                    <h3 style="margin-bottom: 16px;"` • 📍 ${entry.location}
                     
-                    <div style="margin-bottom: 20px;">
-                        <label class="mac-label">
-                            <input type="radio" name="export-range" value="all" checked onchange="updateExportOptions()"> 
+                    <div style="margin-bottom: 20px;"` • 📍 ${entry.location}
+                        <label class="mac-label"` • 📍 ${entry.location}
+                            <input type="radio" name="export-range" value="all" checked onchange="updateExportOptions()"` • 📍 ${entry.location}
                             Export All Entries
-                        </label>
-                    </div>
+                        </label` • 📍 ${entry.location}
+                    </div` • 📍 ${entry.location}
                     
-                    <div style="margin-bottom: 20px;">
-                        <label class="mac-label">
-                            <input type="radio" name="export-range" value="month" onchange="updateExportOptions()"> 
+                    <div style="margin-bottom: 20px;"` • 📍 ${entry.location}
+                        <label class="mac-label"` • 📍 ${entry.location}
+                            <input type="radio" name="export-range" value="month" onchange="updateExportOptions()"` • 📍 ${entry.location}
                             Export Specific Month
-                        </label>
-                        <div id="month-selector" style="margin-left: 20px; margin-top: 8px; display: none;">
-                            <input type="month" class="mac-input" id="export-month" style="max-width: 200px;">
-                        </div>
-                    </div>
+                        </label` • 📍 ${entry.location}
+                        <div id="month-selector" style="margin-left: 20px; margin-top: 8px; display: none;"` • 📍 ${entry.location}
+                            <input type="month" class="mac-input" id="export-month" style="max-width: 200px;"` • 📍 ${entry.location}
+                        </div` • 📍 ${entry.location}
+                    </div` • 📍 ${entry.location}
                     
-                    <div style="margin-bottom: 20px;">
-                        <label class="mac-label">
-                            <input type="radio" name="export-range" value="day" onchange="updateExportOptions()"> 
+                    <div style="margin-bottom: 20px;"` • 📍 ${entry.location}
+                        <label class="mac-label"` • 📍 ${entry.location}
+                            <input type="radio" name="export-range" value="day" onchange="updateExportOptions()"` • 📍 ${entry.location}
                             Export Specific Day
-                        </label>
-                        <div id="day-selector" style="margin-left: 20px; margin-top: 8px; display: none;">
-                            <input type="date" class="mac-input" id="export-day" style="max-width: 200px;">
-                        </div>
-                    </div>
+                        </label` • 📍 ${entry.location}
+                        <div id="day-selector" style="margin-left: 20px; margin-top: 8px; display: none;"` • 📍 ${entry.location}
+                            <input type="date" class="mac-input" id="export-day" style="max-width: 200px;"` • 📍 ${entry.location}
+                        </div` • 📍 ${entry.location}
+                    </div` • 📍 ${entry.location}
                     
-                    <hr style="margin: 20px 0; border: 1px solid #ddd;">
+                    <hr style="margin: 20px 0; border: 1px solid #ddd;"` • 📍 ${entry.location}
                     
-                    <h3 style="margin-bottom: 16px;">iCal Options (Only for iCal export)</h3>
+                    <h3 style="margin-bottom: 16px;"` • 📍 ${entry.location}
                     
-                    <div style="margin-bottom: 20px;">
-                        <label class="mac-label">
-                            <input type="radio" name="ical-grouping" value="individual" checked> 
+                    <div style="margin-bottom: 20px;"` • 📍 ${entry.location}
+                        <label class="mac-label"` • 📍 ${entry.location}
+                            <input type="radio" name="ical-grouping" value="individual" checked` • 📍 ${entry.location}
                             Each event as separate calendar entry
-                        </label>
-                    </div>
+                        </label` • 📍 ${entry.location}
+                    </div` • 📍 ${entry.location}
                     
-                    <div style="margin-bottom: 20px;">
-                        <label class="mac-label">
-                            <input type="radio" name="ical-grouping" value="daily"> 
+                    <div style="margin-bottom: 20px;"` • 📍 ${entry.location}
+                        <label class="mac-label"` • 📍 ${entry.location}
+                            <input type="radio" name="ical-grouping" value="daily"` • 📍 ${entry.location}
                             Group all events per day as one calendar entry
-                        </label>
-                    </div>
+                        </label` • 📍 ${entry.location}
+                    </div` • 📍 ${entry.location}
                     
-                    <button class="mac-button mac-button-primary" onclick="performExport()" style="width: 100%; margin-top: 24px;">
-                        Ã°Å¸â€œÂ¥ Export
-                    </button>
-                </div>
-            </div>
-        </div>
+                    <button class="mac-button mac-button-primary" onclick="performExport()" style="width: 100%; margin-top: 24px;"` • 📍 ${entry.location}
+                        💾 Export
+                    </button` • 📍 ${entry.location}
+                </div` • 📍 ${entry.location}
+            </div` • 📍 ${entry.location}
+        </div` • 📍 ${entry.location}
     `;
     document.body.insertAdjacentHTML('beforeend', modalHTML);
     
@@ -1648,7 +1648,7 @@ function performExport() {
     if (range === 'month') {
         const monthValue = document.getElementById('export-month').value;
         const [year, month] = monthValue.split('-');
-        filteredEntries = entries.filter(e => {
+        filteredEntries = entries.filter(e =` • 📍 ${entry.location}
             const date = new Date(e.timestamp);
             return date.getFullYear() === parseInt(year) && 
                    date.getMonth() + 1 === parseInt(month);
@@ -1656,7 +1656,7 @@ function performExport() {
         filenameSuffix = `${year}-${month}`;
     } else if (range === 'day') {
         const dayValue = document.getElementById('export-day').value;
-        filteredEntries = entries.filter(e => {
+        filteredEntries = entries.filter(e =` • 📍 ${entry.location}
             const date = new Date(e.timestamp);
             const dateStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
             return dateStr === dayValue;
@@ -1681,7 +1681,7 @@ function performExport() {
 
 function exportCSVData(data, suffix) {
     const headers = ['Date and Time', 'Note', 'Activity', 'Duration (min)', 'Location', 'Weather', 'Mood', 'Spent', 'Images'];
-    const rows = data.map(e => [
+    const rows = data.map(e =` • 📍 ${entry.location}
         new Date(e.timestamp).toLocaleString(),
         e.note || '',
         e.activity || '',
@@ -1693,8 +1693,8 @@ function exportCSVData(data, suffix) {
         e.images ? e.images.length : 0
     ]);
     
-    const csv = [headers, ...rows].map(row => 
-        row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')
+    const csv = [headers, ...rows].map(row =` • 📍 ${entry.location}
+        row.map(cell =` • 📍 ${entry.location}
     ).join('\n');
     
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -1712,7 +1712,7 @@ function exportICSData(data, suffix, grouping) {
     if (grouping === 'daily') {
         // Agrupar por dÃƒÂ­a
         const groupedByDay = {};
-        data.forEach(e => {
+        data.forEach(e =` • 📍 ${entry.location}
             const date = new Date(e.timestamp);
             const dayKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
             if (!groupedByDay[dayKey]) {
@@ -1722,14 +1722,14 @@ function exportICSData(data, suffix, grouping) {
         });
         
         // Crear un evento por dÃƒÂ­a
-        icsEvents = Object.keys(groupedByDay).map(dayKey => {
+        icsEvents = Object.keys(groupedByDay).map(dayKey =` • 📍 ${entry.location}
             const dayEntries = groupedByDay[dayKey];
             const firstEntry = dayEntries[0];
             const date = new Date(firstEntry.timestamp);
             const dateStr = date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
             
             // Crear descripciÃƒÂ³n con todos los eventos del dÃƒÂ­a
-            const description = dayEntries.map(e => {
+            const description = dayEntries.map(e =` • 📍 ${entry.location}
                 const time = new Date(e.timestamp).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
                 let text = `${time}: ${e.note || e.activity || 'Event'}`;
                 if (e.duration) text += ` (${e.duration} min)`;
@@ -1746,7 +1746,7 @@ END:VEVENT`;
         }).join('\n');
     } else {
         // Evento individual por cada entrada
-        icsEvents = data.map(e => {
+        icsEvents = data.map(e =` • 📍 ${entry.location}
             const date = new Date(e.timestamp);
             const dateStr = date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
             
@@ -1801,76 +1801,76 @@ function openStats() {
 
 function calculateStats() {
     const totalEntries = entries.length;
-    const breadcrumbs = entries.filter(e => !e.isTimedActivity && !e.isQuickTrack && !e.isSpent).length;
-    const timeEvents = entries.filter(e => e.isTimedActivity).length;
-    const trackEvents = entries.filter(e => e.isQuickTrack).length;
-    const spentEvents = entries.filter(e => e.isSpent).length;
+    const breadcrumbs = entries.filter(e =` • 📍 ${entry.location}
+    const timeEvents = entries.filter(e =` • 📍 ${entry.location}
+    const trackEvents = entries.filter(e =` • 📍 ${entry.location}
+    const spentEvents = entries.filter(e =` • 📍 ${entry.location}
     
     const totalSpent = entries
-        .filter(e => e.isSpent)
-        .reduce((sum, e) => sum + (e.spentAmount || 0), 0);
+        .filter(e =` • 📍 ${entry.location}
+        .reduce((sum, e) =` • 📍 ${entry.location}
     
     const totalMinutes = entries
-        .filter(e => e.isTimedActivity)
-        .reduce((sum, e) => sum + (e.duration || 0), 0);
+        .filter(e =` • 📍 ${entry.location}
+        .reduce((sum, e) =` • 📍 ${entry.location}
     
     const totalHours = (totalMinutes / 60).toFixed(1);
     
     // Actividades mÃƒÂ¡s frecuentes
     const activityCount = {};
-    entries.filter(e => e.isTimedActivity).forEach(e => {
+    entries.filter(e =` • 📍 ${entry.location}
         activityCount[e.activity] = (activityCount[e.activity] || 0) + 1;
     });
-    const topActivity = Object.keys(activityCount).length > 0 
-        ? Object.keys(activityCount).reduce((a, b) => activityCount[a] > activityCount[b] ? a : b)
+    const topActivity = Object.keys(activityCount).length ` • 📍 ${entry.location}
+        ? Object.keys(activityCount).reduce((a, b) =` • 📍 ${entry.location}
         : 'None';
     
     // Tracks mÃƒÂ¡s frecuentes
     const trackCount = {};
-    entries.filter(e => e.isQuickTrack).forEach(e => {
+    entries.filter(e =` • 📍 ${entry.location}
         trackCount[e.note] = (trackCount[e.note] || 0) + 1;
     });
-    const topTrack = Object.keys(trackCount).length > 0
-        ? Object.keys(trackCount).reduce((a, b) => trackCount[a] > trackCount[b] ? a : b)
+    const topTrack = Object.keys(trackCount).length ` • 📍 ${entry.location}
+        ? Object.keys(trackCount).reduce((a, b) =` • 📍 ${entry.location}
         : 'None';
     
     const statsHTML = `
-        <div class="stat-card">
-            <div class="stat-number">${totalEntries}</div>
-            <div class="stat-label">Total Entries</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number">${breadcrumbs}</div>
-            <div class="stat-label">Ã°Å¸ÂÅ¾ Breadcrumbs</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number">${timeEvents}</div>
-            <div class="stat-label">Ã¢ÂÂ±Ã¯Â¸Â Time Events</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number">${trackEvents}</div>
-            <div class="stat-label">Ã°Å¸â€œÅ  Tracked Items</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number">${spentEvents}</div>
-            <div class="stat-label">Ã°Å¸â€™Â° Expenses</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number">Ã¢â€šÂ¬${totalSpent.toFixed(2)}</div>
-            <div class="stat-label">Total Spent</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number">${totalHours}h</div>
-            <div class="stat-label">Hours Tracked</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number" style="font-size: 18px;">${topActivity}</div>
-            <div class="stat-label">Top Activity</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number" style="font-size: 16px;">${topTrack}</div>
-            <div class="stat-label">Most Tracked</div>
-        </div>
+        <div class="stat-card"` • 📍 ${entry.location}
+            <div class="stat-number"` • 📍 ${entry.location}
+            <div class="stat-label"` • 📍 ${entry.location}
+        </div` • 📍 ${entry.location}
+        <div class="stat-card"` • 📍 ${entry.location}
+            <div class="stat-number"` • 📍 ${entry.location}
+            <div class="stat-label"` • 📍 ${entry.location}
+        </div` • 📍 ${entry.location}
+        <div class="stat-card"` • 📍 ${entry.location}
+            <div class="stat-number"` • 📍 ${entry.location}
+            <div class="stat-label"` • 📍 ${entry.location}
+        </div` • 📍 ${entry.location}
+        <div class="stat-card"` • 📍 ${entry.location}
+            <div class="stat-number"` • 📍 ${entry.location}
+            <div class="stat-label"` • 📍 ${entry.location}
+        </div` • 📍 ${entry.location}
+        <div class="stat-card"` • 📍 ${entry.location}
+            <div class="stat-number"` • 📍 ${entry.location}
+            <div class="stat-label"` • 📍 ${entry.location}
+        </div` • 📍 ${entry.location}
+        <div class="stat-card"` • 📍 ${entry.location}
+            <div class="stat-number"` • 📍 ${entry.location}
+            <div class="stat-label"` • 📍 ${entry.location}
+        </div` • 📍 ${entry.location}
+        <div class="stat-card"` • 📍 ${entry.location}
+            <div class="stat-number"` • 📍 ${entry.location}
+            <div class="stat-label"` • 📍 ${entry.location}
+        </div` • 📍 ${entry.location}
+        <div class="stat-card"` • 📍 ${entry.location}
+            <div class="stat-number" style="font-size: 18px;"` • 📍 ${entry.location}
+            <div class="stat-label"` • 📍 ${entry.location}
+        </div` • 📍 ${entry.location}
+        <div class="stat-card"` • 📍 ${entry.location}
+            <div class="stat-number" style="font-size: 16px;"` • 📍 ${entry.location}
+            <div class="stat-label"` • 📍 ${entry.location}
+        </div` • 📍 ${entry.location}
     `;
     
     document.getElementById('stats-content').innerHTML = statsHTML;
@@ -1936,31 +1936,31 @@ async function buscarBSO() {
     }
     
     const resultsDiv = document.getElementById('recap-bso-results');
-    resultsDiv.innerHTML = '<div style="padding: 12px; text-align: center;">Searching...</div>';
+    resultsDiv.innerHTML = '<div style="padding: 12px; text-align: center;"` • 📍 ${entry.location}
     
     try {
         const url = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=song&limit=5`;
         const response = await fetch(url);
         const data = await response.json();
         
-        if (data.results && data.results.length > 0) {
-            const html = data.results.map(track => `
-                <div class="bso-result" style="display: flex; align-items: center; gap: 12px; padding: 8px; border: 2px solid #999; margin-bottom: 8px; cursor: pointer; background: white;" onclick="selectTrack('${track.trackName.replace(/'/g, "\\'")}', '${track.artistName.replace(/'/g, "\\'")}', '${track.trackViewUrl}', '${track.artworkUrl100}')">
-                    <img src="${track.artworkUrl100}" style="width: 50px; height: 50px; border: 2px solid #000;">
-                    <div style="flex: 1;">
-                        <div style="font-weight: bold; font-size: 13px;">${track.trackName}</div>
-                        <div style="font-size: 11px; color: #666;">${track.artistName}</div>
-                    </div>
-                    <div style="font-size: 18px;">Ã¢â€“Â¶Ã¯Â¸Â</div>
-                </div>
+        if (data.results && data.results.length ` • 📍 ${entry.location}
+            const html = data.results.map(track =` • 📍 ${entry.location}
+                <div class="bso-result" style="display: flex; align-items: center; gap: 12px; padding: 8px; border: 2px solid #999; margin-bottom: 8px; cursor: pointer; background: white;" onclick="selectTrack('${track.trackName.replace(/'/g, "\\'")}', '${track.artistName.replace(/'/g, "\\'")}', '${track.trackViewUrl}', '${track.artworkUrl100}')"` • 📍 ${entry.location}
+                    <img src="${track.artworkUrl100}" style="width: 50px; height: 50px; border: 2px solid #000;"` • 📍 ${entry.location}
+                    <div style="flex: 1;"` • 📍 ${entry.location}
+                        <div style="font-weight: bold; font-size: 13px;"` • 📍 ${entry.location}
+                        <div style="font-size: 11px; color: #666;"` • 📍 ${entry.location}
+                    </div` • 📍 ${entry.location}
+                    <div style="font-size: 18px;"` • 📍 ${entry.location}
+                </div` • 📍 ${entry.location}
             `).join('');
             resultsDiv.innerHTML = html;
         } else {
-            resultsDiv.innerHTML = '<div style="padding: 12px; text-align: center; color: #666;">No results found</div>';
+            resultsDiv.innerHTML = '<div style="padding: 12px; text-align: center; color: #666;"` • 📍 ${entry.location}
         }
     } catch (error) {
         console.error('Error searching BSO:', error);
-        resultsDiv.innerHTML = '<div style="padding: 12px; text-align: center; color: red;">Error searching. Try again.</div>';
+        resultsDiv.innerHTML = '<div style="padding: 12px; text-align: center; color: red;"` • 📍 ${entry.location}
     }
 }
 
@@ -1974,14 +1974,14 @@ function selectTrack(trackName, artistName, url, artwork) {
     
     document.getElementById('recap-selected-track').value = JSON.stringify(trackData);
     document.getElementById('recap-bso-results').innerHTML = `
-        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 3px solid #000; background: #f0f0f0;">
-            <img src="${artwork}" style="width: 60px; height: 60px; border: 2px solid #000;">
-            <div style="flex: 1;">
-                <div style="font-weight: bold;">${trackName}</div>
-                <div style="font-size: 12px; color: #666;">${artistName}</div>
-            </div>
-            <a href="${url}" target="_blank" style="text-decoration: none; font-size: 20px;">Ã°Å¸â€â€”</a>
-        </div>
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 3px solid #000; background: #f0f0f0;"` • 📍 ${entry.location}
+            <img src="${artwork}" style="width: 60px; height: 60px; border: 2px solid #000;"` • 📍 ${entry.location}
+            <div style="flex: 1;"` • 📍 ${entry.location}
+                <div style="font-weight: bold;"` • 📍 ${entry.location}
+                <div style="font-size: 12px; color: #666;"` • 📍 ${entry.location}
+            </div` • 📍 ${entry.location}
+            <a href="${url}" target="_blank" style="text-decoration: none; font-size: 20px;"` • 📍 ${entry.location}
+        </div` • 📍 ${entry.location}
     `;
 }
 
@@ -1998,7 +1998,7 @@ function saveRecap() {
         return;
     }
     
-    const highlights = [highlight1, highlight2, highlight3].filter(h => h);
+    const highlights = [highlight1, highlight2, highlight3].filter(h =` • 📍 ${entry.location}
     const track = selectedTrackJson ? JSON.parse(selectedTrackJson) : null;
     
     // Obtener fecha de hoy para el recap
@@ -2008,7 +2008,7 @@ function saveRecap() {
     
     if (editingEntryId) {
         // Modo ediciÃ³n: actualizar recap existente
-        const entryIndex = entries.findIndex(e => e.id === editingEntryId);
+        const entryIndex = entries.findIndex(e =` • 📍 ${entry.location}
         if (entryIndex !== -1) {
             entries[entryIndex] = {
                 ...entries[entryIndex],
@@ -2022,7 +2022,7 @@ function saveRecap() {
         alert('âœ… Day Recap updated!');
     } else {
         // Modo creaciÃ³n: verificar que no exista ya un recap para hoy
-        const existingRecap = entries.find(e => 
+        const existingRecap = entries.find(e =` • 📍 ${entry.location}
             e.type === 'recap' && getDayKey(e.timestamp) === todayKey
         );
         
@@ -2058,7 +2058,7 @@ function editRecapEvent(entry) {
     document.getElementById('recap-rating').value = entry.rating || 5;
     document.getElementById('recap-rating-value').textContent = entry.rating || 5;
     
-    if (entry.highlights && entry.highlights.length > 0) {
+    if (entry.highlights && entry.highlights.length ` • 📍 ${entry.location}
         document.getElementById('recap-highlight-1').value = entry.highlights[0] || '';
         document.getElementById('recap-highlight-2').value = entry.highlights[1] || '';
         document.getElementById('recap-highlight-3').value = entry.highlights[2] || '';
@@ -2067,14 +2067,14 @@ function editRecapEvent(entry) {
     if (entry.track) {
         document.getElementById('recap-selected-track').value = JSON.stringify(entry.track);
         document.getElementById('recap-bso-results').innerHTML = 
-            `<div style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 3px solid #000; background: #f0f0f0;">
-                <img src="${entry.track.artwork}" style="width: 60px; height: 60px; border: 2px solid #000;">
-                <div style="flex: 1;">
-                    <div style="font-weight: bold;">${entry.track.name}</div>
-                    <div style="font-size: 12px; color: #666;">${entry.track.artist}</div>
-                </div>
-                <a href="${entry.track.url}" target="_blank" style="text-decoration: none; font-size: 20px;">Ã°Å¸â€â€”</a>
-            </div>`;
+            `<div style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 3px solid #000; background: #f0f0f0;"` • 📍 ${entry.location}
+                <img src="${entry.track.artwork}" style="width: 60px; height: 60px; border: 2px solid #000;"` • 📍 ${entry.location}
+                <div style="flex: 1;"` • 📍 ${entry.location}
+                    <div style="font-weight: bold;"` • 📍 ${entry.location}
+                    <div style="font-size: 12px; color: #666;"` • 📍 ${entry.location}
+                </div` • 📍 ${entry.location}
+                <a href="${entry.track.url}" target="_blank" style="text-decoration: none; font-size: 20px;"` • 📍 ${entry.location}
+            </div` • 📍 ${entry.location}
     }
     
     
@@ -2099,20 +2099,20 @@ function toggleFabMenu() {
         fabIcon.textContent = 'Ãƒâ€”';
         fabIcon.style.transform = 'rotate(45deg)';
         
-        fabActions.forEach((btn, index) => {
-            setTimeout(() => {
+        fabActions.forEach((btn, index) =` • 📍 ${entry.location}
+            setTimeout(() =` • 📍 ${entry.location}
                 btn.classList.remove('hidden');
-                setTimeout(() => btn.classList.add('show'), 10);
+                setTimeout(() =` • 📍 ${entry.location}
             }, index * 50);
         });
     } else {
         fabIcon.textContent = '+';
         fabIcon.style.transform = 'rotate(0deg)';
         
-        fabActions.forEach((btn, index) => {
-            setTimeout(() => {
+        fabActions.forEach((btn, index) =` • 📍 ${entry.location}
+            setTimeout(() =` • 📍 ${entry.location}
                 btn.classList.remove('show');
-                setTimeout(() => btn.classList.add('hidden'), 300);
+                setTimeout(() =` • 📍 ${entry.location}
             }, index * 30);
         });
     }
@@ -2155,7 +2155,7 @@ function toggleCrumb() {
         renderMoodSelector();
         
         document.getElementById('delete-btn').classList.add('hidden');
-        document.getElementById('save-btn').textContent = 'Ã°Å¸â€™Â¾ Save';
+        document.getElementById('save-btn').textContent = '💾 Save';
         
         // Hide other forms
         document.getElementById('timer-window').classList.add('hidden');
