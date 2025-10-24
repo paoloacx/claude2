@@ -295,7 +295,7 @@ h1 {
     background: #333;
 }
 
-/* ANIMACIÃ“N PANEL DESPLEGABLE */
+/* ANIMACIÃƒâ€œN PANEL DESPLEGABLE */
 .day-content {
     max-height: 0;
     overflow: hidden;
@@ -323,7 +323,7 @@ h1 {
     padding: 16px !important;
 }
 
-/* ANIMACIÃ“N CHEVRON */
+/* ANIMACIÃƒâ€œN CHEVRON */
 .chevron {
     display: inline-block;
     transition: transform 0.3s ease;
@@ -467,7 +467,7 @@ h1 {
     font-size: 11px;
 }
 
-/* ANIMACIÃ“N MODAL (pop-in suave) */
+/* ANIMACIÃƒâ€œN MODAL (pop-in suave) */
 .preview-modal {
     display: none;
     position: fixed;
@@ -898,7 +898,7 @@ h1 {
 
 /* ANIMACIONES PARA TODOS LOS MODALES Y FORMULARIOS */
 
-/* Formularios de creación (form, timer, track, spent, recap) */
+/* Formularios de creaciÃ³n (form, timer, track, spent, recap) */
 #form-window,
 #timer-window,
 #track-window,
@@ -979,7 +979,7 @@ h1 {
 }
 
 
-/* AnimaciÃ³n para mood selector */
+/* AnimaciÃƒÂ³n para mood selector */
 .mood-option {
     transition: all 0.2s cubic-bezier(.18,.89,.32,1.28);
 }
@@ -988,7 +988,7 @@ h1 {
     transform: scale(0.9);
 }
 
-/* AnimaciÃ³n para activity/duration selectors */
+/* AnimaciÃƒÂ³n para activity/duration selectors */
 .duration-option,
 .activity-option {
     transition: all 0.2s cubic-bezier(.18,.89,.32,1.28);
@@ -999,7 +999,7 @@ h1 {
     transform: scale(0.95);
 }
 
-/* AnimaciÃ³n para image preview */
+/* AnimaciÃƒÂ³n para image preview */
 .preview-image-thumb,
 .preview-map-thumb {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -1016,7 +1016,7 @@ h1 {
     transform: scale(0.98);
 }
 
-/* AnimaciÃ³n para edit button */
+/* AnimaciÃƒÂ³n para edit button */
 .edit-button {
     transition: all 0.15s ease;
 }
@@ -1030,7 +1030,7 @@ h1 {
     transform: scale(0.95);
 }
 
-/* AnimaciÃ³n para read more button */
+/* AnimaciÃƒÂ³n para read more button */
 .read-more-btn {
     transition: all 0.2s ease;
     padding: 4px 8px;
@@ -1067,11 +1067,11 @@ h1 {
 .day-recap {
     background: white;
     background-image: 
-        repeating-linear-gradient(0deg, transparent, transparent 1px, #333 1px, #333 2px),
-        repeating-linear-gradient(90deg, transparent, transparent 1px, #333 1px, #333 2px);
-    background-size: 2px 2px;
+        radial-gradient(circle, #000 1px, transparent 1px);
+    background-size: 8px 8px;
     box-shadow: 5px 5px 0 rgba(0,0,0,0.3);
     margin: 0 0 16px 0;
+    border: 3px solid #000;
 }
 
 .recap-header {
@@ -1240,6 +1240,33 @@ input[type="range"]:active::-moz-range-thumb {
     justify-content: center;
     transition: all 0.2s ease;
     position: relative;
+}
+
+.fab-icon-svg {
+    width: 24px;
+    height: 24px;
+    stroke: #000;
+    fill: none;
+}
+
+.fab-label {
+    position: absolute;
+    right: calc(100% + 12px);
+    background: #000;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.fab-action.show .fab-label {
+    opacity: 1;
 }
 
 .fab:hover {
