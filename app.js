@@ -200,7 +200,7 @@ function clearForm() {
     document.getElementById('image-previews').innerHTML = '';
     document.getElementById('audio-preview').innerHTML = '';
     document.getElementById('delete-btn').classList.add('hidden');
-    document.getElementById('save-btn').textContent = '💾 Save';
+    document.getElementById('save-btn').textContent = 'Ã°Å¸â€™Â¾ Save';
     document.getElementById('mood-config').classList.add('hidden');
     const mapContainer = document.getElementById('form-map');
     if (mapContainer) {
@@ -603,7 +603,7 @@ function editEntry(id) {
     }
 
     document.getElementById('delete-btn').classList.remove('hidden');
-    document.getElementById('save-btn').textContent = '💾 Update';
+    document.getElementById('save-btn').textContent = 'Ã°Å¸â€™Â¾ Update';
     
     const formWindow = document.getElementById('form-window');
     formWindow.classList.remove('hidden');
@@ -649,7 +649,7 @@ function editTimeEvent(entry) {
     
     const timerWindow = document.getElementById('timer-window');
     const createBtn = document.getElementById('create-time-btn');
-    createBtn.textContent = '💾 Update Event';
+    createBtn.textContent = 'Ã°Å¸â€™Â¾ Update Event';
     document.getElementById('delete-time-btn').classList.remove('hidden');
     
     timerWindow.classList.remove('hidden');
@@ -805,7 +805,7 @@ function editTrackEvent(entry) {
     });
     
     document.getElementById('save-track-btn').disabled = false;
-    document.getElementById('save-track-btn').textContent = '💾 Update Track';
+    document.getElementById('save-track-btn').textContent = 'Ã°Å¸â€™Â¾ Update Track';
     document.getElementById('delete-track-btn').classList.remove('hidden');
     
     const trackWindow = document.getElementById('track-window');
@@ -830,7 +830,7 @@ function saveTrackEvent() {
             };
         }
         editingEntryId = null;
-        alert(`Ã¢Å“â€¦ Track updated: ${selectedTrackItem}`);
+        alert(`Ã¢Å“â€¦ Mark updated: ${selectedTrackItem}`);
     } else {
         const entry = {
             id: Date.now(),
@@ -847,7 +847,7 @@ function saveTrackEvent() {
         };
         
         entries.unshift(entry);
-        alert(`Ã¢Å“â€¦ Tracked: ${selectedTrackItem}`);
+        alert(`Ã¢Å“â€¦ Marked: ${selectedTrackItem}`);
     }
     
     saveData();
@@ -1103,7 +1103,7 @@ function renderSettingsConfig() {
             <button class="mac-button" onclick="removeDuration(${index})" style="padding: 4px 8px; margin-left: auto;">Ã¢Å“â€¢</button>
         </div>
     `).join('') + `
-        <button class="mac-button" onclick="addDuration()" style="margin-top: 8px;">➕ Add Duration</button>
+        <button class="mac-button" onclick="addDuration()" style="margin-top: 8px;">Ã¢Å¾â€¢ Add Duration</button>
     `;
 
     const activitiesContainer = document.getElementById('time-activities-config');
@@ -1113,7 +1113,7 @@ function renderSettingsConfig() {
             <button class="mac-button" onclick="removeActivity(${index})" style="padding: 4px 8px;">Ã¢Å“â€¢</button>
         </div>
     `).join('') + `
-        <button class="mac-button" onclick="addActivity()" style="margin-top: 8px;">➕ Add Activity</button>
+        <button class="mac-button" onclick="addActivity()" style="margin-top: 8px;">Ã¢Å¾â€¢ Add Activity</button>
     `;
 
     const trackContainer = document.getElementById('track-items-config');
@@ -1126,7 +1126,7 @@ function renderSettingsConfig() {
                     <button class="mac-button" onclick="removeMeal(${index})" style="padding: 4px 8px;">Ã¢Å“â€¢</button>
                 </div>
             `).join('')}
-            <button class="mac-button" onclick="addMeal()" style="margin-top: 8px;">➕ Add Meal</button>
+            <button class="mac-button" onclick="addMeal()" style="margin-top: 8px;">Ã¢Å¾â€¢ Add Meal</button>
         </div>
         <div>
             <strong>Tasks:</strong>
@@ -1136,7 +1136,7 @@ function renderSettingsConfig() {
                     <button class="mac-button" onclick="removeTask(${index})" style="padding: 4px 8px;">Ã¢Å“â€¢</button>
                 </div>
             `).join('')}
-            <button class="mac-button" onclick="addTask()" style="margin-top: 8px;">➕ Add Task</button>
+            <button class="mac-button" onclick="addTask()" style="margin-top: 8px;">Ã¢Å¾â€¢ Add Task</button>
         </div>
     `;
 }
@@ -1426,20 +1426,19 @@ function renderTimeline() {
                                     <button class="mac-button edit-button" onclick="editEntry(${entry.id})">Ã¢Å“ÂÃ¯Â¸Â Edit</button>
                                     
                                     ${entry.isTimedActivity ? 
-                                        `<div class="breadcrumb-time">⏰ ${formatTime(entry.timestamp)} - ${calculateEndTime(entry.timestamp, entry.duration)}</div>
+                                        `<div class="breadcrumb-time">Ã¢ÂÂ° ${formatTime(entry.timestamp)} - ${calculateEndTime(entry.timestamp, entry.duration)}</div>
                                         <div class="activity-label">${entry.activity}</div>
+                                        <div style="font-size: 13px; color: #666; margin-top: 8px;">Duration: ${entry.duration} minutes</div>
                                         ${entry.optionalNote ? `
                                             <div class="optional-note" id="note-${entry.id}">${entry.optionalNote}</div>
                                             ${entry.optionalNote.length > 200 ? `<button class="read-more-btn" id="read-more-${entry.id}" onclick="toggleReadMore(${entry.id})">Read more</button>` : ''}
-                                            <div class="duration-separator"></div>
-                                        ` : ''}
-                                        <div class="duration-text">Duration: ${entry.duration} minutes</div>` :
+                                        ` : ''}` :
                                         `<div class="breadcrumb-time">
                                             ${entry.isQuickTrack ?
                                                 `<span class="compact-time">Ã¢ÂÂ° ${formatTime(entry.timestamp)} ${entry.note}</span>` :
                                                 `Ã¢ÂÂ° ${formatTime(entry.timestamp)}`
                                             }
-                                            ${entry.isSpent ? `<span class="spent-badge">💰 Ã¢â€šÂ¬${entry.spentAmount.toFixed(2)}</span>` : ''}
+                                            ${entry.isSpent ? `<span class="spent-badge">Ã°Å¸â€™Â° Ã¢â€šÂ¬${entry.spentAmount.toFixed(2)}</span>` : ''}
                                         </div>`
                                     }
                                     
@@ -1854,7 +1853,7 @@ function calculateStats() {
         </div>
         <div class="stat-card">
             <div class="stat-number">${spentEvents}</div>
-            <div class="stat-label">💰 Expenses</div>
+            <div class="stat-label">Ã°Å¸â€™Â° Expenses</div>
         </div>
         <div class="stat-card">
             <div class="stat-number">Ã¢â€šÂ¬${totalSpent.toFixed(2)}</div>
@@ -2156,7 +2155,7 @@ function toggleCrumb() {
         renderMoodSelector();
         
         document.getElementById('delete-btn').classList.add('hidden');
-        document.getElementById('save-btn').textContent = '💾 Save';
+        document.getElementById('save-btn').textContent = 'Ã°Å¸â€™Â¾ Save';
         
         // Hide other forms
         document.getElementById('timer-window').classList.add('hidden');
