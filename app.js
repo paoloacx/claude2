@@ -97,9 +97,11 @@ function toggleForm() {
     const timer = document.getElementById('timer-window');
     const track = document.getElementById('track-window');
     const spent = document.getElementById('spent-window');
+    const recap = document.getElementById('recap-form');
     timer.classList.add('hidden');
     track.classList.add('hidden');
     spent.classList.add('hidden');
+    recap.classList.add('hidden');
     form.classList.toggle('hidden');
     if (!form.classList.contains('hidden')) {
         clearForm();
@@ -113,9 +115,11 @@ function toggleTimer() {
     const form = document.getElementById('form-window');
     const track = document.getElementById('track-window');
     const spent = document.getElementById('spent-window');
+    const recap = document.getElementById('recap-form');
     form.classList.add('hidden');
     track.classList.add('hidden');
     spent.classList.add('hidden');
+    recap.classList.add('hidden');
     timer.classList.toggle('hidden');
     if (!timer.classList.contains('hidden')) {
         resetTimerSelections();
@@ -128,9 +132,11 @@ function toggleTrack() {
     const form = document.getElementById('form-window');
     const timer = document.getElementById('timer-window');
     const spent = document.getElementById('spent-window');
+    const recap = document.getElementById('recap-form');
     form.classList.add('hidden');
     timer.classList.add('hidden');
     spent.classList.add('hidden');
+    recap.classList.add('hidden');
     track.classList.toggle('hidden');
     if (!track.classList.contains('hidden')) {
         renderTrackSelector();
@@ -147,9 +153,11 @@ function toggleSpent() {
     const form = document.getElementById('form-window');
     const timer = document.getElementById('timer-window');
     const track = document.getElementById('track-window');
+    const recap = document.getElementById('recap-form');
     form.classList.add('hidden');
     timer.classList.add('hidden');
     track.classList.add('hidden');
+    recap.classList.add('hidden');
     spent.classList.toggle('hidden');
     if (!spent.classList.contains('hidden')) {
         document.getElementById('spent-description').value = '';
@@ -945,6 +953,7 @@ function deleteCurrentEntry() {
         document.getElementById('timer-window').classList.add('hidden');
         document.getElementById('track-window').classList.add('hidden');
         document.getElementById('spent-window').classList.add('hidden');
+        document.getElementById('recap-form').classList.add('hidden');
         
         editingEntryId = null;
     }
@@ -1277,6 +1286,16 @@ function toggleDay(dayKey) {
     chevron.classList.toggle('expanded');
 }
 
+// Toggle Recap View
+function toggleRecapView(recapId) {
+    const content = document.getElementById(`recap-content-${recapId}`);
+    const chevron = document.getElementById(`recap-chevron-${recapId}`);
+    
+    if (content && chevron) {
+        content.classList.toggle('hidden');
+        chevron.classList.toggle('expanded');
+    }
+}
 
 // Show image in modal
 function showImageInModal(entryId, imageIndex) {
@@ -1360,8 +1379,8 @@ function renderTimeline() {
                         ${recaps.map(recap => `
                             <div class="day-recap" id="recap-${recap.id}">
                                 <div class="recap-header" onclick="toggleRecapView(${recap.id})">
-                                    <span>🌟 Day Recap</span>
                                     <span class="recap-chevron" id="recap-chevron-${recap.id}">▼</span>
+                                    <span>🌟 Day Recap</span>
                                 </div>
                                 <div class="recap-content hidden" id="recap-content-${recap.id}">
                                     <div class="recap-rating">Rating: ${'⭐'.repeat(recap.rating)}</div>
@@ -1818,7 +1837,7 @@ function calculateStats() {
         </div>
         <div class="stat-card">
             <div class="stat-number">${breadcrumbs}</div>
-            <div class="stat-label">📝 Breadcrumbs</div>
+            <div class="stat-label">🍞 Breadcrumbs</div>
         </div>
         <div class="stat-card">
             <div class="stat-number">${timeEvents}</div>
@@ -1860,18 +1879,15 @@ function closeStats(event) {
         modal.classList.remove('show');
     }
 }
-// Initialize app
-loadData();
-loadSettings();
 
 // ===== RECAP FUNCTIONS =====
 
 function showRecapForm() {
     // Ocultar otros formularios
-    ['crumb-form', 'time-form', 'track-form', 'spent-form'].forEach(id => {
-        const form = document.getElementById(id);
-        if (form) form.classList.add('hidden');
-    });
+    document.getElementById('form-window').classList.add('hidden');
+    document.getElementById('timer-window').classList.add('hidden');
+    document.getElementById('track-window').classList.add('hidden');
+    document.getElementById('spent-window').classList.add('hidden');
     
     document.getElementById('recap-form').classList.remove('hidden');
     
@@ -1915,7 +1931,7 @@ async function buscarBSO() {
         
         if (data.results && data.results.length > 0) {
             const html = data.results.map(track => `
-                <div class="bso-result" style="display: flex; align-items: center; gap: 12px; padding: 8px; border: 2px solid #999; margin-bottom: 8px; cursor: pointer; background: white;" onclick="selectTrack('${track.trackName.replace(/'/g, "\'")}', '${track.artistName.replace(/'/g, "\'")}', '${track.trackViewUrl}', '${track.artworkUrl100}')">
+                <div class="bso-result" style="display: flex; align-items: center; gap: 12px; padding: 8px; border: 2px solid #999; margin-bottom: 8px; cursor: pointer; background: white;" onclick="selectTrack('${track.trackName.replace(/'/g, "\\'")}', '${track.artistName.replace(/'/g, "\\'")}', '${track.trackViewUrl}', '${track.artworkUrl100}')">
                     <img src="${track.artworkUrl100}" style="width: 50px; height: 50px; border: 2px solid #000;">
                     <div style="flex: 1;">
                         <div style="font-weight: bold; font-size: 13px;">${track.trackName}</div>
@@ -1958,13 +1974,70 @@ function selectTrack(trackName, artistName, url, artwork) {
 function saveRecap() {
     const reflection = document.getElementById('recap-reflection').value.trim();
     const rating = document.getElementById('recap-rating').value;
-}
-  const highlight1 = document.getElementById('recap-highlight-1').value.trim();
+    const highlight1 = document.getElementById('recap-highlight-1').value.trim();
     const highlight2 = document.getElementById('recap-highlight-2').value.trim();
     const highlight3 = document.getElementById('recap-highlight-3').value.trim();
     const selectedTrackJson = document.getElementById('recap-selected-track').value;
     
     if (!reflection && !highlight1 && !highlight2 && !highlight3) {
+        alert('Please add at least a reflection or a highlight');
+        return;
+    }
+    
+    const highlights = [highlight1, highlight2, highlight3].filter(h => h);
+    const track = selectedTrackJson ? JSON.parse(selectedTrackJson) : null;
+    
+    // Obtener fecha de hoy para el recap
+    const today = new Date();
+    today.setHours(23, 59, 59, 999); // Final del día
+    
+    const recap = {
+        id: Date.now(),
+        type: 'recap',
+        timestamp: today.toISOString(),
+        reflection: reflection,
+        rating: parseInt(rating),
+        highlights: highlights,
+        track: track
+    };
+    
+    entries.unshift(recap);
+    saveData();
+    renderTimeline();
+    closeRecapForm();
+    alert('✅ Day Recap saved!');
+}
+
+// Edit Recap Event
+function editRecapEvent(entry) {
+    editingEntryId = entry.id;
+    
+    document.getElementById('recap-reflection').value = entry.reflection || '';
+    document.getElementById('recap-rating').value = entry.rating || 5;
+    document.getElementById('recap-rating-value').textContent = entry.rating || 5;
+    
+    if (entry.highlights && entry.highlights.length > 0) {
+        document.getElementById('recap-highlight-1').value = entry.highlights[0] || '';
+        document.getElementById('recap-highlight-2').value = entry.highlights[1] || '';
+        document.getElementById('recap-highlight-3').value = entry.highlights[2] || '';
+    }
+    
+    if (entry.track) {
+        document.getElementById('recap-selected-track').value = JSON.stringify(entry.track);
+        document.getElementById('recap-bso-results').innerHTML = 
+            `<div style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 3px solid #000; background: #f0f0f0;">
+                <img src="${entry.track.artwork}" style="width: 60px; height: 60px; border: 2px solid #000;">
+                <div style="flex: 1;">
+                    <div style="font-weight: bold;">${entry.track.name}</div>
+                    <div style="font-size: 12px; color: #666;">${entry.track.artist}</div>
+                </div>
+                <a href="${entry.track.url}" target="_blank" style="text-decoration: none; font-size: 20px;">🔗</a>
+            </div>`;
+    }
+    
+    showRecapForm();
+}
+
 // ===== FAB MENU =====
 
 let fabMenuOpen = false;
@@ -2005,75 +2078,9 @@ function closeFabMenu() {
     }
 }
 
-// Modificar las funciones toggle para cerrar el menú
-const originalToggleCrumb = window.toggleCrumb;
-window.toggleCrumb = function() {
-    closeFabMenu();
-    if (originalToggleCrumb) originalToggleCrumb();
-};
-
-const originalToggleTimer = window.toggleTimer;
-window.toggleTimer = function() {
-    closeFabMenu();
-    if (originalToggleTimer) originalToggleTimer();
-};
-
-const originalToggleTrack = window.toggleTrack;
-window.toggleTrack = function() {
-    closeFabMenu();
-    if (originalToggleTrack) originalToggleTrack();
-};
-
-const originalToggleSpent = window.toggleSpent;
-window.toggleSpent = function() {
-    closeFabMenu();
-    if (originalToggleSpent) originalToggleSpent();
-};
-
-// Agregar para Recap
-const originalShowRecapForm = window.showRecapForm;
-window.showRecapForm = function() {
-    closeFabMenu();
-    document.getElementById('recap-form').classList.remove('hidden');
-    ['crumb-form', 'time-form', 'track-form', 'spent-form'].forEach(id => {
-        document.getElementById(id)?.classList.add('hidden');
-    });
-};
-
-
-// Edit Recap Event
-function editRecapEvent(entry) {
-    editingEntryId = entry.id;
-    
-    document.getElementById('recap-reflection').value = entry.reflection || '';
-    document.getElementById('recap-rating').value = entry.rating || 5;
-    document.getElementById('recap-rating-value').textContent = entry.rating || 5;
-    
-    if (entry.highlights && entry.highlights.length > 0) {
-        document.getElementById('recap-highlight-1').value = entry.highlights[0] || '';
-        document.getElementById('recap-highlight-2').value = entry.highlights[1] || '';
-        document.getElementById('recap-highlight-3').value = entry.highlights[2] || '';
-    }
-    
-    if (entry.track) {
-        document.getElementById('recap-selected-track').value = JSON.stringify(entry.track);
-        document.getElementById('recap-bso-results').innerHTML = 
-            `<div style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 3px solid #000; background: #f0f0f0;">
-                <img src="${entry.track.artwork}" style="width: 60px; height: 60px; border: 2px solid #000;">
-                <div style="flex: 1;">
-                    <div style="font-weight: bold;">${entry.track.name}</div>
-                    <div style="font-size: 12px; color: #666;">${entry.track.artist}</div>
-                </div>
-                <a href="${entry.track.url}" target="_blank" style="text-decoration: none; font-size: 20px;">🔗</a>
-            </div>`;
-    }
-    
-    showRecapForm();
-}
-}
-
 // Toggle Crumb Form
 function toggleCrumb() {
+    closeFabMenu();
     const formWindow = document.getElementById('form-window');
     
     if (formWindow.classList.contains('hidden')) {
@@ -2116,3 +2123,8 @@ function toggleCrumb() {
         formWindow.classList.add('hidden');
     }
 }
+
+// Initialize app
+loadData();
+loadSettings();
+updateTimerOptions();
