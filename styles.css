@@ -295,7 +295,7 @@ h1 {
     background: #333;
 }
 
-/* ANIMACIÃ“N PANEL DESPLEGABLE */
+/* ANIMACI&#195;&#402;&#226;&#8364;&#339;N PANEL DESPLEGABLE */
 .day-content {
     max-height: 0;
     overflow: hidden;
@@ -323,7 +323,7 @@ h1 {
     padding: 16px !important;
 }
 
-/* ANIMACIÃ“N CHEVRON */
+/* ANIMACI&#195;&#402;&#226;&#8364;&#339;N CHEVRON */
 .chevron {
     display: inline-block;
     transition: transform 0.3s ease;
@@ -467,7 +467,7 @@ h1 {
     font-size: 11px;
 }
 
-/* ANIMACIÃ“N MODAL (pop-in suave) */
+/* ANIMACI&#195;&#402;&#226;&#8364;&#339;N MODAL (pop-in suave) */
 .preview-modal {
     display: none;
     position: fixed;
@@ -950,7 +950,7 @@ h1 {
     transform: translateY(0);
 }
 
-/* Formularios de creaciÃ³n (Crumb, Time, Track, Spent) */
+/* Formularios de creaci&#195;&#402;&#194;&#179;n (Crumb, Time, Track, Spent) */
 #crumb-form,
 #time-form,
 #track-form,
@@ -974,7 +974,7 @@ h1 {
     transform: translateY(0);
 }
 
-/* AnimaciÃ³n suave para botones del footer */
+/* Animaci&#195;&#402;&#194;&#179;n suave para botones del footer */
 .footer .mac-button {
     transition: transform 0.15s ease, background 0.15s ease;
 }
@@ -983,7 +983,7 @@ h1 {
     transform: scale(0.95);
 }
 
-/* AnimaciÃ³n para mood selector */
+/* Animaci&#195;&#402;&#194;&#179;n para mood selector */
 .mood-option {
     transition: all 0.2s cubic-bezier(.18,.89,.32,1.28);
 }
@@ -992,7 +992,7 @@ h1 {
     transform: scale(0.9);
 }
 
-/* AnimaciÃ³n para activity/duration selectors */
+/* Animaci&#195;&#402;&#194;&#179;n para activity/duration selectors */
 .duration-option,
 .activity-option {
     transition: all 0.2s cubic-bezier(.18,.89,.32,1.28);
@@ -1003,7 +1003,7 @@ h1 {
     transform: scale(0.95);
 }
 
-/* AnimaciÃ³n para image preview */
+/* Animaci&#195;&#402;&#194;&#179;n para image preview */
 .preview-image-thumb,
 .preview-map-thumb {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -1020,7 +1020,7 @@ h1 {
     transform: scale(0.98);
 }
 
-/* AnimaciÃ³n para edit button */
+/* Animaci&#195;&#402;&#194;&#179;n para edit button */
 .edit-button {
     transition: all 0.15s ease;
 }
@@ -1034,7 +1034,7 @@ h1 {
     transform: scale(0.95);
 }
 
-/* AnimaciÃ³n para read more button */
+/* Animaci&#195;&#402;&#194;&#179;n para read more button */
 .read-more-btn {
     transition: all 0.2s ease;
     padding: 4px 8px;
