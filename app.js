@@ -299,7 +299,7 @@ function showMiniMap(lat, lon, containerId) {
     const map = L.map(containerId).setView([lat, lon], 13);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: 'Â© OpenStreetMap',
+        attribution: 'Â\u00A9 OpenStreetMap',
         maxZoom: 19
     }).addTo(map);
 
@@ -822,7 +822,7 @@ function saveTrackEvent() {
             };
         }
         editingEntryId = null;
-        alert(`✅ Mark updated: ${selectedTrackItem}`);
+        alert(`\u2705 Mark updated: ${selectedTrackItem}`);
     } else {
         const entry = {
             id: Date.now(),
@@ -839,7 +839,7 @@ function saveTrackEvent() {
         };
         
         entries.unshift(entry);
-        alert(`✅ Marked: ${selectedTrackItem}`);
+        alert(`\u2705 Marked: ${selectedTrackItem}`);
     }
     
     saveData();
@@ -1034,7 +1034,7 @@ function previewEntry(id) {
             if (mapContainer) {
                 const map = L.map('preview-map-modal').setView([entry.coords.lat, entry.coords.lon], 13);
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: 'Â© OpenStreetMap'
+                    attribution: 'Â\u00A9 OpenStreetMap'
                 }).addTo(map);
                 L.marker([entry.coords.lat, entry.coords.lon]).addTo(map);
                 
@@ -1362,20 +1362,20 @@ function renderTimeline() {
                     <div class="day-block">
                         <div class="day-header" onclick="toggleDay('${dayKey}')">
                             <span>${formatDate(firstEntry.timestamp)}</span>
-                            <span class="chevron" id="chevron-${dayKey}">▼</span>
+                            <span class="chevron" id="chevron-${dayKey}">\u25BC</span>
                         </div>
                         
                         ${recaps.map(recap => `
                             <div class="recap-block">
                                 <div class="recap-header" onclick="toggleRecap('${recap.id}')">
-                                    <span>🌟 Day Recap</span>
-                                    <span class="chevron-recap" id="chevron-recap-${recap.id}">▼</span>
+                                    <span>\uD83C\uDF1F Day Recap</span>
+                                    <span class="chevron-recap" id="chevron-recap-${recap.id}">\u25BC</span>
                                 </div>
                                 <div class="recap-content hidden" id="recap-content-${recap.id}">
-                                    <button class="mac-button edit-button" onclick="editEntry(${recap.id})" style="position: absolute; top: 12px; right: 12px;">✏️ Edit</button>
+                                    <button class="mac-button edit-button" onclick="editEntry(${recap.id})" style="position: absolute; top: 12px; right: 12px;">\u270F\uFE0F Edit</button>
                                     
                                     <div style="margin-bottom: 16px;">
-                                        <strong>Rating:</strong> ${recap.rating}/10 ${'⭐'.repeat(Math.round(recap.rating / 2))}
+                                        <strong>Rating:</strong> ${recap.rating}/10 ${'\u2B50'.repeat(Math.round(recap.rating / 2))}
                                     </div>
                                     
                                     ${recap.reflection ? `
@@ -1403,7 +1403,7 @@ function renderTimeline() {
                                                     <div style="font-weight: bold; font-size: 13px;">${recap.track.name}</div>
                                                     <div style="font-size: 11px; color: #666;">${recap.track.artist}</div>
                                                 </div>
-                                                <a href="${recap.track.url}" target="_blank" style="text-decoration: none; font-size: 18px;">🔗</a>
+                                                <a href="${recap.track.url}" target="_blank" style="text-decoration: none; font-size: 18px;">\uD83D\uDD17</a>
                                             </div>
                                         </div>
                                     ` : ''}
@@ -1894,6 +1894,9 @@ function showRecapForm() {
     
     document.getElementById('recap-form').classList.remove('hidden');
     
+    // Establecer fecha actual
+    setCurrentDateTime('datetime-input-recap');
+    
     // Listener para el slider
     const slider = document.getElementById('recap-rating');
     const valueDisplay = document.getElementById('recap-rating-value');
@@ -1977,6 +1980,15 @@ function selectTrack(trackName, artistName, url, artwork) {
 function editRecapEvent(entry) {
     editingEntryId = entry.id;
     
+    // Set datetime
+    const date = new Date(entry.timestamp);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    document.getElementById('datetime-input-recap').value = `${year}-${month}-${day}T${hours}:${minutes}`;
+    
     document.getElementById('recap-reflection').value = entry.reflection || '';
     document.getElementById('recap-rating').value = entry.rating || 5;
     document.getElementById('recap-rating-value').textContent = entry.rating || 5;
@@ -1996,7 +2008,7 @@ function editRecapEvent(entry) {
                     <div style="font-weight: bold;">${entry.track.name}</div>
                     <div style="font-size: 12px; color: #666;">${entry.track.artist}</div>
                 </div>
-                <a href="${entry.track.url}" target="_blank" style="text-decoration: none; font-size: 20px;">🔗</a>
+                <a href="${entry.track.url}" target="_blank" style="text-decoration: none; font-size: 20px;">\uD83D\uDD17</a>
             </div>
         `;
     }
@@ -2013,6 +2025,7 @@ function saveRecap() {
     const highlight2 = document.getElementById('recap-highlight-2').value.trim();
     const highlight3 = document.getElementById('recap-highlight-3').value.trim();
     const selectedTrackJson = document.getElementById('recap-selected-track').value;
+    const timestamp = getTimestampFromInput('datetime-input-recap');
     
     if (!reflection && !highlight1 && !highlight2 && !highlight3) {
         alert('Please add at least one reflection or highlight');
@@ -2024,6 +2037,7 @@ function saveRecap() {
         if (entryIndex !== -1) {
             entries[entryIndex] = {
                 ...entries[entryIndex],
+                timestamp: timestamp,
                 reflection: reflection,
                 rating: parseInt(rating),
                 highlights: [highlight1, highlight2, highlight3].filter(h => h),
@@ -2031,11 +2045,11 @@ function saveRecap() {
             };
         }
         editingEntryId = null;
-        alert('🌟 Recap updated!');
+        alert('\uD83C\uDF1F Recap updated!');
     } else {
         const recap = {
             id: Date.now(),
-            timestamp: new Date().toISOString(),
+            timestamp: timestamp,
             type: 'recap',
             reflection: reflection,
             rating: parseInt(rating),
@@ -2044,7 +2058,7 @@ function saveRecap() {
         };
         
         entries.unshift(recap);
-        alert('🌟 Recap saved!');
+        alert('\uD83C\uDF1F Recap saved!');
     }
     
     saveData();

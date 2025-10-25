@@ -57,6 +57,9 @@
             <button onclick="closeRecapForm()" style="background: transparent; border: none; color: white; cursor: pointer; font-size: 18px;">âœ•</button>
         </div>
         <div class="mac-content">
+            <label class="mac-label">Date:</label>
+            <input type="datetime-local" class="mac-input" id="datetime-input-recap">
+            
             <label class="mac-label">Day Reflection</label>
             <textarea id="recap-reflection" class="mac-textarea" placeholder="How was your day?"></textarea>
             
@@ -274,34 +277,34 @@
         <button class="fab fab-main" onclick="toggleFabMenu()" id="fab-main">
             <span id="fab-icon">+</span>
         </button>
-        <div class="fab-action-wrapper hidden">
+        <div class="fab-action-wrapper hidden" id="fab-wrapper-0">
             <span class="fab-label">Crumb</span>
-            <button class="fab fab-action" onclick="closeFabMenu(); toggleForm();" title="Breadcrumb">
-                📍
+            <button class="fab fab-action" onclick="closeFabMenu(); toggleForm();">
+                &#128205;
             </button>
         </div>
-        <div class="fab-action-wrapper hidden">
+        <div class="fab-action-wrapper hidden" id="fab-wrapper-1">
             <span class="fab-label">Time</span>
-            <button class="fab fab-action" onclick="closeFabMenu(); toggleTimer();" title="Time Event">
-                ⏱
+            <button class="fab fab-action" onclick="closeFabMenu(); toggleTimer();">
+                &#9201;
             </button>
         </div>
-        <div class="fab-action-wrapper hidden">
+        <div class="fab-action-wrapper hidden" id="fab-wrapper-2">
             <span class="fab-label">Mark</span>
-            <button class="fab fab-action" onclick="closeFabMenu(); toggleTrack();" title="Quick Mark">
-                🎵
+            <button class="fab fab-action" onclick="closeFabMenu(); toggleTrack();">
+                &#127925;
             </button>
         </div>
-        <div class="fab-action-wrapper hidden">
+        <div class="fab-action-wrapper hidden" id="fab-wrapper-3">
             <span class="fab-label">Spent</span>
-            <button class="fab fab-action" onclick="closeFabMenu(); toggleSpent();" title="Spent">
-                💰
+            <button class="fab fab-action" onclick="closeFabMenu(); toggleSpent();">
+                &#128176;
             </button>
         </div>
-        <div class="fab-action-wrapper hidden">
+        <div class="fab-action-wrapper hidden" id="fab-wrapper-4">
             <span class="fab-label">Recap</span>
-            <button class="fab fab-action" onclick="closeFabMenu(); showRecapForm();" title="Day Recap">
-                🌟
+            <button class="fab fab-action" onclick="closeFabMenu(); showRecapForm();">
+                &#11088;
             </button>
         </div>
     </div>

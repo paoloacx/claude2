@@ -576,23 +576,24 @@ h1 {
     right: 0 !important;
     background: #000;
     color: white;
-    padding: 8px 12px;
+    padding: 6px 8px;
     border-top: 3px solid #666;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 8px;
-    box-shadow: 0 -3px 10px rgba(0,0,0,0.3);
+    gap: 6px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
     z-index: 9999 !important;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
 }
 
 .footer .mac-button {
-    margin: 0 4px;
-    font-size: 11px;
-    padding: 6px 10px;
+    margin: 0 2px;
+    font-size: 10px;
+    padding: 5px 8px;
     min-width: fit-content;
     transition: all 0.2s ease;
+    white-space: nowrap;
 }
 
 .footer .mac-button:hover {
@@ -1201,9 +1202,12 @@ input[type="range"]:active::-moz-range-thumb {
     width: 48px;
     height: 48px;
     font-size: 20px;
-    opacity: 0;
-    transform: scale(0) translateY(20px);
-    pointer-events: none;
+}
+
+.fab-action-wrapper .fab-action {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    pointer-events: all;
 }
 
 .fab-action.show {
