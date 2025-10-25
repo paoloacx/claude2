@@ -20,7 +20,7 @@ function refreshApp() {
     if (currentUser && !isOfflineMode) {
         loadDataFromFirebase();
         loadSettingsFromFirebase();
-        alert('Ã¢Å“â€¦ Synced!');
+        alert('âœ… Synced!');
     } else {
         location.reload();
     }
@@ -32,17 +32,17 @@ function refreshApp() {
 let timeDurations = [15, 30, 60, 120, 180];
 let timeActivities = ['Reading', 'Sports', 'Work', 'Cleaning', 'Errands'];
 let trackItems = {
-    meals: ['☕ Breakfast', '🥗 Lunch', '🍽️ Dinner', '🍪 Snack'],
-    tasks: ['💊 Medicine', '💧 Water', '🚶 Walk', '📞 Call']
+    meals: ['ðŸ³ Breakfast', 'ðŸ¥— Lunch', 'ðŸ½ï¸ Dinner', 'â˜• Snack'],
+    tasks: ['ðŸ’Š Medicine', 'ðŸ’§ Water', 'ðŸš¶ Walk', 'ðŸ“ž Call']
 };
 
 // Default moods
 const defaultMoods = [
-    { emoji: '😊', label: 'Happy' },
-    { emoji: '😢', label: 'Sad' },
-    { emoji: '😡', label: 'Angry' },
-    { emoji: '😰', label: 'Anxious' },
-    { emoji: '😴', label: 'Tired' }
+    { emoji: 'ðŸ˜Š', label: 'Happy' },
+    { emoji: 'ðŸ˜¢', label: 'Sad' },
+    { emoji: 'ðŸ˜¡', label: 'Angry' },
+    { emoji: 'ðŸ˜°', label: 'Anxious' },
+    { emoji: 'ðŸ˜´', label: 'Tired' }
 ];
 
 let moods = [...defaultMoods];
@@ -97,11 +97,9 @@ function toggleForm() {
     const timer = document.getElementById('timer-window');
     const track = document.getElementById('track-window');
     const spent = document.getElementById('spent-window');
-    const recap = document.getElementById('recap-form');
     timer.classList.add('hidden');
     track.classList.add('hidden');
     spent.classList.add('hidden');
-    recap.classList.add('hidden');
     form.classList.toggle('hidden');
     if (!form.classList.contains('hidden')) {
         clearForm();
@@ -115,11 +113,9 @@ function toggleTimer() {
     const form = document.getElementById('form-window');
     const track = document.getElementById('track-window');
     const spent = document.getElementById('spent-window');
-    const recap = document.getElementById('recap-form');
     form.classList.add('hidden');
     track.classList.add('hidden');
     spent.classList.add('hidden');
-    recap.classList.add('hidden');
     timer.classList.toggle('hidden');
     if (!timer.classList.contains('hidden')) {
         resetTimerSelections();
@@ -132,11 +128,9 @@ function toggleTrack() {
     const form = document.getElementById('form-window');
     const timer = document.getElementById('timer-window');
     const spent = document.getElementById('spent-window');
-    const recap = document.getElementById('recap-form');
     form.classList.add('hidden');
     timer.classList.add('hidden');
     spent.classList.add('hidden');
-    recap.classList.add('hidden');
     track.classList.toggle('hidden');
     if (!track.classList.contains('hidden')) {
         renderTrackSelector();
@@ -153,11 +147,9 @@ function toggleSpent() {
     const form = document.getElementById('form-window');
     const timer = document.getElementById('timer-window');
     const track = document.getElementById('track-window');
-    const recap = document.getElementById('recap-form');
     form.classList.add('hidden');
     timer.classList.add('hidden');
     track.classList.add('hidden');
-    recap.classList.add('hidden');
     spent.classList.toggle('hidden');
     if (!spent.classList.contains('hidden')) {
         document.getElementById('spent-description').value = '';
@@ -200,7 +192,7 @@ function clearForm() {
     document.getElementById('image-previews').innerHTML = '';
     document.getElementById('audio-preview').innerHTML = '';
     document.getElementById('delete-btn').classList.add('hidden');
-    document.getElementById('save-btn').textContent = '💾 Save';
+    document.getElementById('save-btn').textContent = 'ðŸ’¾ Save';
     document.getElementById('mood-config').classList.add('hidden');
     const mapContainer = document.getElementById('form-map');
     if (mapContainer) {
@@ -218,18 +210,18 @@ function cancelEdit() {
 function getGPS() {
     const btn = document.getElementById('gps-btn');
     const locationInput = document.getElementById('location-input');
-    btn.textContent = '🔄 Searching...';
+    btn.textContent = 'â³ Searching...';
     btn.disabled = true;
 
     if (!navigator.geolocation) {
         alert('Geolocation not available');
-        btn.textContent = '🌍 Use GPS';
+        btn.textContent = 'ðŸŒ Use GPS';
         btn.disabled = false;
         return;
     }
 
     navigator.geolocation.getCurrentPosition(
-        (position) =` • 📍 ${entry.location}
+        (position) => {
             const lat = position.coords.latitude;
             const lon = position.coords.longitude;
             currentCoords = { lat, lon };
@@ -239,12 +231,12 @@ function getGPS() {
             showMiniMap(lat, lon, 'form-map');
             getWeather(lat, lon);
             
-            btn.textContent = '✓ GPS OK';
+            btn.textContent = 'ðŸŒ GPS OK';
             btn.disabled = false;
         },
-        (error) =` • 📍 ${entry.location}
+        (error) => {
             console.error('GPS Error:', error);
-            btn.textContent = '🌍 Use GPS';
+            btn.textContent = 'ðŸŒ Use GPS';
             btn.disabled = false;
         },
         {
@@ -259,7 +251,7 @@ async function getWeather(lat, lon) {
     const weatherInput = document.getElementById('weather-input');
     const locationInput = document.getElementById('location-input');
     
-    weatherInput.value = '🔄 Getting weather...';
+    weatherInput.value = 'â³ Getting weather...';
     
     try {
         const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric&lang=en`;
@@ -277,7 +269,7 @@ async function getWeather(lat, lon) {
         const emoji = getWeatherEmoji(data.weather[0].id);
         const city = data.name || 'Unknown';
         
-        weatherInput.value = `${emoji} ${description}, ${temp}°C in ${city}`;
+        weatherInput.value = `${emoji} ${description}, ${temp}Â°C in ${city}`;
         locationInput.value = city;
     } catch (error) {
         console.error('Error getting weather:', error);
@@ -287,14 +279,14 @@ async function getWeather(lat, lon) {
 }
 
 function getWeatherEmoji(code) {
-    if (code ` • 📍 ${entry.location}
-    if (code ` • 📍 ${entry.location}
-    if (code ` • 📍 ${entry.location}
-    if (code ` • 📍 ${entry.location}
-    if (code ` • 📍 ${entry.location}
-    if (code === 800) return '☀️';
-    if (code ` • 📍 ${entry.location}
-    return '🌤️';
+    if (code >= 200 && code < 300) return 'â›ˆï¸';
+    if (code >= 300 && code < 400) return 'ðŸŒ¦ï¸';
+    if (code >= 500 && code < 600) return 'ðŸŒ§ï¸';
+    if (code >= 600 && code < 700) return 'â„ï¸';
+    if (code >= 700 && code < 800) return 'ðŸŒ«ï¸';
+    if (code === 800) return 'â˜€ï¸';
+    if (code > 800) return 'â˜ï¸';
+    return 'ðŸŒ¤ï¸';
 }
 
 function showMiniMap(lat, lon, containerId) {
@@ -307,13 +299,13 @@ function showMiniMap(lat, lon, containerId) {
     const map = L.map(containerId).setView([lat, lon], 13);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap',
+        attribution: 'Â© OpenStreetMap',
         maxZoom: 19
     }).addTo(map);
 
     L.marker([lat, lon]).addTo(map);
 
-    setTimeout(() =` • 📍 ${entry.location}
+    setTimeout(() => {
         map.invalidateSize();
     }, 100);
 }
@@ -322,9 +314,9 @@ function showMiniMap(lat, lon, containerId) {
 function handleImages(event) {
     const files = Array.from(event.target.files);
     
-    files.forEach(file =` • 📍 ${entry.location}
+    files.forEach(file => {
         const reader = new FileReader();
-        reader.onload = (e) =` • 📍 ${entry.location}
+        reader.onload = (e) => {
             const img = new Image();
             img.onload = function() {
                 const canvas = document.createElement('canvas');
@@ -334,10 +326,10 @@ function handleImages(event) {
                 let height = img.height;
                 const maxSize = 800;
                 
-                if (width ` • 📍 ${entry.location}
+                if (width > height && width > maxSize) {
                     height = (height * maxSize) / width;
                     width = maxSize;
-                } else if (height ` • 📍 ${entry.location}
+                } else if (height > maxSize) {
                     width = (width * maxSize) / height;
                     height = maxSize;
                 }
@@ -381,21 +373,21 @@ async function startRecording() {
         mediaRecorder = new MediaRecorder(stream, options);
         audioChunks = [];
 
-        mediaRecorder.ondataavailable = (event) =` • 📍 ${entry.location}
+        mediaRecorder.ondataavailable = (event) => {
             audioChunks.push(event.data);
         };
 
-        mediaRecorder.onstop = () =` • 📍 ${entry.location}
+        mediaRecorder.onstop = () => {
             const mimeType = mediaRecorder.mimeType || 'audio/webm';
             const audioBlob = new Blob(audioChunks, { type: mimeType });
             const reader = new FileReader();
-            reader.onloadend = () =` • 📍 ${entry.location}
+            reader.onloadend = () => {
                 currentAudio = reader.result;
                 renderAudioPreview();
             };
             reader.readAsDataURL(audioBlob);
             
-            stream.getTracks().forEach(track =` • 📍 ${entry.location}
+            stream.getTracks().forEach(track => track.stop());
         };
 
         mediaRecorder.start();
@@ -419,11 +411,11 @@ function stopRecording() {
 
 function renderImagePreviews() {
     const container = document.getElementById('image-previews');
-    container.innerHTML = currentImages.map((img, idx) =` • 📍 ${entry.location}
-        <div class="image-preview"` • 📍 ${entry.location}
-            <img src="${img}" alt=""` • 📍 ${entry.location}
-            <div class="image-remove" onclick="removeImage(${idx})"` • 📍 ${entry.location}
-        </div` • 📍 ${entry.location}
+    container.innerHTML = currentImages.map((img, idx) => `
+        <div class="image-preview">
+            <img src="${img}" alt="">
+            <div class="image-remove" onclick="removeImage(${idx})">âœ•</div>
+        </div>
     `).join('');
 }
 
@@ -431,12 +423,12 @@ function renderAudioPreview() {
     const container = document.getElementById('audio-preview');
     if (currentAudio) {
         container.innerHTML = `
-            <div style="display: flex; align-items: center; gap: 8px; margin-top: 8px;"` • 📍 ${entry.location}
-                <audio controls style="flex: 1;"` • 📍 ${entry.location}
-                    <source src="${currentAudio}" type="audio/webm"` • 📍 ${entry.location}
-                </audio` • 📍 ${entry.location}
-                <button class="mac-button" onclick="removeAudio()" style="padding: 4px 8px;"` • 📍 ${entry.location}
-            </div` • 📍 ${entry.location}
+            <div style="display: flex; align-items: center; gap: 8px; margin-top: 8px;">
+                <audio controls style="flex: 1;">
+                    <source src="${currentAudio}" type="audio/webm">
+                </audio>
+                <button class="mac-button" onclick="removeAudio()" style="padding: 4px 8px;">âœ•</button>
+            </div>
         `;
     } else {
         container.innerHTML = '';
@@ -455,11 +447,11 @@ function removeAudio() {
 // Mood functions
 function renderMoodSelector() {
     const container = document.getElementById('mood-selector');
-    container.innerHTML = moods.map((mood, index) =` • 📍 ${entry.location}
-        <div class="mood-option ${selectedMood === index ? 'selected' : ''}" onclick="selectMood(${index})"` • 📍 ${entry.location}
+    container.innerHTML = moods.map((mood, index) => `
+        <div class="mood-option ${selectedMood === index ? 'selected' : ''}" onclick="selectMood(${index})">
             ${mood.emoji}
-            <span class="mood-label"` • 📍 ${entry.location}
-        </div` • 📍 ${entry.location}
+            <span class="mood-label">${mood.label}</span>
+        </div>
     `).join('');
 }
 
@@ -478,16 +470,16 @@ function toggleMoodConfig() {
 
 function renderMoodConfig() {
     const container = document.getElementById('mood-config-list');
-    container.innerHTML = moods.map((mood, index) =` • 📍 ${entry.location}
-        <div class="config-item"` • 📍 ${entry.location}
-            <input type="text" value="${mood.emoji}" id="mood-emoji-${index}" maxlength="2"` • 📍 ${entry.location}
-            <input type="text" value="${mood.label}" id="mood-label-${index}" placeholder="Label"` • 📍 ${entry.location}
-        </div` • 📍 ${entry.location}
+    container.innerHTML = moods.map((mood, index) => `
+        <div class="config-item">
+            <input type="text" value="${mood.emoji}" id="mood-emoji-${index}" maxlength="2">
+            <input type="text" value="${mood.label}" id="mood-label-${index}" placeholder="Label">
+        </div>
     `).join('');
 }
 
 function saveMoodConfig() {
-    moods = moods.map((mood, index) =` • 📍 ${entry.location}
+    moods = moods.map((mood, index) => ({
         emoji: document.getElementById(`mood-emoji-${index}`).value || mood.emoji,
         label: document.getElementById(`mood-label-${index}`).value || mood.label
     }));
@@ -497,7 +489,7 @@ function saveMoodConfig() {
     }
     renderMoodSelector();
     toggleMoodConfig();
-    alert('Ã¢Å“â€¦ Configuration saved');
+    alert('âœ… Configuration saved');
 }
 
 // Save/Edit entry functions
@@ -512,7 +504,7 @@ function saveEntry() {
     const timestamp = getTimestampFromInput('datetime-input');
 
     if (editingEntryId) {
-        const entryIndex = entries.findIndex(e =` • 📍 ${entry.location}
+        const entryIndex = entries.findIndex(e => e.id === editingEntryId);
         if (entryIndex !== -1) {
             entries[entryIndex] = {
                 ...entries[entryIndex],
@@ -547,7 +539,7 @@ function saveEntry() {
 }
 
 function editEntry(id) {
-    const entry = entries.find(e =` • 📍 ${entry.location}
+    const entry = entries.find(e => e.id === id);
     if (!entry) return;
 
     if (entry.type === 'recap') {
@@ -588,7 +580,7 @@ function editEntry(id) {
     document.getElementById('datetime-input').value = `${year}-${month}-${day}T${hours}:${minutes}`;
 
     if (entry.mood) {
-        const moodIndex = moods.findIndex(m =` • 📍 ${entry.location}
+        const moodIndex = moods.findIndex(m => m.emoji === entry.mood.emoji && m.label === entry.mood.label);
         selectedMood = moodIndex !== -1 ? moodIndex : null;
     } else {
         selectedMood = null;
@@ -603,7 +595,7 @@ function editEntry(id) {
     }
 
     document.getElementById('delete-btn').classList.remove('hidden');
-    document.getElementById('save-btn').textContent = '💾 Update';
+    document.getElementById('save-btn').textContent = 'ðŸ’¾ Update';
     
     const formWindow = document.getElementById('form-window');
     formWindow.classList.remove('hidden');
@@ -626,7 +618,7 @@ function editTimeEvent(entry) {
     const minutes = String(date.getMinutes()).padStart(2, '0');
     document.getElementById('datetime-input-time').value = `${year}-${month}-${day}T${hours}:${minutes}`;
     
-    document.querySelectorAll('.duration-option').forEach(el =` • 📍 ${entry.location}
+    document.querySelectorAll('.duration-option').forEach(el => {
         el.classList.remove('selected');
         const text = el.textContent.trim();
         if ((selectedDuration === 15 && text.includes('15')) ||
@@ -638,7 +630,7 @@ function editTimeEvent(entry) {
         }
     });
     
-    document.querySelectorAll('#activity-selector .activity-option').forEach(el =` • 📍 ${entry.location}
+    document.querySelectorAll('#activity-selector .activity-option').forEach(el => {
         el.classList.remove('selected');
         if (el.textContent.includes(selectedActivity)) {
             el.classList.add('selected');
@@ -649,7 +641,7 @@ function editTimeEvent(entry) {
     
     const timerWindow = document.getElementById('timer-window');
     const createBtn = document.getElementById('create-time-btn');
-    createBtn.textContent = '💾 Update Event';
+    createBtn.textContent = 'ðŸ’¾ Update Event';
     document.getElementById('delete-time-btn').classList.remove('hidden');
     
     timerWindow.classList.remove('hidden');
@@ -659,7 +651,7 @@ function editTimeEvent(entry) {
 function selectDuration(minutes) {
     selectedDuration = minutes;
     const options = document.querySelectorAll('.duration-option');
-    options.forEach(el =` • 📍 ${entry.location}
+    options.forEach(el => {
         el.classList.remove('selected');
         const text = el.textContent.trim();
         if ((minutes === 15 && text.includes('15')) ||
@@ -677,7 +669,7 @@ function selectDuration(minutes) {
 function selectActivity(activity) {
     selectedActivity = activity;
     const options = document.querySelectorAll('#activity-selector .activity-option');
-    options.forEach(el =` • 📍 ${entry.location}
+    options.forEach(el => {
         el.classList.remove('selected');
         if (el.textContent.includes(activity)) {
             el.classList.add('selected');
@@ -703,7 +695,7 @@ function createTimeEvent() {
     const optionalNote = document.getElementById('time-optional-note').value.trim();
     
     if (editingEntryId) {
-        const entryIndex = entries.findIndex(e =` • 📍 ${entry.location}
+        const entryIndex = entries.findIndex(e => e.id === editingEntryId);
         if (entryIndex !== -1) {
             entries[entryIndex] = {
                 ...entries[entryIndex],
@@ -738,7 +730,7 @@ function createTimeEvent() {
     saveData();
     renderTimeline();
     
-    alert(`Ã¢Å“â€¦ Time event ${editingEntryId ? 'updated' : 'created'}!`);
+    alert(`âœ… Time event ${editingEntryId ? 'updated' : 'created'}!`);
     toggleTimer();
     
     document.getElementById('create-time-btn').textContent = 'Create Event';
@@ -750,8 +742,8 @@ function resetTimerSelections() {
     selectedDuration = null;
     selectedActivity = null;
     editingEntryId = null;
-    document.querySelectorAll('.duration-option').forEach(el =` • 📍 ${entry.location}
-    document.querySelectorAll('#activity-selector .activity-option').forEach(el =` • 📍 ${entry.location}
+    document.querySelectorAll('.duration-option').forEach(el => el.classList.remove('selected'));
+    document.querySelectorAll('#activity-selector .activity-option').forEach(el => el.classList.remove('selected'));
     document.getElementById('create-time-btn').disabled = true;
     document.getElementById('create-time-btn').textContent = 'Create Event';
     document.getElementById('delete-time-btn').classList.add('hidden');
@@ -763,16 +755,16 @@ function renderTrackSelector() {
     const container = document.getElementById('track-selector');
     const allItems = [...trackItems.meals, ...trackItems.tasks];
     
-    container.innerHTML = allItems.map((item, index) =` • 📍 ${entry.location}
-        <div class="activity-option" onclick="selectTrackItem('${item}')"` • 📍 ${entry.location}
+    container.innerHTML = allItems.map((item, index) => `
+        <div class="activity-option" onclick="selectTrackItem('${item}')">
             ${item}
-        </div` • 📍 ${entry.location}
+        </div>
     `).join('');
 }
 
 function selectTrackItem(item) {
     selectedTrackItem = item;
-    document.querySelectorAll('#track-selector .activity-option').forEach(el =` • 📍 ${entry.location}
+    document.querySelectorAll('#track-selector .activity-option').forEach(el => {
         el.classList.remove('selected');
         if (el.textContent.trim() === item) {
             el.classList.add('selected');
@@ -798,14 +790,14 @@ function editTrackEvent(entry) {
     
     renderTrackSelector();
     
-    document.querySelectorAll('#track-selector .activity-option').forEach(el =` • 📍 ${entry.location}
+    document.querySelectorAll('#track-selector .activity-option').forEach(el => {
         if (el.textContent.trim() === selectedTrackItem) {
             el.classList.add('selected');
         }
     });
     
     document.getElementById('save-track-btn').disabled = false;
-    document.getElementById('save-track-btn').textContent = '💾 Update Track';
+    document.getElementById('save-track-btn').textContent = 'ðŸ’¾ Update Track';
     document.getElementById('delete-track-btn').classList.remove('hidden');
     
     const trackWindow = document.getElementById('track-window');
@@ -820,7 +812,7 @@ function saveTrackEvent() {
     const optionalNote = document.getElementById('track-optional-note').value.trim();
     
     if (editingEntryId) {
-        const entryIndex = entries.findIndex(e =` • 📍 ${entry.location}
+        const entryIndex = entries.findIndex(e => e.id === editingEntryId);
         if (entryIndex !== -1) {
             entries[entryIndex] = {
                 ...entries[entryIndex],
@@ -830,7 +822,7 @@ function saveTrackEvent() {
             };
         }
         editingEntryId = null;
-        alert(`Ã¢Å“â€¦ Mark updated: ${selectedTrackItem}`);
+        alert(`✅ Mark updated: ${selectedTrackItem}`);
     } else {
         const entry = {
             id: Date.now(),
@@ -847,14 +839,14 @@ function saveTrackEvent() {
         };
         
         entries.unshift(entry);
-        alert(`Ã¢Å“â€¦ Marked: ${selectedTrackItem}`);
+        alert(`✅ Marked: ${selectedTrackItem}`);
     }
     
     saveData();
     renderTimeline();
     toggleTrack();
     
-    document.getElementById('save-track-btn').textContent = 'Save Track';
+    document.getElementById('save-track-btn').textContent = 'Save Mark';
     document.getElementById('delete-track-btn').classList.add('hidden');
 }
 
@@ -898,7 +890,7 @@ function saveSpent() {
     const timestamp = getTimestampFromInput('datetime-input-spent');
 
     if (editingEntryId) {
-        const entryIndex = entries.findIndex(e =` • 📍 ${entry.location}
+        const entryIndex = entries.findIndex(e => e.id === editingEntryId);
         if (entryIndex !== -1) {
             entries[entryIndex] = {
                 ...entries[entryIndex],
@@ -908,7 +900,7 @@ function saveSpent() {
             };
         }
         editingEntryId = null;
-        alert(`Ã¢Å“â€¦ Spent updated: Ã¢â€šÂ¬${amount.toFixed(2)}`);
+        alert(`âœ… Spent updated: â‚¬${amount.toFixed(2)}`);
     } else {
         const entry = {
             id: Date.now(),
@@ -925,7 +917,7 @@ function saveSpent() {
         };
         
         entries.unshift(entry);
-        alert(`Ã¢Å“â€¦ Spent tracked: Ã¢â€šÂ¬${amount.toFixed(2)}`);
+        alert(`âœ… Spent tracked: â‚¬${amount.toFixed(2)}`);
     }
     
     saveData();
@@ -939,7 +931,7 @@ function deleteCurrentEntry() {
     if (!editingEntryId) return;
     
     if (confirm('Delete this entry?')) {
-        entries = entries.filter(e =` • 📍 ${entry.location}
+        entries = entries.filter(e => e.id !== editingEntryId);
         
         if (currentUser && !isOfflineMode) {
             deleteEntryFromFirebase(editingEntryId);
@@ -953,84 +945,83 @@ function deleteCurrentEntry() {
         document.getElementById('timer-window').classList.add('hidden');
         document.getElementById('track-window').classList.add('hidden');
         document.getElementById('spent-window').classList.add('hidden');
-        document.getElementById('recap-form').classList.add('hidden');
         
         editingEntryId = null;
     }
 }
 // Preview functions
 function previewEntry(id) {
-    const entry = entries.find(e =` • 📍 ${entry.location}
+    const entry = entries.find(e => e.id === id);
     if (!entry) return;
 
     const modal = document.getElementById('preview-modal');
     const body = document.getElementById('preview-body');
     
     let html = `
-        <div style="margin-bottom: 16px;"` • 📍 ${entry.location}
-            <strong` • 📍 ${entry.location}
-        </div` • 📍 ${entry.location}
+        <div style="margin-bottom: 16px;">
+            <strong>Time:</strong> ${formatDate(entry.timestamp)} at ${formatTime(entry.timestamp)}
+        </div>
         
         ${entry.mood ? `
-            <div style="margin-bottom: 16px;"` • 📍 ${entry.location}
-                <strong` • 📍 ${entry.location}
-            </div` • 📍 ${entry.location}
+            <div style="margin-bottom: 16px;">
+                <strong>Mood:</strong> <span style="font-size: 24px;">${entry.mood.emoji}</span> ${entry.mood.label}
+            </div>
         ` : ''}
         
-        <div style="margin-bottom: 16px;"` • 📍 ${entry.location}
-            <strong` • 📍 ${entry.location}
-            <div style="margin-top: 8px; line-height: 1.6;"` • 📍 ${entry.location}
-        </div` • 📍 ${entry.location}
+        <div style="margin-bottom: 16px;">
+            <strong>Note:</strong>
+            <div style="margin-top: 8px; line-height: 1.6;">${entry.note}</div>
+        </div>
         
         ${entry.location ? `
-            <div style="margin-bottom: 16px;"` • 📍 ${entry.location}
-                <strong` • 📍 ${entry.location}
-            </div` • 📍 ${entry.location}
+            <div style="margin-bottom: 16px;">
+                <strong>Location:</strong> ${entry.location}
+            </div>
         ` : ''}
         
         ${entry.weather ? `
-            <div style="margin-bottom: 16px;"` • 📍 ${entry.location}
-                <strong` • 📍 ${entry.location}
-            </div` • 📍 ${entry.location}
+            <div style="margin-bottom: 16px;">
+                <strong>Weather:</strong> ${entry.weather}
+            </div>
         ` : ''}
         
         ${entry.coords ? `
-            <div style="margin-bottom: 16px;"` • 📍 ${entry.location}
-                <strong` • 📍 ${entry.location}
-                <div class="preview-map-full" id="preview-map-modal"` • 📍 ${entry.location}
-            </div` • 📍 ${entry.location}
+            <div style="margin-bottom: 16px;">
+                <strong>Map:</strong>
+                <div class="preview-map-full" id="preview-map-modal"></div>
+            </div>
         ` : ''}
         
         ${entry.audio ? `
-            <div style="margin-bottom: 16px;"` • 📍 ${entry.location}
-                <strong` • 📍 ${entry.location}
-                <audio controls style="width: 100%; margin-top: 8px;"` • 📍 ${entry.location}
-                    <source src="${entry.audio}" type="audio/webm"` • 📍 ${entry.location}
-                </audio` • 📍 ${entry.location}
-            </div` • 📍 ${entry.location}
+            <div style="margin-bottom: 16px;">
+                <strong>Audio:</strong>
+                <audio controls style="width: 100%; margin-top: 8px;">
+                    <source src="${entry.audio}" type="audio/webm">
+                </audio>
+            </div>
         ` : ''}
         
-        ${entry.images && entry.images.length ` • 📍 ${entry.location}
-            <div style="margin-bottom: 16px;"` • 📍 ${entry.location}
-                <strong` • 📍 ${entry.location}
-                <div class="preview-images-full"` • 📍 ${entry.location}
-                    ${entry.images.map(img =` • 📍 ${entry.location}
-                        <img src="${img}" class="preview-image-full" onclick="event.stopPropagation(); showImageInModal('${entry.id}', ${entry.images.indexOf(img)});"` • 📍 ${entry.location}
+        ${entry.images && entry.images.length > 0 ? `
+            <div style="margin-bottom: 16px;">
+                <strong>Images:</strong>
+                <div class="preview-images-full">
+                    ${entry.images.map(img => `
+                        <img src="${img}" class="preview-image-full" onclick="event.stopPropagation(); showImageInModal('${entry.id}', ${entry.images.indexOf(img)});">
                     `).join('')}
-                </div` • 📍 ${entry.location}
-            </div` • 📍 ${entry.location}
+                </div>
+            </div>
         ` : ''}
         
         ${entry.isTimedActivity ? `
-            <div style="margin-bottom: 16px;"` • 📍 ${entry.location}
-                <strong` • 📍 ${entry.location}
-            </div` • 📍 ${entry.location}
+            <div style="margin-bottom: 16px;">
+                <strong>Activity:</strong> ${entry.activity} (${entry.duration} minutes)
+            </div>
         ` : ''}
         
         ${entry.isSpent ? `
-            <div style="margin-bottom: 16px;"` • 📍 ${entry.location}
-                <strong` • 📍 ${entry.location}
-            </div` • 📍 ${entry.location}
+            <div style="margin-bottom: 16px;">
+                <strong>Amount Spent:</strong> â‚¬${entry.spentAmount.toFixed(2)}
+            </div>
         ` : ''}
     `;
     
@@ -1038,16 +1029,16 @@ function previewEntry(id) {
     modal.classList.add('show');
     
     if (entry.coords) {
-        setTimeout(() =` • 📍 ${entry.location}
+        setTimeout(() => {
             const mapContainer = document.getElementById('preview-map-modal');
             if (mapContainer) {
                 const map = L.map('preview-map-modal').setView([entry.coords.lat, entry.coords.lon], 13);
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '© OpenStreetMap'
+                    attribution: 'Â© OpenStreetMap'
                 }).addTo(map);
                 L.marker([entry.coords.lat, entry.coords.lon]).addTo(map);
                 
-                setTimeout(() =` • 📍 ${entry.location}
+                setTimeout(() => map.invalidateSize(), 100);
             }
         }, 100);
     }
@@ -1069,7 +1060,7 @@ function openSettings() {
 
 // Show image preview
 function showImagePreview(entryId, imageIndex) {
-    const entry = entries.find(e =` • 📍 ${entry.location}
+    const entry = entries.find(e => e.id == entryId);
     if (!entry || !entry.images || !entry.images[imageIndex]) {
         console.error('Image not found:', entryId, imageIndex);
         return;
@@ -1079,9 +1070,9 @@ function showImagePreview(entryId, imageIndex) {
     const body = document.getElementById('preview-body');
     
     body.innerHTML = `
-        <div style="text-align: center; padding: 20px;"` • 📍 ${entry.location}
-            <img src="${entry.images[imageIndex]}" style="max-width: 100%; max-height: 80vh; border: 2px solid #000;"` • 📍 ${entry.location}
-        </div` • 📍 ${entry.location}
+        <div style="text-align: center; padding: 20px;">
+            <img src="${entry.images[imageIndex]}" style="max-width: 100%; max-height: 80vh; border: 2px solid #000;">
+        </div>
     `;
     
     modal.classList.add('show');
@@ -1096,48 +1087,48 @@ function closeSettings(event) {
 
 function renderSettingsConfig() {
     const durationsContainer = document.getElementById('time-durations-config');
-    durationsContainer.innerHTML = timeDurations.map((duration, index) =` • 📍 ${entry.location}
-        <div class="config-item"` • 📍 ${entry.location}
-            <input type="number" value="${duration}" id="duration-${index}" style="flex: 0 0 100px;"` • 📍 ${entry.location}
-            <span` • 📍 ${entry.location}
-            <button class="mac-button" onclick="removeDuration(${index})" style="padding: 4px 8px; margin-left: auto;"` • 📍 ${entry.location}
-        </div` • 📍 ${entry.location}
+    durationsContainer.innerHTML = timeDurations.map((duration, index) => `
+        <div class="config-item">
+            <input type="number" value="${duration}" id="duration-${index}" style="flex: 0 0 100px;">
+            <span>minutes</span>
+            <button class="mac-button" onclick="removeDuration(${index})" style="padding: 4px 8px; margin-left: auto;">âœ•</button>
+        </div>
     `).join('') + `
-        <button class="mac-button" onclick="addDuration()" style="margin-top: 8px;"` • 📍 ${entry.location}
+        <button class="mac-button" onclick="addDuration()" style="margin-top: 8px;">âž• Add Duration</button>
     `;
 
     const activitiesContainer = document.getElementById('time-activities-config');
-    activitiesContainer.innerHTML = timeActivities.map((activity, index) =` • 📍 ${entry.location}
-        <div class="config-item"` • 📍 ${entry.location}
-            <input type="text" value="${activity}" id="activity-${index}"` • 📍 ${entry.location}
-            <button class="mac-button" onclick="removeActivity(${index})" style="padding: 4px 8px;"` • 📍 ${entry.location}
-        </div` • 📍 ${entry.location}
+    activitiesContainer.innerHTML = timeActivities.map((activity, index) => `
+        <div class="config-item">
+            <input type="text" value="${activity}" id="activity-${index}">
+            <button class="mac-button" onclick="removeActivity(${index})" style="padding: 4px 8px;">âœ•</button>
+        </div>
     `).join('') + `
-        <button class="mac-button" onclick="addActivity()" style="margin-top: 8px;"` • 📍 ${entry.location}
+        <button class="mac-button" onclick="addActivity()" style="margin-top: 8px;">âž• Add Activity</button>
     `;
 
     const trackContainer = document.getElementById('track-items-config');
     trackContainer.innerHTML = `
-        <div style="margin-bottom: 16px;"` • 📍 ${entry.location}
-            <strong` • 📍 ${entry.location}
-            ${trackItems.meals.map((item, index) =` • 📍 ${entry.location}
-                <div class="config-item"` • 📍 ${entry.location}
-                    <input type="text" value="${item}" id="meal-${index}"` • 📍 ${entry.location}
-                    <button class="mac-button" onclick="removeMeal(${index})" style="padding: 4px 8px;"` • 📍 ${entry.location}
-                </div` • 📍 ${entry.location}
+        <div style="margin-bottom: 16px;">
+            <strong>Meals:</strong>
+            ${trackItems.meals.map((item, index) => `
+                <div class="config-item">
+                    <input type="text" value="${item}" id="meal-${index}">
+                    <button class="mac-button" onclick="removeMeal(${index})" style="padding: 4px 8px;">âœ•</button>
+                </div>
             `).join('')}
-            <button class="mac-button" onclick="addMeal()" style="margin-top: 8px;"` • 📍 ${entry.location}
-        </div` • 📍 ${entry.location}
-        <div` • 📍 ${entry.location}
-            <strong` • 📍 ${entry.location}
-            ${trackItems.tasks.map((item, index) =` • 📍 ${entry.location}
-                <div class="config-item"` • 📍 ${entry.location}
-                    <input type="text" value="${item}" id="task-${index}"` • 📍 ${entry.location}
-                    <button class="mac-button" onclick="removeTask(${index})" style="padding: 4px 8px;"` • 📍 ${entry.location}
-                </div` • 📍 ${entry.location}
+            <button class="mac-button" onclick="addMeal()" style="margin-top: 8px;">âž• Add Meal</button>
+        </div>
+        <div>
+            <strong>Tasks:</strong>
+            ${trackItems.tasks.map((item, index) => `
+                <div class="config-item">
+                    <input type="text" value="${item}" id="task-${index}">
+                    <button class="mac-button" onclick="removeTask(${index})" style="padding: 4px 8px;">âœ•</button>
+                </div>
             `).join('')}
-            <button class="mac-button" onclick="addTask()" style="margin-top: 8px;"` • 📍 ${entry.location}
-        </div` • 📍 ${entry.location}
+            <button class="mac-button" onclick="addTask()" style="margin-top: 8px;">âž• Add Task</button>
+        </div>
     `;
 }
 
@@ -1162,7 +1153,7 @@ function removeActivity(index) {
 }
 
 function addMeal() {
-    trackItems.meals.push('🍴 New Meal');
+    trackItems.meals.push('ðŸ´ New Meal');
     renderSettingsConfig();
 }
 
@@ -1172,7 +1163,7 @@ function removeMeal(index) {
 }
 
 function addTask() {
-    trackItems.tasks.push('Ã¢Å“â€œ New Task');
+    trackItems.tasks.push('âœ“ New Task');
     renderSettingsConfig();
 }
 
@@ -1182,22 +1173,22 @@ function removeTask(index) {
 }
 
 function saveSettings() {
-    timeDurations = timeDurations.map((_, index) =` • 📍 ${entry.location}
+    timeDurations = timeDurations.map((_, index) => {
         const val = document.getElementById(`duration-${index}`);
         return val ? parseInt(val.value) || 60 : 60;
     });
 
-    timeActivities = timeActivities.map((_, index) =` • 📍 ${entry.location}
+    timeActivities = timeActivities.map((_, index) => {
         const val = document.getElementById(`activity-${index}`);
         return val ? val.value : 'Activity';
     });
 
-    trackItems.meals = trackItems.meals.map((_, index) =` • 📍 ${entry.location}
+    trackItems.meals = trackItems.meals.map((_, index) => {
         const val = document.getElementById(`meal-${index}`);
         return val ? val.value : 'Meal';
     });
 
-    trackItems.tasks = trackItems.tasks.map((_, index) =` • 📍 ${entry.location}
+    trackItems.tasks = trackItems.tasks.map((_, index) => {
         const val = document.getElementById(`task-${index}`);
         return val ? val.value : 'Task';
     });
@@ -1211,26 +1202,26 @@ function saveSettings() {
     updateTimerOptions();
     updateTrackOptions();
     closeSettings();
-    alert('Ã¢Å“â€¦ Settings saved!');
+    alert('âœ… Settings saved!');
 }
 
 function updateTimerOptions() {
     const container = document.getElementById('duration-selector');
     if (!container) return;
     
-    container.innerHTML = timeDurations.map(duration =` • 📍 ${entry.location}
-        <div class="duration-option" onclick="selectDuration(${duration})"` • 📍 ${entry.location}
-            ${duration < 60 ? duration + ' min' : (duration / 60) + ' hour' + (duration ` • 📍 ${entry.location}
-        </div` • 📍 ${entry.location}
+    container.innerHTML = timeDurations.map(duration => `
+        <div class="duration-option" onclick="selectDuration(${duration})">
+            ${duration < 60 ? duration + ' min' : (duration / 60) + ' hour' + (duration > 60 ? 's' : '')}
+        </div>
     `).join('');
 
     const actContainer = document.getElementById('activity-selector');
     if (!actContainer) return;
     
-    actContainer.innerHTML = timeActivities.map(activity =` • 📍 ${entry.location}
-        <div class="activity-option" onclick="selectActivity('${activity}')"` • 📍 ${entry.location}
+    actContainer.innerHTML = timeActivities.map(activity => `
+        <div class="activity-option" onclick="selectActivity('${activity}')">
             ${activity}
-        </div` • 📍 ${entry.location}
+        </div>
     `).join('');
 }
 
@@ -1278,6 +1269,14 @@ function getDayKey(timestamp) {
     return date.toISOString().split('T')[0];
 }
 
+function toggleRecap(recapId) {
+    const content = document.getElementById(`recap-content-${recapId}`);
+    const chevron = document.getElementById(`chevron-recap-${recapId}`);
+    
+    content.classList.toggle('hidden');
+    chevron.classList.toggle('expanded');
+}
+
 function toggleDay(dayKey) {
     const content = document.getElementById(`day-content-${dayKey}`);
     const chevron = document.getElementById(`chevron-${dayKey}`);
@@ -1286,20 +1285,10 @@ function toggleDay(dayKey) {
     chevron.classList.toggle('expanded');
 }
 
-// Toggle Recap View
-function toggleRecapView(recapId) {
-    const content = document.getElementById(`recap-content-${recapId}`);
-    const chevron = document.getElementById(`recap-chevron-${recapId}`);
-    
-    if (content && chevron) {
-        content.classList.toggle('hidden');
-        chevron.classList.toggle('expanded');
-    }
-}
 
 // Show image in modal
 function showImageInModal(entryId, imageIndex) {
-    const entry = entries.find(e =` • 📍 ${entry.location}
+    const entry = entries.find(e => e.id == entryId);
     if (!entry || !entry.images || !entry.images[imageIndex]) {
         console.error('Image not found');
         return;
@@ -1309,9 +1298,9 @@ function showImageInModal(entryId, imageIndex) {
     const body = document.getElementById('preview-body');
     
     body.innerHTML = `
-        <div style="text-align: center; padding: 20px;"` • 📍 ${entry.location}
-            <img src="${entry.images[imageIndex]}" style="max-width: 100%; max-height: 80vh; border: 2px solid #000;"` • 📍 ${entry.location}
-        </div` • 📍 ${entry.location}
+        <div style="text-align: center; padding: 20px;">
+            <img src="${entry.images[imageIndex]}" style="max-width: 100%; max-height: 80vh; border: 2px solid #000;">
+        </div>
     `;
     
     modal.classList.add('show');
@@ -1349,12 +1338,8 @@ function renderTimeline() {
     emptyState.classList.add('hidden');
     footer.style.display = 'flex';
 
-    // Obtener el dayKey de hoy para expandirlo por defecto
-    const today = new Date();
-    const todayKey = getDayKey(today.toISOString());
-
     const groupedByDay = {};
-    entries.forEach(entry =` • 📍 ${entry.location}
+    entries.forEach(entry => {
         const dayKey = getDayKey(entry.timestamp);
         if (!groupedByDay[dayKey]) {
             groupedByDay[dayKey] = [];
@@ -1363,140 +1348,151 @@ function renderTimeline() {
     });
 
     const html = `
-        <div class="timeline"` • 📍 ${entry.location}
-            <div class="timeline-line"` • 📍 ${entry.location}
-            ${Object.keys(groupedByDay).map(dayKey =` • 📍 ${entry.location}
+        <div class="timeline">
+            <div class="timeline-line"></div>
+            ${Object.keys(groupedByDay).map(dayKey => {
                 const dayEntries = groupedByDay[dayKey];
                 const firstEntry = dayEntries[0];
                 
-                // Separar recaps del resto de entries
-                const recaps = dayEntries.filter(e =` • 📍 ${entry.location}
-                const normalEntries = dayEntries.filter(e =` • 📍 ${entry.location}
+                // Separar recaps de otros eventos
+                const recaps = dayEntries.filter(e => e.type === 'recap');
+                const regularEntries = dayEntries.filter(e => e.type !== 'recap');
                 
                 return `
-                    <div class="day-block"` • 📍 ${entry.location}
-                        <div class="day-header" onclick="toggleDay('${dayKey}')"` • 📍 ${entry.location}
-                            <span` • 📍 ${entry.location}
-                            <span class="chevron ${dayKey === todayKey ? 'expanded' : ''}" id="chevron-${dayKey}"` • 📍 ${entry.location}
-                        </div` • 📍 ${entry.location}
+                    <div class="day-block">
+                        <div class="day-header" onclick="toggleDay('${dayKey}')">
+                            <span>${formatDate(firstEntry.timestamp)}</span>
+                            <span class="chevron" id="chevron-${dayKey}">▼</span>
+                        </div>
                         
-                        ${recaps.map(recap =` • 📍 ${entry.location}
-                            <div class="day-recap" id="recap-${recap.id}"` • 📍 ${entry.location}
-                                <div class="recap-header" onclick="toggleRecapView(${recap.id})"` • 📍 ${entry.location}
-                                    <span class="recap-chevron" id="recap-chevron-${recap.id}"` • 📍 ${entry.location}
-                                    <span` • 📍 ${entry.location}
-                                </div` • 📍 ${entry.location}
-                                <div class="recap-content hidden" id="recap-content-${recap.id}"` • 📍 ${entry.location}
-                                    <div class="recap-rating"` • 📍 ${entry.location}
-                                    ${recap.reflection ? `<div class="recap-section"` • 📍 ${entry.location}
-                                    ${recap.highlights && recap.highlights.length ` • 📍 ${entry.location}
-                                        <div class="recap-section"` • 📍 ${entry.location}
-                                            <strong` • 📍 ${entry.location}
-                                            <ul` • 📍 ${entry.location}
-                                                ${recap.highlights.map(h =` • 📍 ${entry.location}
-                                            </ul` • 📍 ${entry.location}
-                                        </div` • 📍 ${entry.location}
+                        ${recaps.map(recap => `
+                            <div class="recap-block">
+                                <div class="recap-header" onclick="toggleRecap('${recap.id}')">
+                                    <span>🌟 Day Recap</span>
+                                    <span class="chevron-recap" id="chevron-recap-${recap.id}">▼</span>
+                                </div>
+                                <div class="recap-content hidden" id="recap-content-${recap.id}">
+                                    <button class="mac-button edit-button" onclick="editEntry(${recap.id})" style="position: absolute; top: 12px; right: 12px;">✏️ Edit</button>
+                                    
+                                    <div style="margin-bottom: 16px;">
+                                        <strong>Rating:</strong> ${recap.rating}/10 ${'⭐'.repeat(Math.round(recap.rating / 2))}
+                                    </div>
+                                    
+                                    ${recap.reflection ? `
+                                        <div style="margin-bottom: 16px;">
+                                            <strong>Reflection:</strong>
+                                            <div style="margin-top: 8px; line-height: 1.6;">${recap.reflection}</div>
+                                        </div>
                                     ` : ''}
+                                    
+                                    ${recap.highlights && recap.highlights.length > 0 ? `
+                                        <div style="margin-bottom: 16px;">
+                                            <strong>Highlights:</strong>
+                                            <ul style="margin-top: 8px; padding-left: 20px;">
+                                                ${recap.highlights.map(h => `<li style="margin-bottom: 4px;">${h}</li>`).join('')}
+                                            </ul>
+                                        </div>
+                                    ` : ''}
+                                    
                                     ${recap.track ? `
-                                        <div class="recap-section"` • 📍 ${entry.location}
-                                            <strong` • 📍 ${entry.location}
-                                            <div style="display: flex; align-items: center; gap: 8px; margin-top: 8px;"` • 📍 ${entry.location}
-                                                <img src="${recap.track.artwork}" style="width: 40px; height: 40px; border: 2px solid #000;"` • 📍 ${entry.location}
-                                                <div style="flex: 1;"` • 📍 ${entry.location}
-                                                    <div style="font-weight: bold; font-size: 12px;"` • 📍 ${entry.location}
-                                                    <div style="font-size: 11px; color: #666;"` • 📍 ${entry.location}
-                                                </div` • 📍 ${entry.location}
-                                                <a href="${recap.track.url}" target="_blank" style="text-decoration: none;"` • 📍 ${entry.location}
-                                            </div` • 📍 ${entry.location}
-                                        </div` • 📍 ${entry.location}
+                                        <div style="margin-bottom: 16px;">
+                                            <strong>Day's Soundtrack:</strong>
+                                            <div style="display: flex; align-items: center; gap: 12px; margin-top: 8px; padding: 12px; border: 2px solid #000; background: #f9f9f9;">
+                                                <img src="${recap.track.artwork}" style="width: 50px; height: 50px; border: 2px solid #000;">
+                                                <div style="flex: 1;">
+                                                    <div style="font-weight: bold; font-size: 13px;">${recap.track.name}</div>
+                                                    <div style="font-size: 11px; color: #666;">${recap.track.artist}</div>
+                                                </div>
+                                                <a href="${recap.track.url}" target="_blank" style="text-decoration: none; font-size: 18px;">🔗</a>
+                                            </div>
+                                        </div>
                                     ` : ''}
-                                    <button class="mac-button edit-button" onclick="editEntry(${recap.id})" style="margin-top: 12px;"` • 📍 ${entry.location}
-                                </div` • 📍 ${entry.location}
-                            </div` • 📍 ${entry.location}
+                                </div>
+                            </div>
                         `).join('')}
                         
-                        <div class="day-content ${dayKey === todayKey ? 'expanded' : ''}" id="day-content-${dayKey}"` • 📍 ${entry.location}
-                            ${normalEntries.map(entry =` • 📍 ${entry.location}
+                        <div class="day-content" id="day-content-${dayKey}">
+                            ${regularEntries.map(entry => {
                                 const heightStyle = entry.isTimedActivity && entry.duration ? `min-height: ${Math.min(150 + entry.duration * 0.5, 300)}px;` : '';
                                 const trackClass = entry.isQuickTrack ? 'track-event' : '';
                                 const spentClass = entry.isSpent ? 'spent-event' : '';
                                 
                                 return `
-                                <div class="breadcrumb-entry ${entry.isTimedActivity ? 'edit-mode' : ''} ${trackClass} ${spentClass}" style="${heightStyle}"` • 📍 ${entry.location}
-                                    <button class="mac-button edit-button" onclick="editEntry(${entry.id})"` • 📍 ${entry.location}
+                                <div class="breadcrumb-entry ${entry.isTimedActivity ? 'edit-mode' : ''} ${trackClass} ${spentClass}" style="${heightStyle}">
+                                    <button class="mac-button edit-button" onclick="editEntry(${entry.id})">âœï¸ Edit</button>
                                     
                                     ${entry.isTimedActivity ? 
-                                        `<div class="breadcrumb-time"` • 📍 ${entry.location}
-                                        <div class="activity-label"` • 📍 ${entry.location}
-                                        <div style="font-size: 13px; color: #666; margin-top: 8px;"` • 📍 ${entry.location}
+                                        `<div class="breadcrumb-time">â° ${formatTime(entry.timestamp)} - ${calculateEndTime(entry.timestamp, entry.duration)}</div>
+                                        <div class="activity-label">${entry.activity}</div>
+                                        <div style="font-size: 13px; color: #666; margin-top: 8px;">Duration: ${entry.duration} minutes</div>
                                         ${entry.optionalNote ? `
-                                            <div class="optional-note" id="note-${entry.id}"` • 📍 ${entry.location}
-                                            ${entry.optionalNote.length ` • 📍 ${entry.location}
+                                            <div class="optional-note" id="note-${entry.id}">${entry.optionalNote}</div>
+                                            ${entry.optionalNote.length > 200 ? `<button class="read-more-btn" id="read-more-${entry.id}" onclick="toggleReadMore(${entry.id})">Read more</button>` : ''}
                                         ` : ''}` :
-                                        `<div class="breadcrumb-time"` • 📍 ${entry.location}
+                                        `<div class="breadcrumb-time">
                                             ${entry.isQuickTrack ?
-                                                `<span class="compact-time"` • 📍 ${entry.location}
-                                                `⏰ ${formatTime(entry.timestamp)}`
+                                                `<span class="compact-time">â° ${formatTime(entry.timestamp)} ${entry.note}</span>` :
+                                                `â° ${formatTime(entry.timestamp)}`
                                             }
-                                            ${entry.isSpent ? `<span class="spent-badge"` • 📍 ${entry.location}
-                                        </div` • 📍 ${entry.location}
+                                            ${entry.isSpent ? `<span class="spent-badge">ðŸ’° â‚¬${entry.spentAmount.toFixed(2)}</span>` : ''}
+                                        </div>`
                                     }
                                     
                                     ${entry.isTimedActivity ? '' : ''}
                                     ${entry.isQuickTrack && entry.optionalNote ? `
-                                        <div class="optional-note" id="note-${entry.id}"` • 📍 ${entry.location}
-                                        ${entry.optionalNote.length ` • 📍 ${entry.location}
+                                        <div class="optional-note" id="note-${entry.id}">${entry.optionalNote}</div>
+                                        ${entry.optionalNote.length > 200 ? `<button class="read-more-btn" id="read-more-${entry.id}" onclick="toggleReadMore(${entry.id})">Read more</button>` : ''}
                                     ` : ''}
                                     
-                                    ${!entry.isTimedActivity && !entry.isQuickTrack && !entry.isSpent ? `
-                                        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 8px;"` • 📍 ${entry.location}
-                                            ${entry.mood ? `<span class="mood-display"` • 📍 ${entry.location}
-                                            <div style="flex: 1;"` • 📍 ${entry.location}
-                                                <div class="breadcrumb-note" id="note-${entry.id}"` • 📍 ${entry.location}
-                                                ${entry.note && entry.note.length ` • 📍 ${entry.location}
-                                            </div` • 📍 ${entry.location}
-                                        </div` • 📍 ${entry.location}
+                                    ${!entry.isTimedActivity && !entry.isQuickTrack ? `
+                                        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 8px;">
+                                            ${entry.mood ? `<span class="mood-display">${entry.mood.emoji}</span>` : ''}
+                                            <div style="flex: 1;">
+                                                <div class="breadcrumb-note" id="note-${entry.id}">${entry.note}</div>
+                                                ${entry.note && entry.note.length > 200 ? `<button class="read-more-btn" id="read-more-${entry.id}" onclick="toggleReadMore(${entry.id})">Read more</button>` : ''}
+                                            </div>
+                                        </div>
                                     ` : ''}
                                     
                                     ${entry.weather || entry.location ? `
-                                        <div style="font-size: 12px; color: ${entry.isQuickTrack ? '#ccc' : '#666'}; margin-bottom: 8px;"` • 📍 ${entry.location}
+                                        <div style="font-size: 12px; color: ${entry.isQuickTrack ? '#ccc' : '#666'}; margin-bottom: 8px;">
                                             ${entry.weather ? `${entry.weather}` : ''}
-                                            ${entry.weather && entry.location && entry.location.length < 20 ? ` • 📍 ${entry.location}` : ''}
-                                            ${!entry.weather && entry.location ? `📍 ${entry.location}` : ''}
-                                        </div` • 📍 ${entry.location}
+                                            ${entry.weather && entry.location && entry.location.length < 20 ? ` â€¢ ðŸ“ ${entry.location}` : ''}
+                                            ${!entry.weather && entry.location ? `ðŸ“ ${entry.location}` : ''}
+                                        </div>
                                     ` : ''}
                                     
                                     ${entry.audio ? `
-                                        <div style="margin-top: 12px; margin-bottom: 12px;"` • 📍 ${entry.location}
-                                            <audio controls style="width: 100%; max-width: 300px;"` • 📍 ${entry.location}
-                                                <source src="${entry.audio}" type="audio/webm"` • 📍 ${entry.location}
-                                            </audio` • 📍 ${entry.location}
-                                        </div` • 📍 ${entry.location}
+                                        <div style="margin-top: 12px; margin-bottom: 12px;">
+                                            <audio controls style="width: 100%; max-width: 300px;">
+                                                <source src="${entry.audio}" type="audio/webm">
+                                            </audio>
+                                        </div>
                                     ` : ''}
                                     
-                                    <div class="breadcrumb-preview"` • 📍 ${entry.location}
-                                        ${entry.images && entry.images.length ` • 📍 ${entry.location}
-                                            <img src="${img}" class="preview-image-thumb" onclick="event.stopPropagation(); showImageInModal('${entry.id}', ${entry.images.indexOf(img)});"` • 📍 ${entry.location}
+                                    <div class="breadcrumb-preview">
+                                        ${entry.images && entry.images.length > 0 ? entry.images.map(img => `
+                                            <img src="${img}" class="preview-image-thumb" onclick="event.stopPropagation(); showImageInModal('${entry.id}', ${entry.images.indexOf(img)});">
                                         `).join('') : ''}
-                                        ${entry.coords ? `<div class="preview-map-thumb" id="mini-map-${entry.id}"` • 📍 ${entry.location}
-                                        ${(entry.images && entry.images.length ` • 📍 ${entry.location}
-                                            <button class="mac-button preview-button" onclick="previewEntry(${entry.id})"` • 📍 ${entry.location}
+                                        ${entry.coords ? `<div class="preview-map-thumb" id="mini-map-${entry.id}"></div>` : ''}
+                                        ${(entry.images && entry.images.length > 0) || entry.coords || entry.audio ? `
+                                            <button class="mac-button preview-button" onclick="previewEntry(${entry.id})">ðŸ”</button>
                                         ` : ''}
-                                    </div` • 📍 ${entry.location}
-                                </div` • 📍 ${entry.location}
+                                    </div>
+                                </div>
                             `}).join('')}
-                        </div` • 📍 ${entry.location}
-                    </div` • 📍 ${entry.location}
+                        </div>
+                    </div>
                 `;
             }).join('')}
-        </div` • 📍 ${entry.location}
+        </div>
     `;
 
     container.innerHTML = html;
     
-    entries.forEach(entry =` • 📍 ${entry.location}
+    entries.forEach(entry => {
         if (entry.coords) {
-            setTimeout(() =` • 📍 ${entry.location}
+            setTimeout(() => {
                 const mapEl = document.getElementById(`mini-map-${entry.id}`);
                 if (mapEl && !mapEl.classList.contains('leaflet-container')) {
                     try {
@@ -1517,7 +1513,7 @@ function renderTimeline() {
                         L.marker([entry.coords.lat, entry.coords.lon]).addTo(miniMap);
                         
                         mapEl.style.cursor = 'pointer';
-                        mapEl.onclick = () =` • 📍 ${entry.location}
+                        mapEl.onclick = () => previewEntry(entry.id);
                     } catch (e) {
                         console.error('Error creating mini map:', e);
                     }
@@ -1542,73 +1538,73 @@ function openExportModal(format) {
         createExportModal();
     }
     
-    // Configurar el modal segÃƒÂºn el formato
+    // Configurar el modal segÃºn el formato
     document.getElementById('export-format-type').textContent = format === 'csv' ? 'CSV' : 'iCal';
     document.getElementById('export-modal').classList.add('show');
 }
 
 function createExportModal() {
     const modalHTML = `
-        <div id="export-modal" class="preview-modal" onclick="closeExportModal(event)"` • 📍 ${entry.location}
-            <div class="preview-content" onclick="event.stopPropagation()"` • 📍 ${entry.location}
-                <div class="mac-title-bar"` • 📍 ${entry.location}
-                    <span` • 📍 ${entry.location}
-                    <button onclick="closeExportModal()" style="background: #fff; border: 2px solid #000; padding: 2px 8px; cursor: pointer;"` • 📍 ${entry.location}
-                </div` • 📍 ${entry.location}
-                <div class="mac-content"` • 📍 ${entry.location}
-                    <h3 style="margin-bottom: 16px;"` • 📍 ${entry.location}
+        <div id="export-modal" class="preview-modal" onclick="closeExportModal(event)">
+            <div class="preview-content" onclick="event.stopPropagation()">
+                <div class="mac-title-bar">
+                    <span>ðŸ“¤ Export <span id="export-format-type">CSV</span></span>
+                    <button onclick="closeExportModal()" style="background: #fff; border: 2px solid #000; padding: 2px 8px; cursor: pointer;">âœ•</button>
+                </div>
+                <div class="mac-content">
+                    <h3 style="margin-bottom: 16px;">Select Export Range</h3>
                     
-                    <div style="margin-bottom: 20px;"` • 📍 ${entry.location}
-                        <label class="mac-label"` • 📍 ${entry.location}
-                            <input type="radio" name="export-range" value="all" checked onchange="updateExportOptions()"` • 📍 ${entry.location}
+                    <div style="margin-bottom: 20px;">
+                        <label class="mac-label">
+                            <input type="radio" name="export-range" value="all" checked onchange="updateExportOptions()"> 
                             Export All Entries
-                        </label` • 📍 ${entry.location}
-                    </div` • 📍 ${entry.location}
+                        </label>
+                    </div>
                     
-                    <div style="margin-bottom: 20px;"` • 📍 ${entry.location}
-                        <label class="mac-label"` • 📍 ${entry.location}
-                            <input type="radio" name="export-range" value="month" onchange="updateExportOptions()"` • 📍 ${entry.location}
+                    <div style="margin-bottom: 20px;">
+                        <label class="mac-label">
+                            <input type="radio" name="export-range" value="month" onchange="updateExportOptions()"> 
                             Export Specific Month
-                        </label` • 📍 ${entry.location}
-                        <div id="month-selector" style="margin-left: 20px; margin-top: 8px; display: none;"` • 📍 ${entry.location}
-                            <input type="month" class="mac-input" id="export-month" style="max-width: 200px;"` • 📍 ${entry.location}
-                        </div` • 📍 ${entry.location}
-                    </div` • 📍 ${entry.location}
+                        </label>
+                        <div id="month-selector" style="margin-left: 20px; margin-top: 8px; display: none;">
+                            <input type="month" class="mac-input" id="export-month" style="max-width: 200px;">
+                        </div>
+                    </div>
                     
-                    <div style="margin-bottom: 20px;"` • 📍 ${entry.location}
-                        <label class="mac-label"` • 📍 ${entry.location}
-                            <input type="radio" name="export-range" value="day" onchange="updateExportOptions()"` • 📍 ${entry.location}
+                    <div style="margin-bottom: 20px;">
+                        <label class="mac-label">
+                            <input type="radio" name="export-range" value="day" onchange="updateExportOptions()"> 
                             Export Specific Day
-                        </label` • 📍 ${entry.location}
-                        <div id="day-selector" style="margin-left: 20px; margin-top: 8px; display: none;"` • 📍 ${entry.location}
-                            <input type="date" class="mac-input" id="export-day" style="max-width: 200px;"` • 📍 ${entry.location}
-                        </div` • 📍 ${entry.location}
-                    </div` • 📍 ${entry.location}
+                        </label>
+                        <div id="day-selector" style="margin-left: 20px; margin-top: 8px; display: none;">
+                            <input type="date" class="mac-input" id="export-day" style="max-width: 200px;">
+                        </div>
+                    </div>
                     
-                    <hr style="margin: 20px 0; border: 1px solid #ddd;"` • 📍 ${entry.location}
+                    <hr style="margin: 20px 0; border: 1px solid #ddd;">
                     
-                    <h3 style="margin-bottom: 16px;"` • 📍 ${entry.location}
+                    <h3 style="margin-bottom: 16px;">iCal Options (Only for iCal export)</h3>
                     
-                    <div style="margin-bottom: 20px;"` • 📍 ${entry.location}
-                        <label class="mac-label"` • 📍 ${entry.location}
-                            <input type="radio" name="ical-grouping" value="individual" checked` • 📍 ${entry.location}
+                    <div style="margin-bottom: 20px;">
+                        <label class="mac-label">
+                            <input type="radio" name="ical-grouping" value="individual" checked> 
                             Each event as separate calendar entry
-                        </label` • 📍 ${entry.location}
-                    </div` • 📍 ${entry.location}
+                        </label>
+                    </div>
                     
-                    <div style="margin-bottom: 20px;"` • 📍 ${entry.location}
-                        <label class="mac-label"` • 📍 ${entry.location}
-                            <input type="radio" name="ical-grouping" value="daily"` • 📍 ${entry.location}
+                    <div style="margin-bottom: 20px;">
+                        <label class="mac-label">
+                            <input type="radio" name="ical-grouping" value="daily"> 
                             Group all events per day as one calendar entry
-                        </label` • 📍 ${entry.location}
-                    </div` • 📍 ${entry.location}
+                        </label>
+                    </div>
                     
-                    <button class="mac-button mac-button-primary" onclick="performExport()" style="width: 100%; margin-top: 24px;"` • 📍 ${entry.location}
-                        💾 Export
-                    </button` • 📍 ${entry.location}
-                </div` • 📍 ${entry.location}
-            </div` • 📍 ${entry.location}
-        </div` • 📍 ${entry.location}
+                    <button class="mac-button mac-button-primary" onclick="performExport()" style="width: 100%; margin-top: 24px;">
+                        ðŸ“¥ Export
+                    </button>
+                </div>
+            </div>
+        </div>
     `;
     document.body.insertAdjacentHTML('beforeend', modalHTML);
     
@@ -1641,14 +1637,14 @@ function performExport() {
     const range = document.querySelector('input[name="export-range"]:checked').value;
     const icalGrouping = document.querySelector('input[name="ical-grouping"]:checked').value;
     
-    // Filtrar entradas segÃƒÂºn el rango seleccionado
+    // Filtrar entradas segÃºn el rango seleccionado
     let filteredEntries = [...entries];
     let filenameSuffix = 'all';
     
     if (range === 'month') {
         const monthValue = document.getElementById('export-month').value;
         const [year, month] = monthValue.split('-');
-        filteredEntries = entries.filter(e =` • 📍 ${entry.location}
+        filteredEntries = entries.filter(e => {
             const date = new Date(e.timestamp);
             return date.getFullYear() === parseInt(year) && 
                    date.getMonth() + 1 === parseInt(month);
@@ -1656,7 +1652,7 @@ function performExport() {
         filenameSuffix = `${year}-${month}`;
     } else if (range === 'day') {
         const dayValue = document.getElementById('export-day').value;
-        filteredEntries = entries.filter(e =` • 📍 ${entry.location}
+        filteredEntries = entries.filter(e => {
             const date = new Date(e.timestamp);
             const dateStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
             return dateStr === dayValue;
@@ -1669,7 +1665,7 @@ function performExport() {
         return;
     }
     
-    // Realizar la exportaciÃƒÂ³n
+    // Realizar la exportaciÃ³n
     if (format === 'csv') {
         exportCSVData(filteredEntries, filenameSuffix);
     } else {
@@ -1681,7 +1677,7 @@ function performExport() {
 
 function exportCSVData(data, suffix) {
     const headers = ['Date and Time', 'Note', 'Activity', 'Duration (min)', 'Location', 'Weather', 'Mood', 'Spent', 'Images'];
-    const rows = data.map(e =` • 📍 ${entry.location}
+    const rows = data.map(e => [
         new Date(e.timestamp).toLocaleString(),
         e.note || '',
         e.activity || '',
@@ -1689,12 +1685,12 @@ function exportCSVData(data, suffix) {
         e.location || '',
         e.weather || '',
         e.mood ? `${e.mood.emoji} ${e.mood.label}` : '',
-        e.spentAmount ? `Ã¢â€šÂ¬${e.spentAmount}` : '',
+        e.spentAmount ? `â‚¬${e.spentAmount}` : '',
         e.images ? e.images.length : 0
     ]);
     
-    const csv = [headers, ...rows].map(row =` • 📍 ${entry.location}
-        row.map(cell =` • 📍 ${entry.location}
+    const csv = [headers, ...rows].map(row => 
+        row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')
     ).join('\n');
     
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -1710,9 +1706,9 @@ function exportICSData(data, suffix, grouping) {
     let icsEvents = '';
     
     if (grouping === 'daily') {
-        // Agrupar por dÃƒÂ­a
+        // Agrupar por dÃ­a
         const groupedByDay = {};
-        data.forEach(e =` • 📍 ${entry.location}
+        data.forEach(e => {
             const date = new Date(e.timestamp);
             const dayKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
             if (!groupedByDay[dayKey]) {
@@ -1721,15 +1717,15 @@ function exportICSData(data, suffix, grouping) {
             groupedByDay[dayKey].push(e);
         });
         
-        // Crear un evento por dÃƒÂ­a
-        icsEvents = Object.keys(groupedByDay).map(dayKey =` • 📍 ${entry.location}
+        // Crear un evento por dÃ­a
+        icsEvents = Object.keys(groupedByDay).map(dayKey => {
             const dayEntries = groupedByDay[dayKey];
             const firstEntry = dayEntries[0];
             const date = new Date(firstEntry.timestamp);
             const dateStr = date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
             
-            // Crear descripciÃƒÂ³n con todos los eventos del dÃƒÂ­a
-            const description = dayEntries.map(e =` • 📍 ${entry.location}
+            // Crear descripciÃ³n con todos los eventos del dÃ­a
+            const description = dayEntries.map(e => {
                 const time = new Date(e.timestamp).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
                 let text = `${time}: ${e.note || e.activity || 'Event'}`;
                 if (e.duration) text += ` (${e.duration} min)`;
@@ -1746,7 +1742,7 @@ END:VEVENT`;
         }).join('\n');
     } else {
         // Evento individual por cada entrada
-        icsEvents = data.map(e =` • 📍 ${entry.location}
+        icsEvents = data.map(e => {
             const date = new Date(e.timestamp);
             const dateStr = date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
             
@@ -1801,76 +1797,76 @@ function openStats() {
 
 function calculateStats() {
     const totalEntries = entries.length;
-    const breadcrumbs = entries.filter(e =` • 📍 ${entry.location}
-    const timeEvents = entries.filter(e =` • 📍 ${entry.location}
-    const trackEvents = entries.filter(e =` • 📍 ${entry.location}
-    const spentEvents = entries.filter(e =` • 📍 ${entry.location}
+    const breadcrumbs = entries.filter(e => !e.isTimedActivity && !e.isQuickTrack && !e.isSpent).length;
+    const timeEvents = entries.filter(e => e.isTimedActivity).length;
+    const trackEvents = entries.filter(e => e.isQuickTrack).length;
+    const spentEvents = entries.filter(e => e.isSpent).length;
     
     const totalSpent = entries
-        .filter(e =` • 📍 ${entry.location}
-        .reduce((sum, e) =` • 📍 ${entry.location}
+        .filter(e => e.isSpent)
+        .reduce((sum, e) => sum + (e.spentAmount || 0), 0);
     
     const totalMinutes = entries
-        .filter(e =` • 📍 ${entry.location}
-        .reduce((sum, e) =` • 📍 ${entry.location}
+        .filter(e => e.isTimedActivity)
+        .reduce((sum, e) => sum + (e.duration || 0), 0);
     
     const totalHours = (totalMinutes / 60).toFixed(1);
     
-    // Actividades mÃƒÂ¡s frecuentes
+    // Actividades mÃ¡s frecuentes
     const activityCount = {};
-    entries.filter(e =` • 📍 ${entry.location}
+    entries.filter(e => e.isTimedActivity).forEach(e => {
         activityCount[e.activity] = (activityCount[e.activity] || 0) + 1;
     });
-    const topActivity = Object.keys(activityCount).length ` • 📍 ${entry.location}
-        ? Object.keys(activityCount).reduce((a, b) =` • 📍 ${entry.location}
+    const topActivity = Object.keys(activityCount).length > 0 
+        ? Object.keys(activityCount).reduce((a, b) => activityCount[a] > activityCount[b] ? a : b)
         : 'None';
     
-    // Tracks mÃƒÂ¡s frecuentes
+    // Tracks mÃ¡s frecuentes
     const trackCount = {};
-    entries.filter(e =` • 📍 ${entry.location}
+    entries.filter(e => e.isQuickTrack).forEach(e => {
         trackCount[e.note] = (trackCount[e.note] || 0) + 1;
     });
-    const topTrack = Object.keys(trackCount).length ` • 📍 ${entry.location}
-        ? Object.keys(trackCount).reduce((a, b) =` • 📍 ${entry.location}
+    const topTrack = Object.keys(trackCount).length > 0
+        ? Object.keys(trackCount).reduce((a, b) => trackCount[a] > trackCount[b] ? a : b)
         : 'None';
     
     const statsHTML = `
-        <div class="stat-card"` • 📍 ${entry.location}
-            <div class="stat-number"` • 📍 ${entry.location}
-            <div class="stat-label"` • 📍 ${entry.location}
-        </div` • 📍 ${entry.location}
-        <div class="stat-card"` • 📍 ${entry.location}
-            <div class="stat-number"` • 📍 ${entry.location}
-            <div class="stat-label"` • 📍 ${entry.location}
-        </div` • 📍 ${entry.location}
-        <div class="stat-card"` • 📍 ${entry.location}
-            <div class="stat-number"` • 📍 ${entry.location}
-            <div class="stat-label"` • 📍 ${entry.location}
-        </div` • 📍 ${entry.location}
-        <div class="stat-card"` • 📍 ${entry.location}
-            <div class="stat-number"` • 📍 ${entry.location}
-            <div class="stat-label"` • 📍 ${entry.location}
-        </div` • 📍 ${entry.location}
-        <div class="stat-card"` • 📍 ${entry.location}
-            <div class="stat-number"` • 📍 ${entry.location}
-            <div class="stat-label"` • 📍 ${entry.location}
-        </div` • 📍 ${entry.location}
-        <div class="stat-card"` • 📍 ${entry.location}
-            <div class="stat-number"` • 📍 ${entry.location}
-            <div class="stat-label"` • 📍 ${entry.location}
-        </div` • 📍 ${entry.location}
-        <div class="stat-card"` • 📍 ${entry.location}
-            <div class="stat-number"` • 📍 ${entry.location}
-            <div class="stat-label"` • 📍 ${entry.location}
-        </div` • 📍 ${entry.location}
-        <div class="stat-card"` • 📍 ${entry.location}
-            <div class="stat-number" style="font-size: 18px;"` • 📍 ${entry.location}
-            <div class="stat-label"` • 📍 ${entry.location}
-        </div` • 📍 ${entry.location}
-        <div class="stat-card"` • 📍 ${entry.location}
-            <div class="stat-number" style="font-size: 16px;"` • 📍 ${entry.location}
-            <div class="stat-label"` • 📍 ${entry.location}
-        </div` • 📍 ${entry.location}
+        <div class="stat-card">
+            <div class="stat-number">${totalEntries}</div>
+            <div class="stat-label">Total Entries</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">${breadcrumbs}</div>
+            <div class="stat-label">ðŸ“ Breadcrumbs</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">${timeEvents}</div>
+            <div class="stat-label">â±ï¸ Time Events</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">${trackEvents}</div>
+            <div class="stat-label">ðŸ“Š Marked Items</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">${spentEvents}</div>
+            <div class="stat-label">ðŸ’° Expenses</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">â‚¬${totalSpent.toFixed(2)}</div>
+            <div class="stat-label">Total Spent</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">${totalHours}h</div>
+            <div class="stat-label">Hours Tracked</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" style="font-size: 18px;">${topActivity}</div>
+            <div class="stat-label">Top Activity</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" style="font-size: 16px;">${topTrack}</div>
+            <div class="stat-label">Most Marked</div>
+        </div>
     `;
     
     document.getElementById('stats-content').innerHTML = statsHTML;
@@ -1883,23 +1879,20 @@ function closeStats(event) {
         modal.classList.remove('show');
     }
 }
+// Initialize app
+loadData();
+loadSettings();
 
 // ===== RECAP FUNCTIONS =====
 
 function showRecapForm() {
     // Ocultar otros formularios
-    document.getElementById('form-window').classList.add('hidden');
-    document.getElementById('timer-window').classList.add('hidden');
-    document.getElementById('track-window').classList.add('hidden');
-    document.getElementById('spent-window').classList.add('hidden');
+    ['crumb-form', 'time-form', 'track-form', 'spent-form'].forEach(id => {
+        const form = document.getElementById(id);
+        if (form) form.classList.add('hidden');
+    });
     
     document.getElementById('recap-form').classList.remove('hidden');
-    
-    // Si no estamos editando, asegurar que el botÃ³n delete estÃ© oculto
-    if (!editingEntryId) {
-        document.getElementById('save-recap-btn').textContent = 'ðŸ’¾ Save Recap';
-        document.getElementById('delete-recap-btn').classList.add('hidden');
-    }
     
     // Listener para el slider
     const slider = document.getElementById('recap-rating');
@@ -1922,10 +1915,6 @@ function closeRecapForm() {
     document.getElementById('recap-bso').value = '';
     document.getElementById('recap-bso-results').innerHTML = '';
     document.getElementById('recap-selected-track').value = '';
-    // Restaurar botones
-    document.getElementById('save-recap-btn').textContent = 'ðŸ’¾ Save Recap';
-    document.getElementById('delete-recap-btn').classList.add('hidden');
-    editingEntryId = null;
 }
 
 async function buscarBSO() {
@@ -1936,31 +1925,31 @@ async function buscarBSO() {
     }
     
     const resultsDiv = document.getElementById('recap-bso-results');
-    resultsDiv.innerHTML = '<div style="padding: 12px; text-align: center;"` • 📍 ${entry.location}
+    resultsDiv.innerHTML = '<div style="padding: 12px; text-align: center;">Searching...</div>';
     
     try {
         const url = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=song&limit=5`;
         const response = await fetch(url);
         const data = await response.json();
         
-        if (data.results && data.results.length ` • 📍 ${entry.location}
-            const html = data.results.map(track =` • 📍 ${entry.location}
-                <div class="bso-result" style="display: flex; align-items: center; gap: 12px; padding: 8px; border: 2px solid #999; margin-bottom: 8px; cursor: pointer; background: white;" onclick="selectTrack('${track.trackName.replace(/'/g, "\\'")}', '${track.artistName.replace(/'/g, "\\'")}', '${track.trackViewUrl}', '${track.artworkUrl100}')"` • 📍 ${entry.location}
-                    <img src="${track.artworkUrl100}" style="width: 50px; height: 50px; border: 2px solid #000;"` • 📍 ${entry.location}
-                    <div style="flex: 1;"` • 📍 ${entry.location}
-                        <div style="font-weight: bold; font-size: 13px;"` • 📍 ${entry.location}
-                        <div style="font-size: 11px; color: #666;"` • 📍 ${entry.location}
-                    </div` • 📍 ${entry.location}
-                    <div style="font-size: 18px;"` • 📍 ${entry.location}
-                </div` • 📍 ${entry.location}
+        if (data.results && data.results.length > 0) {
+            const html = data.results.map(track => `
+                <div class="bso-result" style="display: flex; align-items: center; gap: 12px; padding: 8px; border: 2px solid #999; margin-bottom: 8px; cursor: pointer; background: white;" onclick="selectTrack('${track.trackName.replace(/'/g, "\'")}', '${track.artistName.replace(/'/g, "\'")}', '${track.trackViewUrl}', '${track.artworkUrl100}')">
+                    <img src="${track.artworkUrl100}" style="width: 50px; height: 50px; border: 2px solid #000;">
+                    <div style="flex: 1;">
+                        <div style="font-weight: bold; font-size: 13px;">${track.trackName}</div>
+                        <div style="font-size: 11px; color: #666;">${track.artistName}</div>
+                    </div>
+                    <div style="font-size: 18px;">â–¶ï¸</div>
+                </div>
             `).join('');
             resultsDiv.innerHTML = html;
         } else {
-            resultsDiv.innerHTML = '<div style="padding: 12px; text-align: center; color: #666;"` • 📍 ${entry.location}
+            resultsDiv.innerHTML = '<div style="padding: 12px; text-align: center; color: #666;">No results found</div>';
         }
     } catch (error) {
         console.error('Error searching BSO:', error);
-        resultsDiv.innerHTML = '<div style="padding: 12px; text-align: center; color: red;"` • 📍 ${entry.location}
+        resultsDiv.innerHTML = '<div style="padding: 12px; text-align: center; color: red;">Error searching. Try again.</div>';
     }
 }
 
@@ -1974,15 +1963,47 @@ function selectTrack(trackName, artistName, url, artwork) {
     
     document.getElementById('recap-selected-track').value = JSON.stringify(trackData);
     document.getElementById('recap-bso-results').innerHTML = `
-        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 3px solid #000; background: #f0f0f0;"` • 📍 ${entry.location}
-            <img src="${artwork}" style="width: 60px; height: 60px; border: 2px solid #000;"` • 📍 ${entry.location}
-            <div style="flex: 1;"` • 📍 ${entry.location}
-                <div style="font-weight: bold;"` • 📍 ${entry.location}
-                <div style="font-size: 12px; color: #666;"` • 📍 ${entry.location}
-            </div` • 📍 ${entry.location}
-            <a href="${url}" target="_blank" style="text-decoration: none; font-size: 20px;"` • 📍 ${entry.location}
-        </div` • 📍 ${entry.location}
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 3px solid #000; background: #f0f0f0;">
+            <img src="${artwork}" style="width: 60px; height: 60px; border: 2px solid #000;">
+            <div style="flex: 1;">
+                <div style="font-weight: bold;">${trackName}</div>
+                <div style="font-size: 12px; color: #666;">${artistName}</div>
+            </div>
+            <a href="${url}" target="_blank" style="text-decoration: none; font-size: 20px;">ðŸ”—</a>
+        </div>
     `;
+}
+
+function editRecapEvent(entry) {
+    editingEntryId = entry.id;
+    
+    document.getElementById('recap-reflection').value = entry.reflection || '';
+    document.getElementById('recap-rating').value = entry.rating || 5;
+    document.getElementById('recap-rating-value').textContent = entry.rating || 5;
+    
+    if (entry.highlights && entry.highlights.length > 0) {
+        document.getElementById('recap-highlight-1').value = entry.highlights[0] || '';
+        document.getElementById('recap-highlight-2').value = entry.highlights[1] || '';
+        document.getElementById('recap-highlight-3').value = entry.highlights[2] || '';
+    }
+    
+    if (entry.track) {
+        document.getElementById('recap-selected-track').value = JSON.stringify(entry.track);
+        document.getElementById('recap-bso-results').innerHTML = `
+            <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 3px solid #000; background: #f0f0f0;">
+                <img src="${entry.track.artwork}" style="width: 60px; height: 60px; border: 2px solid #000;">
+                <div style="flex: 1;">
+                    <div style="font-weight: bold;">${entry.track.name}</div>
+                    <div style="font-size: 12px; color: #666;">${entry.track.artist}</div>
+                </div>
+                <a href="${entry.track.url}" target="_blank" style="text-decoration: none; font-size: 20px;">🔗</a>
+            </div>
+        `;
+    }
+    
+    const recapForm = document.getElementById('recap-form');
+    recapForm.classList.remove('hidden');
+    recapForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function saveRecap() {
@@ -1994,55 +2015,36 @@ function saveRecap() {
     const selectedTrackJson = document.getElementById('recap-selected-track').value;
     
     if (!reflection && !highlight1 && !highlight2 && !highlight3) {
-        alert('Please add at least a reflection or a highlight');
+        alert('Please add at least one reflection or highlight');
         return;
     }
     
-    const highlights = [highlight1, highlight2, highlight3].filter(h =` • 📍 ${entry.location}
-    const track = selectedTrackJson ? JSON.parse(selectedTrackJson) : null;
-    
-    // Obtener fecha de hoy para el recap
-    const today = new Date();
-    today.setHours(23, 59, 59, 999); // Final del dÃ­a
-    const todayKey = getDayKey(today.toISOString());
-    
     if (editingEntryId) {
-        // Modo ediciÃ³n: actualizar recap existente
-        const entryIndex = entries.findIndex(e =` • 📍 ${entry.location}
+        const entryIndex = entries.findIndex(e => e.id === editingEntryId);
         if (entryIndex !== -1) {
             entries[entryIndex] = {
                 ...entries[entryIndex],
                 reflection: reflection,
                 rating: parseInt(rating),
-                highlights: highlights,
-                track: track
+                highlights: [highlight1, highlight2, highlight3].filter(h => h),
+                track: selectedTrackJson ? JSON.parse(selectedTrackJson) : null
             };
         }
         editingEntryId = null;
-        alert('âœ… Day Recap updated!');
+        alert('🌟 Recap updated!');
     } else {
-        // Modo creaciÃ³n: verificar que no exista ya un recap para hoy
-        const existingRecap = entries.find(e =` • 📍 ${entry.location}
-            e.type === 'recap' && getDayKey(e.timestamp) === todayKey
-        );
-        
-        if (existingRecap) {
-            alert('âš ï¸ A recap already exists for today. Please edit the existing one.');
-            return;
-        }
-        
         const recap = {
             id: Date.now(),
+            timestamp: new Date().toISOString(),
             type: 'recap',
-            timestamp: today.toISOString(),
             reflection: reflection,
             rating: parseInt(rating),
-            highlights: highlights,
-            track: track
+            highlights: [highlight1, highlight2, highlight3].filter(h => h),
+            track: selectedTrackJson ? JSON.parse(selectedTrackJson) : null
         };
         
         entries.unshift(recap);
-        alert('âœ… Day Recap saved!');
+        alert('🌟 Recap saved!');
     }
     
     saveData();
@@ -2050,128 +2052,78 @@ function saveRecap() {
     closeRecapForm();
 }
 
-// Edit Recap Event
-function editRecapEvent(entry) {
-    editingEntryId = entry.id;
-    
-    document.getElementById('recap-reflection').value = entry.reflection || '';
-    document.getElementById('recap-rating').value = entry.rating || 5;
-    document.getElementById('recap-rating-value').textContent = entry.rating || 5;
-    
-    if (entry.highlights && entry.highlights.length ` • 📍 ${entry.location}
-        document.getElementById('recap-highlight-1').value = entry.highlights[0] || '';
-        document.getElementById('recap-highlight-2').value = entry.highlights[1] || '';
-        document.getElementById('recap-highlight-3').value = entry.highlights[2] || '';
-    }
-    
-    if (entry.track) {
-        document.getElementById('recap-selected-track').value = JSON.stringify(entry.track);
-        document.getElementById('recap-bso-results').innerHTML = 
-            `<div style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 3px solid #000; background: #f0f0f0;"` • 📍 ${entry.location}
-                <img src="${entry.track.artwork}" style="width: 60px; height: 60px; border: 2px solid #000;"` • 📍 ${entry.location}
-                <div style="flex: 1;"` • 📍 ${entry.location}
-                    <div style="font-weight: bold;"` • 📍 ${entry.location}
-                    <div style="font-size: 12px; color: #666;"` • 📍 ${entry.location}
-                </div` • 📍 ${entry.location}
-                <a href="${entry.track.url}" target="_blank" style="text-decoration: none; font-size: 20px;"` • 📍 ${entry.location}
-            </div` • 📍 ${entry.location}
-    }
-    
-    
-    // Mostrar botÃ³n delete y cambiar texto de save
-    document.getElementById('save-recap-btn').textContent = 'ðŸ’¾ Update Recap';
-    document.getElementById('delete-recap-btn').classList.remove('hidden');
-    
-    showRecapForm();
-}
-
 // ===== FAB MENU =====
 
 let fabMenuOpen = false;
 
 function toggleFabMenu() {
-    const fabActions = document.querySelectorAll('.fab-action');
+    const fabActions = document.querySelectorAll('.fab-action-wrapper');
     const fabIcon = document.getElementById('fab-icon');
     
     fabMenuOpen = !fabMenuOpen;
     
     if (fabMenuOpen) {
-        fabIcon.textContent = 'Ãƒâ€”';
+        fabIcon.textContent = '×';
         fabIcon.style.transform = 'rotate(45deg)';
         
-        fabActions.forEach((btn, index) =` • 📍 ${entry.location}
-            setTimeout(() =` • 📍 ${entry.location}
-                btn.classList.remove('hidden');
-                setTimeout(() =` • 📍 ${entry.location}
+        fabActions.forEach((wrapper, index) => {
+            setTimeout(() => {
+                wrapper.classList.remove('hidden');
+                setTimeout(() => wrapper.classList.add('show'), 10);
             }, index * 50);
         });
     } else {
         fabIcon.textContent = '+';
         fabIcon.style.transform = 'rotate(0deg)';
         
-        fabActions.forEach((btn, index) =` • 📍 ${entry.location}
-            setTimeout(() =` • 📍 ${entry.location}
-                btn.classList.remove('show');
-                setTimeout(() =` • 📍 ${entry.location}
+        fabActions.forEach((wrapper, index) => {
+            setTimeout(() => {
+                wrapper.classList.remove('show');
+                setTimeout(() => wrapper.classList.add('hidden'), 300);
             }, index * 30);
         });
     }
 }
 
-// Cerrar FAB menu al hacer click en una acciÃƒÂ³n
+// Cerrar FAB menu al hacer click en una acciÃ³n
 function closeFabMenu() {
     if (fabMenuOpen) {
         toggleFabMenu();
     }
 }
 
-// Toggle Crumb Form
-function toggleCrumb() {
+// Modificar las funciones toggle para cerrar el menÃº
+const originalToggleCrumb = window.toggleCrumb;
+window.toggleCrumb = function() {
     closeFabMenu();
-    const formWindow = document.getElementById('form-window');
-    
-    if (formWindow.classList.contains('hidden')) {
-        // Limpiar formulario
-        editingEntryId = null;
-        document.getElementById('note-input').value = '';
-        document.getElementById('location-input').value = '';
-        document.getElementById('weather-input').value = '';
-        currentImages = [];
-        currentAudio = null;
-        currentCoords = null;
-        selectedMood = null;
-        
-        // Set current datetime
-        const now = new Date();
-        const year = now.getFullYear();
-        const month = String(now.getMonth() + 1).padStart(2, '0');
-        const day = String(now.getDate()).padStart(2, '0');
-        const hours = String(now.getHours()).padStart(2, '0');
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        document.getElementById('datetime-input').value = `${year}-${month}-${day}T${hours}:${minutes}`;
-        
-        renderImagePreviews();
-        renderAudioPreview();
-        renderMoodSelector();
-        
-        document.getElementById('delete-btn').classList.add('hidden');
-        document.getElementById('save-btn').textContent = '💾 Save';
-        
-        // Hide other forms
-        document.getElementById('timer-window').classList.add('hidden');
-        document.getElementById('track-window').classList.add('hidden');
-        document.getElementById('spent-window').classList.add('hidden');
-        document.getElementById('recap-form').classList.add('hidden');
-        
-        // Show this form
-        formWindow.classList.remove('hidden');
-        formWindow.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } else {
-        formWindow.classList.add('hidden');
-    }
-}
+    if (originalToggleCrumb) originalToggleCrumb();
+};
 
-// Initialize app
-loadData();
-loadSettings();
-updateTimerOptions();
+const originalToggleTime = window.toggleTime;
+window.toggleTime = function() {
+    closeFabMenu();
+    if (originalToggleTime) originalToggleTime();
+};
+
+const originalToggleTrack = window.toggleTrack;
+window.toggleTrack = function() {
+    closeFabMenu();
+    if (originalToggleTrack) originalToggleTrack();
+};
+
+const originalToggleSpent = window.toggleSpent;
+window.toggleSpent = function() {
+    closeFabMenu();
+    if (originalToggleSpent) originalToggleSpent();
+};
+
+// Agregar para Recap
+const originalShowRecapForm = window.showRecapForm;
+window.showRecapForm = function() {
+    closeFabMenu();
+    document.getElementById('recap-form').classList.remove('hidden');
+    ['crumb-form', 'time-form', 'track-form', 'spent-form'].forEach(id => {
+        document.getElementById(id)?.classList.add('hidden');
+    });
+};
+
